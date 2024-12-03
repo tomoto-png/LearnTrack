@@ -1,0 +1,19 @@
+services:
+  app:
+    build: ./
+    volumes:
+      - .:/learntrack
+    ports:
+      - 8010:8000
+  mysql:
+    image: mysql:8.3
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: appmysql
+      MYSQL_ROOT_PASSWORD: mysql1202
+      TZ: ${TZ}
+volumes:
+  mysql:
