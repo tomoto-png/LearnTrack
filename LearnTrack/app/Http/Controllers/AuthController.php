@@ -13,20 +13,27 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+    
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+        ],[
+            'name.required' => '名前を入力してください。',
+            'email.required' => 'メールアドレスを入力してください。',
+            'email.unique' => 'このメールアドレスは既に登録されています。',
+            'password.required' => 'パスワードを入力してください。',
+            'password.min' => 'パスワードは8文字以上である必要があります。',
+            'password.confirmed' => 'パスワードが一致しません。',
         ]);
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        return redirect()->route('dashboard')->with('success', '登録が完了しました！ログインしてください。');
+        return redirect()->route('dashboard')->with('success','登録が完了しました！ログインをしてください。');
     }
     public function showLoginForm()
     {
@@ -36,19 +43,24 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
+        ],[
+            'email.required' => 'メールアドレスを入力してください。',
+            'password.required' => 'パスワードを入力してください。',
+            'password.min' => 'パスワードは8文字以上で入力してください。',
         ]);
-        if (auth()->attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        if (Auth::attempt($request->only('email','password'), $request->filled('remember'))) {
             return redirect()->route('dashboard');
+        } else {
+            return back()->withErrors(['login_error' => 'メールアドレスまたはパスワードが間違っています。']);
         }
-        return back()->withErrors(['email' => 'The provided credentials are incorrect.']);
     }
     public function logout(Request $request)
     {
-        Auth::logout(); // ログアウト処理
-        $request->session()->invalidate(); // セッションの無効化
-        $request->session()->regenerateToken(); // セッションの再生成
-    
-        return redirect()->route('login'); // ログインページにリダイレクト
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }
