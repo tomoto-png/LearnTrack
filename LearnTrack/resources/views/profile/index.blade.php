@@ -6,7 +6,6 @@
     <title>マイページ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* カラーパレット */
         :root {
             --bg-green: #b3cfad;
             --bg-light-gray: #e3e6d8;
@@ -21,7 +20,7 @@
     <aside class="w-[300px] bg-[var(--bg-light-gray)] shadow-lg h-screen p-6 flex flex-col">
 
         <!-- ロゴ -->
-        <div class="mb-10 mt-5 flex items-center space-x-2">
+        <div class="mb-12 mt-5 flex items-center space-x-2">
             <img src="{{ asset('images/tomototomato.png') }}" class="w-[25px] h-[28px] object-cover">
             <img src="{{ asset('images/logo.png') }}" class="w-[68px] h-[29px] object-contain">
         </div>
@@ -57,7 +56,7 @@
 
     <div class="mb-12 mt-5 flex-1 p-6">
         <header class="mb-10">
-            <h1 class="text-3xl font-semibold">マイページ</h1>
+            <h1 class="text-2xl font-semibold">マイページ</h1>
         </header>
 
         <section class="bg-[var(--bg-light-gray)] p-6 rounded-lg shadow-lg">

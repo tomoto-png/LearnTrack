@@ -13,7 +13,7 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
-    
+
     public function register(Request $request)
     {
         $request->validate([
@@ -33,7 +33,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('dashboard')->with('success','登録が完了しました！ログインをしてください。');
+        return redirect()->route('profile.index')->with('success','登録が完了しました！ログインをしてください。');
     }
     public function showLoginForm()
     {
@@ -50,7 +50,7 @@ class AuthController extends Controller
             'password.min' => 'パスワードは8文字以上で入力してください。',
         ]);
         if (Auth::attempt($request->only('email','password'), $request->filled('remember'))) {
-            return redirect()->route('dashboard');
+            return redirect()->route('profile.index');
         } else {
             return back()->withErrors(['login_error' => 'メールアドレスまたはパスワードが間違っています。']);
         }
