@@ -16,71 +16,44 @@
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex">
 
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 shadow-md bg-white z-20 hidden md:block">
+        @include('components.sidebar')
+    </div>
 
-    <aside class="w-[300px] bg-[var(--bg-light-gray)] shadow-lg h-screen p-6 flex flex-col">
-
-        <!-- ロゴ -->
-        <div class="mb-12 mt-5 flex items-center space-x-2">
-            <img src="{{ asset('images/tomototomato.png') }}" class="w-[25px] h-[28px] object-cover">
-            <img src="{{ asset('images/logo.png') }}" class="w-[68px] h-[29px] object-contain">
-        </div>
-
-        <!-- ナビゲーションメニュー -->
-        <nav class="space-y-5">
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/account_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
-                <a href="#" class="text-lg font-medium hover:text-[var(--accent-yellow)]">マイページ</a>
+    <div id="mainContent" class="flex-1 p-4 sm:p-6 mt-4 md:ml-72 transition-all">
+        <header class="flex sm:flex-row justify-between items-center space-y-4 sm:space-y-0 mb-8">
+            <!-- タイトルとハンバーガーメニュー -->
+            <div class="flex items-center justify-between w-full sm:w-auto">
+                <h1 class="text-xl sm:text-2xl font-semibold">マイページ</h1>
+                <button id="menuButton"
+                    class="fixed top-6 right-6 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110 md:hidden z-[9999]">
+                    <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
+                </button>
             </div>
-
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/import_contacts_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
-                <a href="#" class="text-lg font-medium hover:text-[var(--accent-yellow)]">学習計画</a>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/signal_cellular_alt_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
-                <a href="#" class="text-lg font-medium hover:text-[var(--accent-yellow)]">学習データ</a>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/timer_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
-                <a href="#" class="text-lg font-medium hover:text-[var(--accent-yellow)]">タイマー</a>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/send_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
-                <a href="#" class="text-lg font-medium hover:text-[var(--accent-yellow)]">共有</a>
-            </div>
-        </nav>
-    </aside>
-
-    <div class="mb-12 mt-5 flex-1 p-6">
-        <header class="mb-10">
-            <h1 class="text-2xl font-semibold">マイページ</h1>
         </header>
 
         <section class="bg-[var(--bg-light-gray)] p-6 rounded-lg shadow-lg">
-            <div class="flex items-center space-x-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6">
                 @if ($user->avatar)
-                    <div class="w-24 h-24 rounded-full border-4 border-[var(--accent-yellow)] shadow overflow-hidden">
+                    <div class="w-24 h-24 rounded-full border-4 border-[var(--accent-yellow)] shadow overflow-hidden sm:w-32 sm:h-32">
                         <img class="w-full h-full object-cover"
                             src="{{ asset('storage/' . $user->avatar) }}"
                             alt="{{ $user->name }}のアバター">
                     </div>
                 @else
-                    <div class="w-24 h-24 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-2xl text-white shadow">
+                    <div class="w-24 h-24 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-2xl text-white shadow sm:w-32 sm:h-32">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 @endif
 
-                <div>
-                    <h2 class="text-2xl font-semibold text-[var(--text-brown)]">{{ $user->name }}</h2>
+                <div class="mt-4 sm:mt-0">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-[var(--text-brown)]">{{ $user->name }}</h2>
                 </div>
             </div>
 
             <div class="mt-6 bg-white p-4 rounded-lg shadow">
-                <h3 class="text-lg font-semibold text-gray-800">自己紹介</h3>
-                <p class="text-sm mt-2 text-gray-600">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800">自己紹介</h3>
+                <p class="text-sm sm:text-base mt-2 text-gray-600">
                     {{ $user->bio ?? '自己紹介はまだ設定されていません。' }}
                 </p>
             </div>
@@ -94,5 +67,11 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById("menuButton").addEventListener("click", function() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("hidden");
+        });
+    </script>
 </body>
 </html>

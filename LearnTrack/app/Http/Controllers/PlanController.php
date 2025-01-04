@@ -8,10 +8,15 @@ use App\Models\Plan;
 
 class PlanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $plans = Auth::user()->plans;
-        return view('plan.index', compact('plan'));
+        $search = $request->get('search');
+
+        $plans = Plan::when($search, function($query, $search) {
+            return $query->where('name', 'like', "%{$search}%");
+        })->paginate(6);
+
+        return view('plan.index', compact('plans'));
     }
     public function create()
     {
@@ -22,15 +27,22 @@ class PlanController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'target_hours' => 'required|integer|min:5|max:21',
+            'target_hours' => 'required|numeric|min:0.5|max:100',
             'priority' => 'required|in:low,medium,high',
+            'start_date' => 'nullable|date',
+            'deadline' => 'nullable|date|after_or_equal:start_date',
         ]);
 
         Plan::create([
-            'name' => $request-> name,
-            'description' => $request-> description,
-            'target_hours' => $request-> target_hours,
-            'priority' => $request -> priority,
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'description' => $request->description,
+            'target_hours' => $request->target_hours,
+            'priority' => $request->priority,
+            'start_date' => $request->start_date,
+            'deadline' => $request->deadline,
+            'progress' => 0.00,
+            'completed' => false,
         ]);
 
         return redirect()->route('plan.index');
@@ -38,7 +50,7 @@ class PlanController extends Controller
 
     public function edit($id)
     {
-        $plan = Plan::find($id);
+        $plan = Plan::findOrFail($id);
         return view('plan.edit', compact('plan'));
     }
     public function update(Request $request, $id)
@@ -46,24 +58,33 @@ class PlanController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'target_hours' => 'required|integer|min:5|max:21',
+            'target_hours' => 'required|numeric|min:5|max:21',
             'priority' => 'required|in:low,medium,high',
+            'start_date' => 'nullable|date',
+            'deadline' => 'nullable|date|after_or_equal:start_date',
+            'progress' => 'nullable|numeric|min:0|max:100',
+            'completed' => 'nullable|boolean',
         ]);
-        $plan = Plan::find($id);
+
+        $plan = Plan::findOrFail($id);
         $plan->update([
-            'name' => $request-> name,
-            'description' => $request-> description,
-            'target_hours' => $request-> target_hours,
-            'priority' => $request-> priority,
+            'name' => $request->name,
+            'description' => $request->description,
+            'target_hours' => $request->target_hours,
+            'priority' => $request->priority,
+            'start_date' => $request->start_date,
+            'deadline' => $request->deadline,
+            'progress' => $request->progress ?? $plan->progress,
+            'completed' => $request->completed ?? $plan->completed,
         ]);
 
         return redirect()->route('plan.index');
     }
     public function destroy($id)
     {
-        $paln = Plan::find($id);
+        $plan = Plan::findOrFail($id);
         $plan->delete();
 
-        return redirect()->route("plan.index");
+        return redirect()->route('plan.index');
     }
 }

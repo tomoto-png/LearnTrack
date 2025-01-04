@@ -26,35 +26,31 @@
 
             <div>
                 <label for="name" class="block text-lg font-medium mb-2">名前</label>
-                <input type="text"
-                       name="name"
-                       id="name"
-                       value="{{ old('name', $user->name) }}"
-                       required
+                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
                        class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">
             </div>
 
             <div>
                 <label for="bio" class="block text-lg font-medium mb-2">自己紹介</label>
-                <textarea name="bio"
-                          id="bio"
-                          required
-                          rows="4"
-                          class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">{{ old('bio', $user->bio) }}</textarea>
+                <textarea name="bio" id="bio" required rows="4"
+                    class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">{{ old('bio', $user->bio) }}
+                </textarea>
             </div>
 
             <div>
                 <label for="avatar" class="block text-lg font-medium mb-2">画像</label>
-                <input type="file"
-                       name="avatar"
-                       id="avatar"
+                <input type="file" name="avatar"id="avatar"
                        class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg bg-white focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">
             </div>
 
-            <button type="submit"
-                    class="w-full bg-[var(--accent-yellow)] text-[var(--text-brown)] py-2 rounded-lg font-semibold hover:bg-[var(--text-brown)] hover:text-white transition focus:outline-none">
-                更新
-            </button>
+            <div class="mt-6 text-center text-sm flex justify-between">
+                <a class="bg-[var(--accent-yellow)] hover:bg-[var(--button-hover)] transition-colors transform hover:translate-y-[-2px] text-white px-6 py-3 rounded-lg font-semibold" href="{{ route('profile.index') }}">
+                    キャンセル
+                </a>
+                <button type="submit" class="bg-[var(--accent-yellow)] text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition">
+                    編集する
+                </button>
+            </div>
         </form>
     </div>
 </body>

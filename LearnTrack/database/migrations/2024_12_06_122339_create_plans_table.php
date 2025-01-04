@@ -15,17 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name', 255);
-            $table->text('description');
-            $table->decimal('target_hours', 5, 2);
+            $table->text('description')->nullable();
+            $table->decimal('target_hours', 3, 1);
             $table->enum('priority', ['low', 'medium', 'high']);
-            $table->dateTime('start_date');
-            $table->dateTime('deadline');
-            $table->dateTime('completed_at');
-            $table->decimal('progress', 5, 2);
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('deadline')->nullable();
+            $table->decimal('progress', 5, 2)->default(0.00);
             $table->boolean('completed')->default(false);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
