@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>学習計画一覧</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --bg-green: #b3cfad;
             --bg-light-gray: #e3e6d8;
             --text-brown: #9f9579;
             --accent-yellow: #d9ca79;
+            --button-hover: #c5a02d;
         }
     </style>
 </head>
@@ -50,13 +52,13 @@
                         </button>
                         @endif
                     </div>
-                    <button type="submit" class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-md hover:bg-yellow-500 transition-shadow shadow text-sm sm:text-base md:text-lg">
+                    <button type="submit" class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow text-sm sm:text-base md:text-lg">
                         検索
                     </button>
                 </form>
 
                 <a href="{{ route('plan.create') }}"
-                    class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition-shadow shadow sm:w-auto text-center w-32">
+                    class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-lg font-semibold hover:bg-[var(--button-hover)] transition-shadow shadow sm:w-auto text-center w-32">
                     新規作成
                 </a>
             </div>
@@ -87,8 +89,8 @@
                                 <p class="text-xs sm:text-sm text-gray-700 font-semibold">進捗:
                                     <span class="text-xs sm:text-sm font-medium text-gray-800">{{ $plan['progress'] }}%</span>
                                 </p>
-                                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full {{ $plan['progress'] == 100 ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }} whitespace-nowrap">
-                                    {{ $plan['progress'] == 100 ? '完了' : '未完了' }}
+                                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full {{ $plan['completed'] == 1 ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }} whitespace-nowrap">
+                                    {{ $plan['completed'] ==  1 ? '完了' : '未完了' }}
                                 </span>
                             </div>
 
@@ -100,7 +102,7 @@
                         <div class="w-full flex justify-end space-x-2 mt-2">
 
                             <a href="{{ route('plan.edit', ['id' => $plan['id']]) }}"
-                               class="bg-[var(--accent-yellow)] text-white px-4 py-2 rounded-md font-semibold hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-auto flex justify-center items-center space-x-2">
+                               class="bg-[var(--accent-yellow)] text-white px-4 py-2 rounded-md font-semibold hover:bg-[var(--button-hover)] transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-auto flex justify-center items-center space-x-2">
                                 <img src="{{ asset('images/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-5 h-5">
                                 <span>編集</span>
                             </a>
@@ -128,7 +130,7 @@
                             ←
                         </span>
                     @else
-                        <a href="{{ $plans->previousPageUrl() }}" class="px-3 py-2 text-base font-medium text-white bg-[var(--accent-yellow)] border border-[var(--accent-yellow)] rounded-full hover:bg-yellow-500 transition-transform transform hover:scale-105">
+                        <a href="{{ $plans->previousPageUrl() }}" class="px-3 py-2 text-base font-medium text-white bg-[var(--accent-yellow)] border border-[var(--accent-yellow)] rounded-full hover:bg-[var(--button-hover)] transition-transform transform hover:scale-105">
                             ←
                         </a>
                     @endif
@@ -141,7 +143,7 @@
                     @endphp
 
                     @if ($start > 1)
-                        <a href="{{ $plans->url(1) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--accent-yellow)] hover:text-white transition-transform transform hover:scale-105">
+                        <a href="{{ $plans->url(1) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-white transition-transform transform hover:scale-105">
                             1
                         </a>
                         @if ($start > 2)
@@ -155,7 +157,7 @@
                                 {{ $i }}
                             </span>
                         @else
-                            <a href="{{ $plans->url($i) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--accent-yellow)] hover:text-white transition-transform transform hover:scale-105">
+                            <a href="{{ $plans->url($i) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-white transition-transform transform hover:scale-105">
                                 {{ $i }}
                             </a>
                         @endif
@@ -165,13 +167,13 @@
                         @if ($end < $lastPage - 1)
                             <span class="px-2 text-base text-gray-500">...</span>
                         @endif
-                        <a href="{{ $plans->url($lastPage) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--accent-yellow)] hover:text-white transition-transform transform hover:scale-105">
+                        <a href="{{ $plans->url($lastPage) }}" class="px-3 py-2 text-base font-medium text-[var(--text-brown)] bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-white transition-transform transform hover:scale-105">
                             {{ $lastPage }}
                         </a>
                     @endif
 
                     @if ($plans->hasMorePages())
-                        <a href="{{ $plans->nextPageUrl() }}" class="px-3 py-2 text-base font-medium text-white bg-[var(--accent-yellow)] border border-[var(--accent-yellow)] rounded-full hover:bg-yellow-500 transition-transform transform hover:scale-105">
+                        <a href="{{ $plans->nextPageUrl() }}" class="px-3 py-2 text-base font-medium text-white bg-[var(--accent-yellow)] border border-[var(--accent-yellow)] rounded-full hover:bg-[var(--button-hover)] transition-transform transform hover:scale-105">
                             →
                         </a>
                     @else

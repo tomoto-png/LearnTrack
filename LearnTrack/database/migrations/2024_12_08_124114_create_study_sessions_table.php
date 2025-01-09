@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('study_sessions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('plan_id')->nullable(); // NULLを許容
+            $table->unsignedBigInteger('plan_id')->nullable();
             $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->integer('duration')->comment('Duration in minutes'); 
+            $table->dateTime('end_time')->nullable();
+            $table->integer('duration')->nullable()->comment('Duration in minutes');
             $table->timestamps();
-            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('set null'); // set null に変更
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('set null');
         });
     }
 

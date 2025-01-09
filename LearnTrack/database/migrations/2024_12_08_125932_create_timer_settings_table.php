@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('timer_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedInteger('work_duration'); // 作業時間（単位: 分）
-            $table->unsignedInteger('break_duration'); // 休憩時間（単位: 分）
+            $table->unsignedInteger('work_duration');
+            $table->unsignedInteger('break_duration');
             $table->boolean('is_pomodoro')->default(false);
             $table->timestamps();
-    
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

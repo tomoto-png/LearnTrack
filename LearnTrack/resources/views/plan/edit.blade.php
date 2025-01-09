@@ -16,62 +16,62 @@
         }
     </style>
 </head>
-<body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex flex-col md:flex-row">
+<body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex justify-center items-center">
 
-    <!-- サイドバー -->
-    <div class="fixed inset-y-0 left-0 w-72 shadow-md md:block hidden z-20">
-        @include('components.sidebar')
-    </div>
-
-    <!-- メインコンテンツ -->
-    <div class="flex-1 p-6 mt-5 mb-5 ml-0 md:ml-72">
-        <header class="mb-10">
-            <h1 class="text-3xl font-semibold text-center text-gray-800">編集</h1>
+    <div class="w-full max-w-4xl p-6 bg-[var(--bg-light-gray)] rounded-xl shadow-lg">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-[var(--text-brown)] border-b-2 border-[var(--accent-yellow)] pb-2">    ✏️ 編集</h1>
         </header>
 
-        <section class="bg-[var(--bg-light-gray)] shadow-lg rounded-xl p-8">
-            <form action="{{ route('plan.update', ['id' => $plan->id]) }}" method="POST">
-                @method('PUT')
-                @csrf
-                <div class="space-y-6">
+        <form action="{{ route('plan.update', ['id' => $plan->id]) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="space-y-6">
 
+                <div>
+                    <label for="name" class="block text-lg font-medium text-[var(--text-brown)]">
+                        計画名
+                    </label>
+                    <input type="text" id="name" name="name" class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]" value="{{ old('name', $plan->name) }}" required>
+                </div>
+                <div>
+                    <label for="description" class="block text-lg font-medium text-[var(--text-brown)]">
+                        詳細
+                    </label>
+                    <textarea id="description" name="description" class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]" rows="4">{{ old('description', $plan->description) }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-800">計画名</label>
-                        <input type="text" id="name" name="name" class="mt-2 w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]" value="{{ old('name', $plan->name) }}" required>
+                        <label for="target_hours" class="block text-lg font-medium text-[var(--text-brown)]">
+                            目標時間
+                        </label>
+                        <input type="number" id="target_hours" name="target_hours" class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]"  value="{{ old('target_hours', $plan->target_hours) }}" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
                     </div>
-
                     <div>
-                        <label for="description" class="block text-sm font-medium text-gray-800">計画の詳細</label>
-                        <textarea id="description" name="description" class="mt-2 w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]" rows="4">{{ old('description', $plan->description) }}</textarea>
-                    </div>
-
-                    <div>
-                        <label for="target_hours" class="block text-sm font-medium text-gray-800">目標時間（時間）</label>
-                        <input type="number" id="target_hours" name="target_hours" class="mt-2 w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]" value="{{ old('target_hours', $plan->target_hours) }}" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
-                    </div>
-
-                    <div>
-                        <label for="priority" class="block text-sm font-medium text-gray-800">優先度</label>
-                        <select name="priority" id="priority" required class="mt-2 w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]">
-                            <option value="low" {{ old('priority', $plan->priority) == 'low' ? 'selected' : '' }}>Low</option>
-                            <option value="medium" {{ old('priority', $plan->priority) == 'medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="high" {{ old('priority', $plan->priority) == 'high' ? 'selected' : '' }}>High</option>
+                        <label for="priority" class="block text-lg font-medium text-[var(--text-brown)]">
+                            優先度
+                        </label>
+                        <select name="priority" id="priority" required class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]">
+                            <option value="low" {{ old('priority', $plan->priority) == 'low' ? 'selected' : '' }}>🟢 Low</option>
+                            <option value="medium" {{ old('priority', $plan->priority) == 'medium' ? 'selected' : '' }}>🟡 Medium</option>
+                            <option value="high" {{ old('priority', $plan->priority) == 'high' ? 'selected' : '' }}>🔴 High</option>
                         </select>
                     </div>
-
-                    <div class="mt-6 text-center text-sm flex justify-between">
-                        <a class="bg-[var(--accent-yellow)] hover:bg-[var(--button-hover)] transition-colors transform hover:translate-y-[-2px] text-white px-6 py-3 rounded-lg font-semibold" href="{{ route('plan.index') }}">
-                            キャンセル
-                        </a>
-
-                        <button type="submit" class="bg-[var(--accent-yellow)] hover:bg-[var(--button-hover)] transition-colors transform hover:translate-y-[-2px] text-white px-6 py-3 rounded-lg font-semibold">
-                            更新する
-                        </button>
-                    </div>
                 </div>
-            </form>
-        </section>
+
+                <div class="flex justify-between items-center space-x-4">
+                    <a href="{{ route('plan.index') }}" class="bg-[var(--accent-yellow)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--button-hover)] transition-all w-full sm:w-auto text-center">
+                        キャンセル
+                    </a>
+                    <button type="submit" class="bg-[var(--accent-yellow)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--button-hover)] transition-all w-full sm:w-auto text-center">
+                        追加する
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 
 </body>
 </html>
+
