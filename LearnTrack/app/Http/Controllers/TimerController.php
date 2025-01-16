@@ -57,64 +57,69 @@ class TimerController extends Controller
         return response()->json(['message' => 'タイマー停止']);
     }
 
-    public function savePomodoroSettings(Request $request)
+    public function pomodoroIndex()
     {
         $user = Auth::user();
-
-        $request->validate([
-            'work_duration' => 'required|integer|min:1|max:180',
-            'break_duration' => 'required|integer|min:1|max:60',
-            'is_pomodoro' => 'nullable|boolean',
-        ]);
-
-        TimerSetting::create([
-            'user_id' => $user->id,
-            'work_duration' => $request->work_duration,
-            'break_duration' => $request->break_duration,
-            'is_pomodoro' => $request->has('is_pomodoro'),
-        ]);
-
-        return redirect()->route('timer.pomodoro.show');
+        $plans = Plan::where('user_id', $user->id)->get();
+        $studySession = StudySession::where('user_id', $user->id)->latest('start_time')->first();
+        // $timerSettings = TimerSetting::where('user_id', $user->id)->get();
+        return view('pomodoro.index', compact('plans', 'studySession'));
     }
 
-    public function pomodoroStart(Request $request, Plan $plan = null)
+    // public function savePomodoroSettings(Request $request)
+    // {
+    //     $user = Auth::user();
+
+    //     $request->validate([
+    //         'work_duration' => 'required|integer|min:1|max:180',
+    //         'break_duration' => 'required|integer|min:1|max:60',
+    //         'is_pomodoro' => 'nullable|boolean',
+    //     ]);
+
+    //     TimerSetting::create([
+    //         'user_id' => $user->id,
+    //         'work_duration' => $request->work_duration,
+    //         'break_duration' => $request->break_duration,
+    //         'is_pomodoro' => $request->has('is_pomodoro'),
+    //     ]);
+
+    //     return redirect()->route('pomodoro.index');
+    // }
+
+    public function pomodoroStart(Plan $plan = null)
     {
         $user = Auth::user();
-
         $unfinishedSession = StudySession::where('user_id', $user->id)
-            ->whereNull('end_time')
-            ->first();
+        ->whereNull('end_time')
+        ->first();
         if ($unfinishedSession) {
-            $unfinishedSession->update([
-                'end_time' => now(),
-                'duration' => now()->diffInMinutes($unfinishedSession->start_time),
-            ]);
+            $unfinishedSession->delete();
         }
-        $timerSettings = TimerSetting::findOrFail($request->setting_id);
 
-        StudySession::create([
+
+        // $timerSettings = TimerSetting::findOrFail($request->setting_id);
+        $startTime = Carbon::parse(request()->input('pomodoro_start_time', now()));
+        $newSession = StudySession::create([
             'user_id' => $user->id,
             'plan_id' => $plan?->id,
-            'start_time' => now(),
-            'duration' => $timerSettings->work_duration, // ポモドーロ設定に基づく
+            'start_time' => $startTime,
         ]);
 
-        return redirect()->route('timer.pomodoro.show');
+        return response()->json(['studySessionId' => $newSession->id], 200);
     }
 
-    public function pomodoroStop()
+    public function pomodoroStop(StudySession $studySession)
     {
         $user = Auth::user();
-        $studySession = StudySession::where('user_id', $user->id)
-            ->orderBy('start_time', 'desc')
-            ->firstOrFail();
+
+        $endTime = Carbon::parse(request()->input('end_time', now()));
+        $durationInSeconds = request()->input('duration');
 
         $studySession->update([
-            'end_time' => now(),
-            'duration' => now()->diffInMinutes($studySession->start_time),
+            'end_time' => $endTime,
+            'duration' => $durationInSeconds,
         ]);
 
-        return redirect()->route('timer.pomodoro.show');
+        return response()->json(['message' => 'タイマー停止']);
     }
-
 }

@@ -30,12 +30,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{id}', [PlanController::class, 'destroy'])->name('plan.destroy');
     });
     Route::prefix('timer')->group(function () {
+        //集中タイマー管理
         Route::get('/', [TimerController::class, 'index'])->name('timer.index');
         Route::post('/start/{plan?}', [TimerController::class, 'start'])->name('timer.start');
         Route::put('/stop/{studySession}', [TimerController::class, 'stop'])->name('timer.stop');
-        Route::get('/pomodoro', [TimerController::class, 'pomodoroShow'])->name('timer.pomodoro.show');
-        Route::post('/pomodoro/settings', [TimerController::class, 'savePomodoroSettings'])->name('timer.pomodoro.save');
-        Route::post('/pomodoro/start/{plan?}', [TimerController::class, 'pomodoroStart'])->name('timer.pomodoro.start');
-        Route::post('/pomodoro/stop', [TimerController::class, 'pomodoroStop'])->name('timer.pomodoro.stop');
+        //ポモドーロタイマー管理
+        Route::get('/pomodoro', [TimerController::class, 'pomodoroIndex'])->name('pomodoro.index');
+        // Route::post('/pomodoro/settings', [TimerController::class, 'savePomodoroSettings'])->name('pomodoro.save');
+        Route::post('/pomodoro/start/{plan?}', [TimerController::class, 'pomodoroStart'])->name('pomodoro.start');
+        Route::put('/pomodoro/stop/{studySession}', [TimerController::class, 'pomodoroStop'])->name('pomodoro.stop');
     });
 });
