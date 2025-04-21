@@ -34,10 +34,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [TimerController::class, 'index'])->name('timer.index');
         Route::post('/start/{plan?}', [TimerController::class, 'start'])->name('timer.start');
         Route::put('/stop/{studySession}', [TimerController::class, 'stop'])->name('timer.stop');
+        Route::get('/settings', [TimerController::class, 'timerSettings'])->name('timer.settings');
+        Route::post('/saveTimerSettings', [TimerController::class, 'saveTimerSettings'])->name('pomodoro.saveTimerSettings');
         //ポモドーロタイマー管理
         Route::get('/pomodoro', [TimerController::class, 'pomodoroIndex'])->name('pomodoro.index');
-        // Route::post('/pomodoro/settings', [TimerController::class, 'savePomodoroSettings'])->name('pomodoro.save');
         Route::post('/pomodoro/start/{plan?}', [TimerController::class, 'pomodoroStart'])->name('pomodoro.start');
         Route::put('/pomodoro/stop/{studySession}', [TimerController::class, 'pomodoroStop'])->name('pomodoro.stop');
+        Route::get('/pomodoro/settings', [TimerController::class, 'pomodoroSettings'])->name('pomodoro.settings');
+        Route::post('/pomodoro/savePomodoroSettings', [TimerController::class, 'savePomodoroSettings'])->name('pomodoro.savePomodoroSettings');
     });
 });

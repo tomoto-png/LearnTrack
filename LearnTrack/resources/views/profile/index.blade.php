@@ -26,7 +26,7 @@
             <div class="flex items-center justify-between w-full sm:w-auto">
                 <h1 class="text-xl sm:text-2xl font-semibold">マイページ</h1>
                 <button id="menuButton"
-                    class="fixed top-6 right-6 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110 md:hidden z-[9999]">
+                    class="fixed top-5 right-5 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110 md:hidden z-[9999]">
                     <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
                 </button>
             </div>
@@ -65,6 +65,12 @@
                 プロフィール編集
             </a>
         </div>
+        <form action="{{ route('logout') }}" method="POST" class="inline ml-3 w-full sm:w-auto">
+            @csrf
+            <button type="submit" class="bg-red-400 text-lg text-white px-4 py-2 rounded-lg hover:bg-red-600 w-full sm:w-auto">
+                ログアウト
+            </button>
+        </form>
     </div>
 
     <script>

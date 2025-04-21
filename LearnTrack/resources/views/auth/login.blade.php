@@ -28,8 +28,8 @@
                 <div class="relative">
                     <img src="{{ asset('images/mail_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
-                    <input type="email" id="email" name="email" value="{{ old("email") }}"
-                    class="w-full mt-1 p-2 px-10 border border {{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
+                    <input type="text" id="email" name="email" value="{{ old("email") }}"
+                    class="w-full mt-1 p-2 px-10 border border {{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200"/>
                 </div>
                 @error('email')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
@@ -43,7 +43,7 @@
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="password" id="password" name="password" value="{{ old('password') }}"
                     class="w-full mt-1 p-2 px-10 border border {{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
-                    <button type="button" id="toggle-password" 
+                    <button type="button" id="toggle-password"
                         class="absolute top-1/2 right-3 transform -translate-y-1/3">
                         <!-- アイコン表示用 -->
                         <img id="eye-icon" src="{{ asset('images/eye-slash-regular.svg') }}" alt="eye-icon" class="w-6 h-6 cursor-pointer">
@@ -71,7 +71,7 @@
         document.getElementById('toggle-password').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eye-icon');
-            
+
             // パスワードの表示/非表示を切り替え
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -81,7 +81,7 @@
                 eyeIcon.src = '{{ asset("images/eye-slash-regular.svg") }}'; // アイコンを元に戻す
             }
         });
-        
+
     </script>
 </body>
 </html>

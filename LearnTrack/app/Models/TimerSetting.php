@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TimerSetting extends Model
 {
-    protected $fillable = ['user_id','work_duration','break_duration','is_pomodoro'];
+    protected $fillable = ['user_id', 'study_time', 'break_time', 'auto_switch','sound_effect'];
 
     public function user(): BelongsTo
     {

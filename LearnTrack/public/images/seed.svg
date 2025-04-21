@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_1" data-name="レイヤー 1" xmlns="http://www.w3.org/2000/svg" viewBox="270 100 160 160">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffd293;
+      }
+
+      .cls-2 {
+        fill: #f9e79b;
+      }
+    </style>
+  </defs>
+  <g>
+    <ellipse class="cls-2" cx="353" cy="191" rx="51" ry="67"/>
+    <path class="cls-2" d="M312,151c22.38-19.59,28.67-35.6,30-47,.34-2.92.83-9.65,3-10,3.53-.57,6.07,16.69,18,31,7.8,9.35,17.04,14.36,23,17"/>
+  </g>
+  <ellipse class="cls-1" cx="352.5" cy="189.5" rx="41.5" ry="53.5"/>
+</svg>
