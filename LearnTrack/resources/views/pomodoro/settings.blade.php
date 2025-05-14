@@ -29,7 +29,7 @@
 
         <div class="flex items-center justify-center mt-12">
             <form id="pomodoroSettingsForm" action="{{ route('pomodoro.savePomodoroSettings') }}" method="POST"
-                class="w-full max-w-3xl p-10">
+                class="w-full max-w-3xl p-10 bg-[var(--bg-light-gray)] rounded-lg">
                 @csrf
                 <div class="mb-6 flex items-center justify-between">
                     <label for="studyTime" class="block text-lg font-medium mb-2 text-[var(--text-brown)]">

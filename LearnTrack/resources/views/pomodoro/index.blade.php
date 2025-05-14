@@ -127,10 +127,10 @@
                 <span id="timer" class="text-7xl numbers font-semibold">
                     {{ str_pad(Auth::user()->timerSetting->study_time ?? 25, 2, '0', STR_PAD_LEFT) }}:00
                 </span>
-                <p class="text-base font-medium">
+                <p class="text-base font-medium mt-2">
                     <span id="pomodoroCountDisplay">0</span>ポモドーロ
                 </p>
-                <p id="timer-status" class="text-xl absolute top-24">
+                <p id="timer-status" class="text-xl absolute top-28">
                     未開始
                 </p>
             </div>
@@ -154,6 +154,10 @@
         <audio id="sound2" src="{{ asset('sounds/完了6.mp3') }}" preload="auto"></audio>
         <audio id="sound3" src="{{ asset('sounds/決定1.mp3') }}" preload="auto"></audio>
     </div>
+    @php
+        $autoSwitch = Auth::user()->timerSetting?->auto_switch ?? true;
+        $soundEffect = Auth::user()->timerSetting->sound_effect ?? true;
+    @endphp
     <script>
         $(document).ready(function () {
             let timerInterval = null;
@@ -170,8 +174,8 @@
             let cycleStep = 120;
             let studyCycleTime = parseInt("{{ Auth::user()->timerSetting->study_time ?? 25 }}") * 60;
             let breakCycleTime = parseInt("{{ Auth::user()->timerSetting->break_time ?? 5 }}") * 60;
-            let autoSwitch = @json((bool) Auth::user()->timerSetting->auto_switch ?? true);
-            let soundEffect = @json((bool) Auth::user()->timerSetting->sound_effect ?? true);
+            let autoSwitch = @json((bool) $autoSwitch);
+            let soundEffect = @json((bool) $soundEffect);
 
             $.ajaxSetup({
                 headers: {
@@ -267,7 +271,7 @@
 
                         }
                     }
-                }, 50);
+                }, 1000);
             }
 
             function startStudyTimer() {
@@ -298,10 +302,6 @@
                         stop();
                     }
                 });
-            }
-
-            function getCurrentTime() {
-                return new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
             }
 
             function updateProgressBar() {
@@ -355,7 +355,6 @@
             }
             function stop() {
                 if (timerInterval && studySessionId) {
-                    const japanTime = getCurrentTime();
                     updateTimerStatus("一時停止");
                     const time = parseInt("{{ Auth::user()->timerSetting->study_time ?? 25 }}") * 60;
                     console.log("タイマーを停止しました");
@@ -371,7 +370,6 @@
                         url: '/timer/pomodoro/stop/' + studySessionId,
                         type: 'PUT',
                         data: {
-                            end_time: japanTime,
                             duration: totalStudyTime
                         },
                         success: function (response) {
@@ -391,12 +389,10 @@
 
             $("#start-button").click(() => {
                 if (!timerInterval) {
-                    const japanTime = getCurrentTime();
                     startStudyTimer();
                     $.ajax({
                         url: '/timer/pomodoro/start/' + $('#planSelect').val(),
                         type: 'POST',
-                        data: { start_time: japanTime },
                         success: function (response) {
                             if (response.studySessionId) {
                                 studySessionId = response.studySessionId;

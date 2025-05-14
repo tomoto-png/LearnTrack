@@ -141,6 +141,9 @@
         <audio id="sound1" src="{{ asset('sounds/決定ボタンを押す5.mp3') }}" preload="auto"></audio>
         <audio id="sound2" src="{{ asset('sounds/決定1.mp3') }}" preload="auto"></audio>
     </div>
+    @php
+        $soundEffect = Auth::user()->timerSetting?->sound_effect ?? true;
+    @endphp
 
     <script>
         $(document).ready(function () {
@@ -155,7 +158,7 @@
             let cycleTime2 = 3600;
             let cycleStep2 = 238;
             let cycleStep = 120;
-            let soundEffect = @json((bool) Auth::user()->timerSetting->sound_effect ?? true);
+            let soundEffect = @json((bool) $soundEffect);
 
             $.ajaxSetup({
                 headers: {
@@ -207,8 +210,6 @@
             }
             $("#start-button").click(function () {
                 if (!timerInterval) {
-                    let now = new Date();
-                    let japanTime = now.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
                     updateTimerStatus("学習時間");
                     timerInterval = setInterval(function () {
                         totalSeconds++;
@@ -224,12 +225,11 @@
                                 playSound1();
                             }
                         }
-                    }, 1);
+                    }, 1000);
 
                     $.ajax({
                         url: '/timer/start/' + $('#planSelect').val(),
                         type: 'POST',
-                        data: { end_time: japanTime },
                         success: function (response) {
                             if (response.studySessionId) {
                                 studySessionId = response.studySessionId;
@@ -314,7 +314,7 @@
                             resetIconsAndProgress();
                             loopSeconds = 0;
                         }
-                    }, 100);
+                    }, 1000);
                 } else {
                     console.warn('タイマーは既に動作中か、セッションIDがありません');
                 }
@@ -324,8 +324,6 @@
 
             $("#stop-button").click(function () {
                 if (timerInterval && studySessionId) {
-                    let now = new Date();
-                    let japanTime = now.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
                     updateTimerStatus("一時停止");
                     clearInterval(timerInterval);
                     timerInterval = null;
@@ -333,10 +331,7 @@
                     $.ajax({
                         url: '/timer/stop/' + studySessionId,
                         type: 'PUT',
-                        data: {
-                            end_time: japanTime,
-                            duration: totalSeconds
-                        },
+                        data: {duration: totalSeconds},
                         success: function (response) {
                             console.log('タイマー停止: ', response);
                         },

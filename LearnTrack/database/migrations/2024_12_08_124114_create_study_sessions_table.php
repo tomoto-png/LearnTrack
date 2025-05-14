@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('plan_id')->nullable();
-            $table->dateTime('start_time');
-            $table->dateTime('end_time')->nullable();
             $table->integer('duration')->nullable()->comment('Duration in minutes');
             $table->timestamps();
 

@@ -16,8 +16,7 @@ class TimerController extends Controller
     {
         $user = Auth::user();
         $plans = Plan::where('user_id', $user->id)->get();
-        $studySession = StudySession::where('user_id', $user->id)->latest('start_time')->first();
-        return view('timer.index', compact('plans', 'studySession'));
+        return view('timer.index', compact('plans'));
     }
 
     public function start(Plan $plan = null)
@@ -25,20 +24,16 @@ class TimerController extends Controller
         $user = Auth::user();
 
         $unfinishedSession = StudySession::where('user_id', $user->id)
-        ->whereNull('end_time')
+        ->whereNull('duration')
         ->first();
 
         if ($unfinishedSession) {
             $unfinishedSession->delete();
         }
 
-        // 新しいセッションを開始
-        $startTime = Carbon::parse(request()->input('start_time', now()));
-
         $newSession = StudySession::create([
             'user_id' => $user->id,
             'plan_id' => $plan?->id,
-            'start_time' => $startTime,
         ]);
 
         return response()->json(['message' => 'タイマー開始', 'studySessionId' => $newSession->id], 200);
@@ -46,11 +41,9 @@ class TimerController extends Controller
 
     public function stop(StudySession $studySession)
     {
-        $endTime = Carbon::parse(request()->input('end_time', now()));
         $durationInSeconds = request()->input('duration');
 
         $studySession->update([
-            'end_time' => $endTime,
             'duration' => $durationInSeconds,
         ]);
 
@@ -61,25 +54,22 @@ class TimerController extends Controller
     {
         $user = Auth::user();
         $plans = Plan::where('user_id', $user->id)->get();
-        $studySession = StudySession::where('user_id', $user->id)->latest('start_time')->first();
-        return view('pomodoro.index', compact('plans', 'studySession'));
+        return view('pomodoro.index', compact('plans'));
     }
 
     public function pomodoroStart(Plan $plan = null)
     {
         $user = Auth::user();
         $unfinishedSession = StudySession::where('user_id', $user->id)
-        ->whereNull('end_time')
+        ->whereNull('duration')
         ->first();
         if ($unfinishedSession) {
             $unfinishedSession->delete();
         }
 
-        $startTime = Carbon::parse(request()->input('pomodoro_start_time', now()));
         $newSession = StudySession::create([
             'user_id' => $user->id,
             'plan_id' => $plan?->id,
-            'start_time' => $startTime,
         ]);
 
         return response()->json(['studySessionId' => $newSession->id], 200);
@@ -88,12 +78,9 @@ class TimerController extends Controller
     public function pomodoroStop(StudySession $studySession)
     {
         $user = Auth::user();
-        $endTime = Carbon::parse(request()->input('end_time', now()));
         $duration = request()->input('duration');
-        Log::info('Duration: ' . $duration);
 
         $studySession->update([
-            'end_time' => $endTime,
             'duration' => $duration,
         ]);
 

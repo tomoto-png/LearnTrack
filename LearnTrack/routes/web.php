@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TimerController;
+use App\Http\Controllers\StudyDataController;
 
 // 認証関連
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -42,5 +43,9 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/pomodoro/stop/{studySession}', [TimerController::class, 'pomodoroStop'])->name('pomodoro.stop');
         Route::get('/pomodoro/settings', [TimerController::class, 'pomodoroSettings'])->name('pomodoro.settings');
         Route::post('/pomodoro/savePomodoroSettings', [TimerController::class, 'savePomodoroSettings'])->name('pomodoro.savePomodoroSettings');
+    });
+    Route::prefix('studyData')->group(function () {
+        Route::get('/', [StudyDataController::class, 'index'])->name('studyData.index');
+        Route::post('/calendar/click', [StudyDataController::class, 'fetchData']);
     });
 });
