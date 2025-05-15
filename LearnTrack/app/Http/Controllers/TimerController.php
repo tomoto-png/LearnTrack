@@ -47,6 +47,22 @@ class TimerController extends Controller
             'duration' => $durationInSeconds,
         ]);
 
+        $plan = $studySession->plan;
+
+        if ($plan && $plan->target_hours > 0) {
+            $totalDuration = $plan->studySessions()->sum('duration');
+            $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
+            $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
+            $plan->update([
+                'progress' => $progress,
+            ]);
+            if ($progress >= 100) {
+                $plan->update([
+                    'completed' => true,
+                ]);
+            }
+        }
+
         return response()->json(['message' => 'タイマー停止']);
     }
 
@@ -83,6 +99,17 @@ class TimerController extends Controller
         $studySession->update([
             'duration' => $duration,
         ]);
+
+        $plan = $studySession->plan;
+
+        if ($plan && $plan->target_hours > 0) {
+            $totalDuration = $plan->studySessions()->sum('duration');
+            $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
+            $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
+            $plan->update([
+                'progress' => $progress,
+            ]);
+        }
 
         return response()->json(['message' => 'タイマー停止', 'duration' => $duration]);
     }

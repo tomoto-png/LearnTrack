@@ -72,9 +72,24 @@
             </button>
         </header>
         <div class="flex flex-col items-center space-y-6 mt-6">
-            <!-- 選択された日付 -->
-            <h1 id="selected-date-label" class="text-xl font-bold">今日</h1>
-
+            <div class="grid grid-cols-3 items-center w-full max-w-md mx-auto">
+                {{-- justify-start で左寄せ --}}
+                <div class="flex justify-start">
+                    <button id="prevDateButton">
+                        <img src="{{ asset('images/arrow_back_ios_new_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                    </button>
+                </div>
+                {{-- text-center でテキストを中央寄せ --}}
+                <div class="text-center">
+                    <h1 id="selectedDateLabel" class="text-xl font-bold">今日</h1>
+                </div>
+                {{-- justify-end で右寄せ --}}
+                <div class="flex justify-end">
+                    <button id="nextDateButton">
+                        <img src="{{ asset('images/arrow_forward_ios_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                    </button>
+                </div>
+            </div>
             <!-- グラフタイプ切り替え -->
             <div class="flex gap-3">
                 <div id="graph-type-switch" class="relative inline-flex bg-gray-100 rounded-full p-1 shadow-inner">
@@ -92,8 +107,8 @@
             </div>
 
             <!-- グラフ表示 -->
-            <div class="flex flex-col justify-center items-center w-full max-w-[930px] aspect-[3/2] mx-auto px-4">
-                <canvas id="studyPieChart" class="w-full h-full"></canvas>
+            <div class="flex flex-col justify-center items-center w-full max-w-[1000px] aspect-[3/2] mx-auto">
+                <canvas id="studyPieChart"></canvas>
                 <p id="chartMessage" class="text-center text-gray-500"></p>
             </div>
         </div>
@@ -173,6 +188,10 @@
             });
 
             const options = {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: 70,
+                },
                 responsive: true,
                 plugins: {
                     legend: { position: 'right' },
@@ -184,7 +203,7 @@
                                 const seconds = totalSeconds % 60;
 
                                 const data = context.chart.data.datasets[0].data;//一つ目のデータセットを取得
-                                const total = data.reduce((sum, val) => sum + val, 0);//0が初期値、educe() は、配列の値を1つにまとめる
+                                const total = data.reduce((sum, val) => sum + val, 0);//0が初期値、
                                 const percentage = ((totalSeconds / total) * 100).toFixed(1);
 
                                 let label = ``;
@@ -241,6 +260,15 @@
                 options.plugins.datalabels = {
                     //ラベルのカラー
                     color: function(context) { //contextは全体の情報
+                        const dataset = context.dataset;
+                        const value = dataset.data[context.dataIndex];
+                        const total = dataset.data.reduce((sum, v) => sum + v, 0);
+                        const percentage = value / total;
+
+                        if (percentage < 0.05) {
+                            return '#000000'; // 外側ラベル用に黒
+                        }
+
                         const bgColor = context.dataset.backgroundColor[context.dataIndex];//Chartのデータセットオブジェクトによって背景の背景の色配列を取得、[context.dataIndex]を使用する事で何番目か
                         return getContrastColor(bgColor);
                     },//ラベルのカラー
@@ -248,7 +276,7 @@
                     font: {
                         size: 16
                     },
-                    offset: 15,//位置を外側に10pxずらす
+                    offset: 15,//位置を外側に15pxずらす
                     formatter: (value) => {
                         const minutes = Math.floor(value / 60);
                         const seconds = value % 60;
@@ -263,6 +291,7 @@
 
                         return label;
                     },
+                    clip: false,
                     anchor: function(context) {
                         return getLabelDisplaySettings(context).anchor;
                     },
@@ -278,7 +307,7 @@
                 const total = context.dataset.data.reduce((sum, v) => sum + v, 0);
                 const percentage = value / total;//パーセントの計算
 
-                if (percentage < 0.04) {
+                if (percentage < 0.05) {
                     return {
                         anchor: 'end',
                         align: 'end'
@@ -320,10 +349,9 @@
             const calendarModal = document.getElementById('calendarModal');
             let calendarInitialized = false;
             let selectedDateEl = null;
-            let clickedDate = null;
             const todayStr = new Date().toISOString().split('T')[0];
             let calendar;
-            let targetDate;
+            let targetDate = todayStr;
 
             function closeCalendarModal() {
                 calendarModal.classList.add('hidden');
@@ -366,52 +394,22 @@
 
                         //日付セルのクリックイベント
                         dateClick: function(info) {
-                            clickedDate = info.dateStr;
+                            targetDate = info.dateStr;
                             selectedType = 'day';
-                            updateDateLabel(clickedDate, selectedType);
-                            const dateLabel = document.getElementById('selected-date-label');
-                            if (clickedDate === todayStr) {
-                                dateLabel.textContent = '今日';
-                            } else {
-                                const formattedDate = new Date(clickedDate).toLocaleDateString('ja-JP', {
-                                    year: 'numeric', month: 'long', day: 'numeric'
-                                });
-                                dateLabel.textContent = formattedDate;
-                            }
-
+                            updateDateLabel(targetDate, selectedType);
                             $.ajax({
                                 url: '/studyData/calendar/click',
                                 method: 'POST',
                                 data: {
-                                    date: clickedDate,
+                                    date: targetDate,
                                     type: selectedType,
                                     chartType: chartType,
                                     _token: '{{ csrf_token() }}'
                                 },
                                 success: function(response) {
-                                    createChart(response.labels, response.data, 'pie');
+                                    createChart(response.labels, response.data);
                                     closeCalendarModal();
-
-                                    const activeTab = document.querySelector('#graph-type-switch .tab.text-blue-600');
-                                    const currentType = activeTab?.getAttribute('data-type');
-
-                                    if (currentType !== 'day'){
-                                        const tabs = document.querySelectorAll('#graph-type-switch .tab');
-                                        tabs.forEach(tab => {
-                                            tab.classList.remove('text-blue-600');
-                                            tab.classList.add('text-gray-600');
-                                        });
-                                        //日ボタンにデザイン
-                                        const dayTab = document.querySelector('#graph-type-switch .tab[data-type="day"]');
-                                        dayTab.classList.remove('text-gray-600');
-                                        dayTab.classList.add('text-blue-600');
-
-                                        //スライド円の位置調整
-                                        const slider = document.getElementById('slider');
-                                        if (slider) {
-                                            slider.style.transform = 'translateX(0%)';
-                                        }
-                                    }
+                                    updateSlideAppearance();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error('送信エラー:', error);
@@ -448,45 +446,21 @@
 
                                 //年と月の非同期処理
                                 function fetchDateViewData()  {
-                                    clickedDate = localISO;
-                                    updateDateLabel(clickedDate, selectedType);
-                                    console.log(selectedType);
+                                    targetDate = localISO;
+                                    updateDateLabel(targetDate, selectedType);
                                     $.ajax({
                                         url: '/studyData/calendar/click',
                                         method: 'POST',
                                         data: {
-                                            date: clickedDate,
-                                            chartType: chartType,
+                                            date: targetDate,
                                             type: selectedType,
+                                            chartType: chartType,
                                             _token: '{{ csrf_token() }}'
                                         },
                                         success: function(response) {
-                                            createChart(response.labels, response.data, chartType);
+                                            createChart(response.labels, response.data);
                                             closeCalendarModal();
-
-                                            const activeTab = document.querySelector('#graph-type-switch .tab.text-blue-600');
-                                            const currentType = activeTab?.getAttribute('data-type');
-
-                                            if (currentType !== selectedType) {
-                                                const tabs = document.querySelectorAll('#graph-type-switch .tab');
-                                                tabs.forEach(tab => {
-                                                    tab.classList.remove('text-blue-600');
-                                                    tab.classList.add('text-gray-600');
-                                                });
-
-                                                const targetTab = document.querySelector(`#graph-type-switch .tab[data-type="${selectedType}"]`);
-                                                targetTab.classList.remove('text-gray-600');
-                                                targetTab.classList.add('text-blue-600');
-
-                                                const slider = document.getElementById('slider');
-                                                if (slider) {
-                                                    if (selectedType === 'year') {
-                                                        slider.style.transform = 'translateX(200%)';
-                                                    } else if (selectedType === 'month') {
-                                                        slider.style.transform = 'translateX(100%)';
-                                                    }
-                                                }
-                                            }
+                                            updateSlideAppearance();
                                         },
                                         error: function(xhr, status, error) {
                                             console.error('送信エラー:', error);
@@ -501,7 +475,6 @@
                     calendarInitialized = true;
                 }
                 //前回選択した日付のカレンダーが表示する(選択がない時は今日の日付)
-                targetDate = clickedDate ?? todayStr;
                 calendar.gotoDate(targetDate);
                 updateDisplayedMonth(targetDate);
 
@@ -510,7 +483,7 @@
                     const dayEls = calendarEl.querySelectorAll('.fc-daygrid-day[data-date]');//data-date 属性を持った日付をすべて取得
                     //各日付の data-dateが選択した日付と一致するか確認
                     dayEls.forEach(dayEl => {
-                         //すでに選択されているセルがあれば、その枠線クラスを外す
+                        //すでに選択されているセルがあれば、その枠線クラスを外す
                         if (dayEl.dataset.date === targetDate) {
                             if (selectedDateEl) {
                                 selectedDateEl.classList.remove('selected-date');
@@ -522,6 +495,33 @@
                     });
                 }, 0);
             });
+            function updateSlideAppearance() {
+                const activeTab = document.querySelector('#graph-type-switch .tab.text-blue-600');
+                const currentType = activeTab?.getAttribute('data-type');
+
+                if (currentType !== selectedType) {
+                    const tabs = document.querySelectorAll('#graph-type-switch .tab');
+                    tabs.forEach(tab => {
+                        tab.classList.remove('text-blue-600');
+                        tab.classList.add('text-gray-600');
+                    });
+
+                    const targetTab = document.querySelector(`#graph-type-switch .tab[data-type="${selectedType}"]`);
+                    targetTab.classList.remove('text-gray-600');
+                    targetTab.classList.add('text-blue-600');
+
+                    const slider = document.getElementById('slider');
+                    if (slider) {
+                        if (selectedType === 'year') {
+                            slider.style.transform = 'translateX(200%)';
+                        } else if (selectedType === 'month') {
+                            slider.style.transform = 'translateX(100%)';
+                        } else if (selectedType === 'day') {
+                            slider.style.transform = 'translateX(0%)'
+                        }
+                    }
+                }
+            }
             calendarModal.addEventListener('click', function (e) {
                 if (!calendarContainer.contains(e.target)) {
                     calendarModal.classList.add('hidden');
@@ -530,9 +530,7 @@
             });
 
             function updateDateLabel(dateStr, type) {
-                const dateLabel = document.getElementById('selected-date-label');
-
-
+                const dateLabel = document.getElementById('selectedDateLabel');
                 const date = new Date(dateStr);
 
                 if (type === 'year') {
@@ -583,11 +581,13 @@
                 const index = Math.floor((scrollTop + centerOffset) / itemHeight);//中央に見えているアイテムのインデックスを計算
                 return $picker.children().eq(index).text();//インデックスに該当するアイテムを取得し、そのテキストを返す。
             }
+
             // 選択された日付、または現在の日付から年と月を表示する
-            function updateDisplayedMonth(dateStr = todayStr) {
+            function updateDisplayedMonth(dateStr) {
                 const [splitYear, splitMonth, splitDay] = dateStr.split('-');
                 $('#selectedDate').text(`${splitYear}年 ${parseInt(splitMonth)}月`);
             }
+
             //中央に当たるアイテムの年月を表示する関数
             function updateSelectedDate() {
                 const year = getCenteredItem($yearPicker);//getCenteredItemメソットから返されたテキストから年テキストを取る
@@ -700,19 +700,7 @@
             document.querySelectorAll('#graph-type-switch .tab').forEach((btn, index)=> {
                 btn.addEventListener('click', function() {
                     selectedType = this.getAttribute('data-type');//thisは現在クリックされた要素.getAttributeはその要素の属性の値を取得
-
-                    const slider = document.getElementById('slider');//スライドの円を取得
-                    slider.style.transform = `translateX(${index * 100}%)`;//スライドの%(dayだと0番目なので0%)をここで計算
-
-                    // 色変更
-                    document.querySelectorAll('#graph-type-switch .tab').forEach(tab => {
-                        tab.classList.remove('text-blue-600');//全ての .tab ボタンから「青い文字のクラス（text-blue-600）」を削除
-                        tab.classList.add('text-gray-600');//グレー文字のクラスを追加
-                    });
-                    //クリックしたボタンにデザインを
-                    this.classList.remove('text-gray-600');
-                    this.classList.add('text-blue-600');
-
+                    updateSlideAppearance();
                     sendChartRequest();
                 });
             });
@@ -730,12 +718,11 @@
                     chartType = this.getAttribute('data-type');
                     sendChartRequest();
                 })
-            })
+            });
 
             function sendChartRequest() {
-                const date = clickedDate ?? todayStr;
+                const date = targetDate;
                 updateDateLabel(date, selectedType);
-                console.log(date);
                 $.ajax({
                     url: '/studyData/calendar/click',
                     method: 'POST',
@@ -746,12 +733,61 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        createChart(response.labels, response.data, chartType);
+                        createChart(response.labels, response.data);
                     },
                     error: function(xhr, status, error) {
                         console.error('送信エラー:', error);
                     }
                 });
+            }
+
+            const prevDate = document.getElementById('prevDateButton');
+            const nextDate = document.getElementById('nextDateButton');
+            prevDate.addEventListener('click',function() {
+                const date = new Date(targetDate);// JavaScript の Date オブジェクト
+
+                if (selectedType === 'day') {
+                    date.setDate(date.getDate() - 1);//date.getDate()で何日かを取得、date.setDate()変換した日を適用する
+                } else if (selectedType === 'month') {
+                    date.setMonth(date.getMonth() - 1);//日付を一か月戻す
+                } else if (selectedType === 'year') {
+                    date.setFullYear(date.getFullYear() -1);//日付を一年戻す
+                }
+                updateDate(date);
+            });
+            nextDate.addEventListener('click',function() {
+                const date = new Date(targetDate);
+
+                if (selectedType === 'day') {
+                    date.setDate(date.getDate() + 1);
+                } else if (selectedType === 'month') {
+                    date.setMonth(date.getMonth() + 1);
+                } else if (selectedType === 'year') {
+                    date.setFullYear(date.getFullYear() + 1);
+                };
+
+                updateDate(date);
+            });
+
+            function updateDate(date) {
+                targetDate = date.toISOString().split('T')[0];//Date オブジェクトを ISO 8601 形式の文字列
+                updateDateLabel(targetDate, selectedType);
+                $.ajax({
+                    url: '/studyData/calendar/click',
+                    method: 'POST',
+                    data: {
+                        date: targetDate,
+                        type: selectedType,
+                        chartType: chartType,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        createChart(response.labels, response.data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('送信エラー:', error);
+                    }
+                })
             }
         });
 
