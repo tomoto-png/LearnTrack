@@ -19,21 +19,21 @@
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] flex">
 
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 shadow-md bg-white z-20 hidden md:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
         @include('components.sidebar')
     </div>
 
-    <div id="mainContent" class="flex-1 p-4 sm:p-6 mt-4 md:ml-72 transition-all">
+    <div id="mainContent" class="flex-1 p-4 mt-4 sm:p-6 sm:mt-6 lg:ml-72">
         <header class="flex sm:flex-row justify-between items-center space-y-4 sm:space-y-0 mb-8">
             <div class="flex items-center justify-between w-full sm:w-auto">
                 <h1 class="text-xl sm:text-2xl font-semibold">学習計画一覧</h1>
                 <button id="menuButton"
-                    class="fixed top-5 right-5 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110 md:hidden z-[9999]">
+                    class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
                     <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
                 </button>
             </div>
         </header>
-        <div class="bg-[var(--bg-light-gray)] p-6 sm:p-6 rounded-lg shadow-lg">
+        <div class="bg-[var(--bg-light-gray)] p-6 ¥¥ rounded-lg shadow-lg">
             <div class="flex sm:flex-row items-center w-full justify-between">
                 <form action="{{ route('plan.index') }}" method="GET" class="flex items-center space-x-2 sm:w-auto">
                     <div class="relative sm:w-64 md:w-80 lg:w-96">
@@ -62,7 +62,7 @@
                     新規作成
                 </a>
             </div>
-            <div class="grid grid-cols-1 mt-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div class="grid grid-cols-1 mt-6 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 @forelse ($plans as $plan)
                 <div class="relative p-4 sm:p-5 rounded-xl shadow-lg
                     @if($plan['priority'] === 'high') bg-red-200 border-red-500

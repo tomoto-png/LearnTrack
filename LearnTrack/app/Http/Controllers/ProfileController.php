@@ -26,28 +26,25 @@ class ProfileController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'bio' => 'required|string|max:500',
+            'bio' => 'nullable|string|max:500',
             'avatar' => 'nullable|image|max:2048',
         ],[
             'name.required' => '名前を入力してください。',
             'name.string' => '名前は文字列で入力してください。',
-            'bio.required' => '自己紹介文を入力してください。',
             'bio.string' => '自己紹介文は文字列で入力してください。',
             'bio.max' => '自己紹介文は500文字以内で入力してください。',
             'avatar.image' => '画像形式でアップロードしてください。',
             'avatar.max' => '画像は2MB以内でアップロードしてください。',
         ]);
 
-        $user->update([
-            'name' => $request->input('name'),
-            'bio' => $request->input('bio'),
-        ]);
-
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $avatarPath;
-            $user->save();
         }
+        $user->update([
+            'name' => $request->name,
+            'bio' => $request->bio,
+            'avatar' => $avatarPath,
+        ]);
 
         return redirect()->route('profile.index');
     }

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>新規追加</title>
+    <title>計画追加</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
             --bg-green: #b3cfad;
             --bg-light-gray: #e3e6d8;
-            --text-brown: #9f9579;
+            --text-brown: #7c6f4f;
             --accent-yellow: #d9ca79;
             --button-hover: #c5a02d;
         }
@@ -20,7 +20,7 @@
 
     <div class="w-full max-w-4xl p-6 bg-[var(--bg-light-gray)] rounded-xl shadow-lg">
         <header class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-[var(--text-brown)] border-b-2 border-[var(--accent-yellow)] pb-2">📋 新規追加</h1>
+            <h1 class="text-3xl font-bold text-[var(--text-brown)] border-b-2 border-[var(--accent-yellow)] pb-2">📋 計画追加</h1>
         </header>
 
         <form action="{{ route('plan.store') }}" method="POST">

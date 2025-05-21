@@ -21,11 +21,11 @@
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] flex flex-col lg:flex-row">
 
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 shadow-md bg-white z-20 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
         @include('components.sidebar')
     </div>
 
-    <div id="mainContent" class="flex-1 p-4 sm:p-6 mt-4 lg:ml-72 transition-all">
+    <div id="mainContent" class="flex-1 p-4 mt-4 sm:p-6 sm:mt-6 lg:ml-72">
         <header class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-semibold">
                 ポモドーロタイマー
@@ -35,7 +35,7 @@
                 <img src="{{ asset('images/settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-7 h-7">
             </a>
             <button id="menuButton"
-                    class="fixed top-5 right-5 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-110 lg:hidden z-[9999]">
+                class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
                 <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
             </button>
         </header>
@@ -168,6 +168,7 @@
             let loopSeconds = 0;
             let pomodoroCount = 0;
             let tomatoCount = 0;
+            let count = 0;
             let tomatoCompleted = false;
             let cycleTime = 360;
             let cycleStep2 = 239;
@@ -271,7 +272,7 @@
 
                         }
                     }
-                }, 1000);
+                }, 10);
             }
 
             function startStudyTimer() {
@@ -336,6 +337,7 @@
                 }
                 if (loopSeconds >= cycleTime - 2 && !tomatoCompleted) {
                     $("#tomato-icon-container").css("border-color", "green");
+                    count++;
                     tomatoCount++;
                     tomatoCompleted = true;
                     $("#tomatoCountDisplay").text(tomatoCount);
@@ -360,7 +362,6 @@
                     console.log("タイマーを停止しました");
                     clearInterval(timerInterval);
                     timerInterval = null;
-                    console.log(totalStudyTime);
 
                     if (isBreakTime) {
                         totalStudyTime += time - totalSeconds;
@@ -370,6 +371,7 @@
                         url: '/timer/pomodoro/stop/' + studySessionId,
                         type: 'PUT',
                         data: {
+                            count: count,
                             duration: totalStudyTime
                         },
                         success: function (response) {
@@ -379,6 +381,7 @@
                             console.error('エラーが発生しました:', error);
                         }
                     });
+                    count = 0;
                 } else {
                     console.warn("タイマーは停止中です");
                     return;
@@ -472,6 +475,7 @@
                 isBreakTime = false;
                 loopSeconds = 0;
                 tomatoCount = 0;
+                count = 0;
                 pomodoroCount = 0;
 
                 resetIconsAndProgress();

@@ -4,19 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>カレンダー</title>
+    <title>学習データ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- データラベルのライブラリー --}}
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
     <!-- FullCalendar CSS & JS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
@@ -55,11 +51,11 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)]">
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-72 shadow-md bg-white z-20 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
         @include('components.sidebar')
     </div>
 
-    <div id="mainContent" class="flex-1 p-4 sm:p-6 mt-4 lg:ml-72 transition-all">
+    <div id="mainContent" class="flex-1 p-4 mt-4 sm:p-6 sm:mt-6 lg:ml-72">
         <header class="flex justify-between items-center mb-6">
             <h1 class="text-xl sm:text-2xl font-semibold">学習データ</h1>
             <button type="button" id="calendarToggleBtn"
@@ -67,11 +63,11 @@
                 <img src="{{ asset('images/calendar_month_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-7 h-7">
             </button>
             <button id="menuButton"
-                class="fixed top-5 right-5 bg-[var(--accent-yellow)] text-white p-3 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 md:hidden z-[9999]">
+                class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
                 <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
             </button>
         </header>
-        <div class="flex flex-col items-center space-y-6 mt-6">
+        <div class="flex flex-col items-center space-y-6">
             <div class="grid grid-cols-3 items-center w-full max-w-md mx-auto">
                 {{-- justify-start で左寄せ --}}
                 <div class="flex justify-start">
@@ -101,7 +97,7 @@
 
                 <!-- グラフ形式切り替え -->
                 <div id="chart-type" class="flex justify-center gap-3 w-full max-w-xs">
-                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--accent-yellow)] text-white font-semibold shadow hover:brightness-105">円グラフ</button>
+                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--accent-yellow)] text-white font-semibold shadow hover:bg-[var(--button-hover)]">円グラフ</button>
                     <button data-type="bar" class="tab px-6 py-2 rounded-lg bg-white font-semibold shadow hover:bg-gray-100">棒グラフ</button>
                 </div>
             </div>
@@ -412,7 +408,12 @@
                                     updateSlideAppearance();
                                 },
                                 error: function(xhr, status, error) {
-                                    console.error('送信エラー:', error);
+                                    if (xhr.status === 419 || xhr.status === 401) {
+                                        alert('セッションが切れました。再度ログインしてください。');
+                                        window.location.href = '/login';
+                                    } else {
+                                        console.error('送信エラー:', error);
+                                    }
                                 }
                             });
                         },
@@ -463,7 +464,12 @@
                                             updateSlideAppearance();
                                         },
                                         error: function(xhr, status, error) {
-                                            console.error('送信エラー:', error);
+                                            if (xhr.status === 419 || xhr.status === 401) {
+                                                alert('セッションが切れました。再度ログインしてください。');
+                                                window.location.href = '/login';
+                                            } else {
+                                                console.error('送信エラー:', error);
+                                            }
                                         }
                                     });
                                 }
@@ -736,7 +742,12 @@
                         createChart(response.labels, response.data);
                     },
                     error: function(xhr, status, error) {
-                        console.error('送信エラー:', error);
+                        if (xhr.status === 419 || xhr.status === 401) {
+                            alert('セッションが切れました。再度ログインしてください。');
+                            window.location.href = '/login';
+                        } else {
+                            console.error('送信エラー:', error);
+                        }
                     }
                 });
             }
@@ -785,7 +796,12 @@
                         createChart(response.labels, response.data);
                     },
                     error: function(xhr, status, error) {
-                        console.error('送信エラー:', error);
+                        if (xhr.status === 419 || xhr.status === 401) {
+                            alert('セッションが切れました。再度ログインしてください。');
+                            window.location.href = '/login';
+                        } else {
+                            console.error('送信エラー:', error);
+                        }
                     }
                 })
             }

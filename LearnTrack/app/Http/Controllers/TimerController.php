@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Plan;
 use App\Models\StudySession;
 use App\Models\TimerSetting;
@@ -41,10 +42,17 @@ class TimerController extends Controller
 
     public function stop(StudySession $studySession)
     {
+        $user = Auth::user();
         $durationInSeconds = request()->input('duration');
+        $count = request()->input('count');
+        $userCount = $user->count + $count;
 
         $studySession->update([
             'duration' => $durationInSeconds,
+        ]);
+
+        $user->update([
+            'count' => $userCount
         ]);
 
         $plan = $studySession->plan;
@@ -95,11 +103,17 @@ class TimerController extends Controller
     {
         $user = Auth::user();
         $duration = request()->input('duration');
+        $count = request()->input('count');
+        $userCount = $user->count + $count;
 
         $studySession->update([
-            'duration' => $duration,
+            'duration' => $duration
         ]);
 
+        $user->update([
+            'count' => $userCount,
+        ]);
+        //目標時間のパーセント計算
         $plan = $studySession->plan;
 
         if ($plan && $plan->target_hours > 0) {

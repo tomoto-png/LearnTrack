@@ -35,12 +35,18 @@
                 <textarea name="bio" id="bio" required rows="4"
                     class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">{{ old('bio', $user->bio) }}
                 </textarea>
+                @error('bio')
+                    <p>{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label for="avatar" class="block text-lg font-medium mb-2">画像</label>
                 <input type="file" name="avatar"id="avatar"
                        class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg bg-white focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">
+                @error('avatar')
+                    <p>{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mt-6 text-center text-sm flex justify-between">

@@ -19,21 +19,22 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed'
         ],[
-            'name.required' => '名前を入力してください。',
-            'email.required' => 'メールアドレスを入力してください。',
-            'email.unique' => 'このメールアドレスは既に登録されています。',
+            'name.required' => '名前を入力してください！',
+            'email.required' => 'メールアドレスを入力してください！',
+            'email.email' => '正しいメールアドレスの形式で入力してください!',
+            'email.unique' => 'このメールアドレスは既に登録されています！',
             'password.required' => 'パスワードを入力してください。',
             'password.min' => 'パスワードは8文字以上である必要があります。',
-            'password.confirmed' => 'パスワードが一致しません。',
+            'password.confirmed' => 'パスワードが一致しません。'
         ]);
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('profile.index')->with('success','登録が完了しました！ログインをしてください。');
+        return redirect()->route('profile.index');
     }
     public function showLoginForm()
     {
@@ -45,9 +46,10 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:8',
         ],[
-            'email.required' => 'メールアドレスを入力してください。',
-            'password.required' => 'パスワードを入力してください。',
-            'password.min' => 'パスワードは8文字以上で入力してください。',
+            'email.required' => 'メールアドレスを入力してください！',
+            'email.email' => '正しいメールアドレスの形式で入力してください！',
+            'password.required' => 'パスワードを入力してください！',
+            'password.min' => 'パスワードは8文字以上で入力してください！'
         ]);
         if (Auth::attempt($request->only('email','password'), $request->filled('remember'))) {
             return redirect()->route('profile.index');

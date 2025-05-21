@@ -21,8 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'bio', // 追加
-        'avatar', // 追加
+        'bio',
+        'avatar',
+        'count'
     ];
 
     /**
@@ -73,9 +74,9 @@ class User extends Authenticatable
         return $this->hasMany(Resource::class);
     }
 
-    public function posts(): HasMany
+    public function questions(): HasMany
     {
-        return $this->hasMany(PostUser::class);
+        return $this->hasMany(Question::class);
     }
     public function timerSetting(): HasOne
     {

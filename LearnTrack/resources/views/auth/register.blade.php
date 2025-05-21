@@ -46,7 +46,7 @@
                     <img src="{{ asset('images/lock_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="password" id="password" name="password"
-                        class="w-full mt-1 p-2 px-10 border border {{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
+                        class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
                     <button type="button" id="toggle-password"
                         class="absolute top-1/2 right-3 transform -translate-y-[40%]">
                         <img id="eye-icon" src="{{ asset('images/eye-slash-regular.svg') }}" alt="eye-icon" class="w-6 h-6 cursor-pointer">
@@ -64,7 +64,7 @@
                     <img src="{{ asset('images/lock_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="password" id="password_confirmation" name="password_confirmation"
-                        class="w-full mt-1 p-2 px-10 border border {{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
+                        class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
                 </div>
                 @error('password_confirmation')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>

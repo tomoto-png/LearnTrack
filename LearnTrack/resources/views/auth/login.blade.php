@@ -29,7 +29,7 @@
                     <img src="{{ asset('images/mail_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="text" id="email" name="email" value="{{ old("email") }}"
-                    class="w-full mt-1 p-2 px-10 border border {{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200"/>
+                    class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200"/>
                 </div>
                 @error('email')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
@@ -42,7 +42,7 @@
                     <img src="{{ asset('images/lock_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="password" id="password" name="password" value="{{ old('password') }}"
-                    class="w-full mt-1 p-2 px-10 border border {{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
+                    class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
                     <button type="button" id="toggle-password"
                         class="absolute top-1/2 right-3 transform -translate-y-1/3">
                         <!-- アイコン表示用 -->

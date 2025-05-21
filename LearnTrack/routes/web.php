@@ -6,6 +6,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TimerController;
 use App\Http\Controllers\StudyDataController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
 
 // 認証関連
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -47,5 +49,13 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('studyData')->group(function () {
         Route::get('/', [StudyDataController::class, 'index'])->name('studyData.index');
         Route::post('/calendar/click', [StudyDataController::class, 'fetchData']);
+    });
+    Route::prefix('question')->group(function () {
+        Route::get('/', [QuestionController::class, 'index'])->name('question.index');
+        Route::get('/create', [QuestionController::class, 'create'])->name('question.create');
+        Route::get('/cancel', [QuestionController::class, 'cancel'])->name('question.cancel');
+        Route::post('/', [QuestionController::class, 'store'])->name('question.store');
+        Route::get('/show/{id}', [QuestionController::class, 'show'])->name('question.show');
+        Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
     });
 });
