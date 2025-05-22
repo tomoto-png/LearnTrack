@@ -16,9 +16,14 @@ class UsersSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'id' => 1,
             'name' => 'Test',
             'email' => 'test@1111.com',
+            'password' => Hash::make('test1111'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ], [
+            'name' => 'test',
+            'email' => 'test@1112.com',
             'password' => Hash::make('test1111'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

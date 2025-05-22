@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText("content");
             $table->text("image_url")->nullable();
             $table->unsignedInteger('reward')->default(0);
+            $table->boolean('auto_repost_enabled')->default(false);
             $table->timestamps();
         });
     }

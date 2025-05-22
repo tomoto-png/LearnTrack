@@ -156,7 +156,7 @@
             let previousProgress = 0;
             let tomatoCompleted = false;
             let cycleTime = 360;
-            let cycleTime2 = 3600;
+            let cycleTime2 = 5400;
             let cycleStep2 = 238;
             let cycleStep = 120;
             let soundEffect = @json((bool) $soundEffect);
@@ -316,7 +316,7 @@
                             resetIconsAndProgress();
                             loopSeconds = 0;
                         }
-                    }, 1000);
+                    }, 10);
                 } else {
                     console.warn('タイマーは既に動作中か、セッションIDがありません');
                 }

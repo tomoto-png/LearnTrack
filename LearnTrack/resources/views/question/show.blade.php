@@ -23,30 +23,51 @@
             <span class="font-bold text-2xl">&larr;</span>
         </a>
         {{-- 質問 --}}
-        <div class="space-y-2">
-            <div class="flex items-center space-x-2">
-                @if ($questionData->user->avatar)
-                    <div class="w-10 h-10 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
-                        <img class="w-full h-full object-cover"
-                            src="{{ asset('storage/' . $questionData->user->avatar) }}"
-                            alt="{{ $questionData->user->name }}のアバター">
+        <div class="px-6 max-w-xl lg:max-w-3xl w-full mx-auto sm:0">
+            <div class="p-8 bg-[var(--bg-light-gray)] shadow-md rounded-xl">
+                <div class="space-y-2">
+                    <div class="flex items-center space-x-2">
+                        @if ($questionData->user->avatar)
+                            <div class="w-12 h-12 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
+                                <img class="w-full h-full object-cover"
+                                    src="{{ asset('storage/' . $questionData->user->avatar) }}"
+                                    alt="{{ $questionData->user->name }}のアバター">
+                            </div>
+                        @else
+                            <div class="w-12 h-12 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-white shadow">
+                                {{ strtoupper(substr($questionData->user->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div>
+                            <p>{{ $questionData->user->name }}さん</p>
+                            <p class="text-sm">{{ $questionData->updated_at->format('Y/m/d H:i') }}</p>
+                        </div>
                     </div>
-                @else
-                    <div class="w-6 h-6 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-white shadow">
-                        {{ strtoupper(substr($questionData->user->name, 0, 1)) }}
+
+                    {{-- nl2brは/nがある時に改行する、コード内にURLがあるとpタグからaタグに変換する --}}
+                    <div>
+                        <div class="rounded border text-base leading-relaxed">
+                            {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($questionData->content))) !!}
+                        </div>
                     </div>
-                @endif
-                <p>{{ $questionData->user->name }}さん</p>
+                    @if (!@empty($questionData->image_url))
+                        <div class="flex justify-center my-6">
+                            <img src="{{ asset('storage/' . $questionData->image_url) }}" alt="" class="w-64 h-auto rounded shadow-md border">
+                        </div>
+                    @endif
+
+
+                    @if ($questionData->reward > 0)
+                        <div class="flex items-center space-x-1">
+                            <img src="{{ asset('images/icons8-トマト-48.png')}}" alt="" class="h-6 w-6">
+                            <p class="text-base font-medium">{{ $questionData->reward }}</p>
+                        </div>
+                    @endif
+                    <button type="button" id="openModal">回答する</button>
+                </div>
             </div>
-
-            {{-- nl2brは/nがある時に改行する、コード内にURLがあるとpタグからaタグに変換する --}}
-            <p>{!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($questionData->content))) !!}</p>
-
-            @if (!@empty($questionData->image_url))
-                <img src="{{ asset('storage/' . $questionData->image_url) }}" alt="" class="w-44 h-auto">
-            @endif
-            <button type="button" id="openModal">回答する</button>
         </div>
+
         {{-- 回答 --}}
         <div>
 

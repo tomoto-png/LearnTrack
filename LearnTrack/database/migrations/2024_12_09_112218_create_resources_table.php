@@ -20,9 +20,6 @@ return new class extends Migration
             $table->boolean('visibility')->default(false);
             $table->longText("description"); // 長い説明文も対応可能に
             $table->timestamps();
-    
-            // 外部キー制約
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null'); 
         });
     }
 

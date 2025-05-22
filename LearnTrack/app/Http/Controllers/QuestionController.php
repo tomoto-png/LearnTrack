@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuestionRequest;
 
@@ -77,6 +76,7 @@ class QuestionController extends Controller
                 'user_id' => $user->id,
                 'content' => $request->content,
                 'image_url' => $imagePath,
+                'auto_repost_enabled' => $request->has('auto_repost_enabled'),
                 'reward' => $request->reward
             ]);
         }

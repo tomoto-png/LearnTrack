@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('question_id');
             $table->text('content');
             $table->boolean('is_venture')->default(false);
+            $table->timestamps();
         });
     }
 

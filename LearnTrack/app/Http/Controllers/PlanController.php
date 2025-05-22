@@ -11,10 +11,29 @@ class PlanController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
+        $sort = $request->input('sort');
 
-        $plans = Plan::when($search, function($query, $search) {
-            return $query->where('name', 'like', "%{$search}%");
-        })->paginate(6);
+        $query = Plan::query();
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        switch ($sort) {
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'priority_high':
+                $query->orderByRaw("FIELD(priority, 'high', 'medium', 'low')");
+                break;
+            case 'priority_low':
+                $query->orderByRaw("FIELD(priority, 'low', 'medium', 'high')");
+                break;
+        }
+
+        $plans = $query->paginate(6);
 
         return view('plan.index', compact('plans'));
     }

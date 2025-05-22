@@ -17,9 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_id')->nullable();
             $table->integer('duration')->nullable()->comment('Duration in minutes');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('set null');
         });
     }
 

@@ -14,6 +14,21 @@
             --text-brown: #9f9579;
             --accent-yellow: #d9ca79;
         }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #d9ca79;
+        }
+
+        .toggle-checkbox:checked + .toggle-label .toggle-circle {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            background-color: #d1d5db;
+        }
+
+        .toggle-circle {
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-[var(--bg-green)] min-h-screen flex justify-center">
@@ -90,23 +105,5 @@
             </form>
         </div>
     </div>
-
-    <style>
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #d9ca79;
-        }
-
-        .toggle-checkbox:checked + .toggle-label .toggle-circle {
-            transform: translateX(24px);
-        }
-
-        .toggle-label {
-            background-color: #d1d5db;
-        }
-
-        .toggle-circle {
-            transition: transform 0.3s ease;
-        }
-    </style>
 </body>
 </html>

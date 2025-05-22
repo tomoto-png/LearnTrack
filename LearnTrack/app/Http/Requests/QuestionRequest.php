@@ -28,7 +28,8 @@ class QuestionRequest extends FormRequest
 
         return [
             'content' => 'required|string|min:5|max:2000',
-            'image_url' => 'nullable|image|max:2048', // 単位はKB
+            'image_url' => 'nullable|image|max:2048',
+            'auto_repost_enabled' => 'nullable|boolean',
             'reward' => [
                 'nullable',
                 'integer',
@@ -51,6 +52,7 @@ class QuestionRequest extends FormRequest
             'content.string' => '質問文は文字列で入力してください！',
             'image_url.max' => '画像は2MB以内でアップロードしてください！',
             'image_url.image' => '画像形式でアップロードしてください！',
+            'auto_repost_enabled.boolean' => '自動再質問の値が不正です。',
         ];
     }
 

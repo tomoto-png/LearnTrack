@@ -33,39 +33,51 @@
                 </button>
             </div>
         </header>
-        <div class="bg-[var(--bg-light-gray)] p-6 ¥¥ rounded-lg shadow-lg">
-            <div class="flex sm:flex-row items-center w-full justify-between">
-                <form action="{{ route('plan.index') }}" method="GET" class="flex items-center space-x-2 sm:w-auto">
-                    <div class="relative sm:w-64 md:w-80 lg:w-96">
-                        <input type="text" name="search" placeholder="計画名で検索" value="{{ request('search') }}"
-                            class="px-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)] w-full writing-mode-horizontal-tb text-sm sm:text-base md:text-lg">
-                        <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
-                            class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-600">
-                        @if(request('search'))
-                        <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                            onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                        @endif
+        <div class="bg-[var(--bg-light-gray)] p-6 rounded-lg shadow-lg">
+            <div class="flex flex-col sm:flex-row sm:items-center w-full sm:justify-between gap-2 sm:gap-0">
+                <form action="{{ route('plan.index') }}" method="GET" class="flex items-center space-x-2">
+                    <div class="flex items-center rounded-lg border-2 border-gray-300 overflow-hidden">
+                        <div class="relative w-40 sm:w-52 md:w-64 lg:w-80">
+                            <input type="text" name="search" placeholder="計画名で検索" value="{{ request('search') }}"
+                                class="px-6 md:px-8 h-8 md:h-9 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)] w-full">
+                            <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
+                                class="w-5 h-5 absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-600">
+                            @if(request('search'))
+                            <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+                                onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                            @endif
+                        </div>
+                        <div class="h-8 md:h-9 w-[2px] bg-gray-300"></div>
+                        <select name="sort" onchange="this.form.submit()" class="w-20 sm:w-24 md:w-36 px-1 md:px-2 h-8 md:h-9 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)]">
+                            <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>新しい順</option>
+                            <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>古い順</option>
+                            <option value="priority_high" {{ request('sort') === 'priority_high' ? 'selected' : '' }}>優先度が高い順</option>
+                            <option value="priority_low" {{ request('sort') === 'priority_low' ? 'selected' : '' }}>優先度が低い順</option>
+                        </select>
                     </div>
-                    <button type="submit" class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow text-sm sm:text-base md:text-lg">
+                    <button
+                        type="submit"
+                        class="min-w-[60px] bg-[var(--accent-yellow)] text-white px-2 sm:px-3 h-8 md:h-9 text-xs sm:text-sm rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow"
+                    >
                         検索
                     </button>
                 </form>
 
                 <a href="{{ route('plan.create') }}"
-                    class="bg-[var(--accent-yellow)] text-white text-sm sm:text-base px-4 py-2 rounded-lg font-semibold hover:bg-[var(--button-hover)] transition-shadow shadow sm:w-auto text-center w-32">
+                    class="flex items-center justify-center bg-[var(--accent-yellow)] text-white px-3 md:px-4 h-8 md:h-9 text-sm sm:text-base rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow">
                     新規作成
                 </a>
             </div>
             <div class="grid grid-cols-1 mt-6 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 @forelse ($plans as $plan)
                 <div class="relative p-4 sm:p-5 rounded-xl shadow-lg
-                    @if($plan['priority'] === 'high') bg-red-200 border-red-500
+                    @if($plan['priority'] === 'high')bg-red-200 border-red-500
                     @elseif($plan['priority'] === 'medium') bg-yellow-200 border-yellow-500
                     @else bg-green-200 border-green-500 @endif
                     flex flex-col justify-between">
