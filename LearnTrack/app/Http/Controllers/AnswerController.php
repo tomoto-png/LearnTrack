@@ -8,6 +8,8 @@ use App\Http\Requests\AnswerRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Log;
 
 class AnswerController extends Controller
 {
@@ -48,9 +50,10 @@ class AnswerController extends Controller
             $imagePath = null;
             if (session('confirm_image_path')) {
                 $tempPath = session('confirm_image_path');
-                $newPath = 'images/' . basename($tempPath);
-                Storage::disk('public')->move($tempPath, $newPath);
-                $imagePath = $newPath;
+                dd($tempPath);
+                $fullTempPath = storage_path('app/public/' . $tempPath);
+                $s3Path = Storage::disk('s3')->putFile('image', new File($fullTempPath));
+                $imagePath = Storage::disk('s3')->url($s3Path);
 
                 //一時保存のデータを削除
                 Storage::disk('public')->delete(session('confirm_image_path'));

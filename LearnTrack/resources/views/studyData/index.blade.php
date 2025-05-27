@@ -110,7 +110,7 @@
         </div>
 
 
-        <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40 hidden">
+        <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-40 hidden">
             <div id="calendarContainer" class="bg-white p-6 rounded-lg shadow-lg w-full space-y-1 max-w-3xl">
                 <div id="calendar"></div>
                 <div class="flex space-x-1">
@@ -350,7 +350,7 @@
             let targetDate = todayStr;
 
             function closeCalendarModal() {
-                calendarModal.classList.add('hidden');
+                $('#calendarModal').removeClass('flex').addClass('hidden');
 
                 if (!yearPicker.classList.contains('hidden')) {
                     yearPicker.classList.add('hidden');
@@ -369,7 +369,7 @@
 
             calendarBtn.addEventListener('click', function () {
                 if (calendarModal.classList.contains('hidden')) {
-                    calendarModal.classList.remove('hidden');
+                    $('#calendarModal').removeClass('hidden').addClass('flex');
                 } else {
                     calendarModal.classList.add('hidden');
                     closeCalendarModal();
