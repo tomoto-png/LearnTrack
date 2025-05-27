@@ -82,4 +82,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(TimerSetting::class);
     }
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+    public function answerReplys(): HasMany
+    {
+        return $this->hasMany(AnswerReply::class);
+    }
 }

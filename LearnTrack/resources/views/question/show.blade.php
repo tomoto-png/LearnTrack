@@ -22,19 +22,19 @@
         <a href="{{ route('question.index' )}}">
             <span class="font-bold text-2xl">&larr;</span>
         </a>
-        {{-- 質問 --}}
         <div class="px-6 max-w-xl lg:max-w-3xl w-full mx-auto sm:0">
-            <div class="p-8 bg-[var(--bg-light-gray)] shadow-md rounded-xl">
-                <div class="space-y-2">
+            {{-- 質問 --}}
+            <div class="p-8 bg-[var(--bg-light-gray)] rounded-lg">
+                <div class="space-y-4">
                     <div class="flex items-center space-x-2">
                         @if ($questionData->user->avatar)
-                            <div class="w-12 h-12 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
+                            <div class="w-11 h-11 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
                                 <img class="w-full h-full object-cover"
                                     src="{{ asset('storage/' . $questionData->user->avatar) }}"
                                     alt="{{ $questionData->user->name }}のアバター">
                             </div>
                         @else
-                            <div class="w-12 h-12 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-white shadow">
+                            <div class="w-11 h-11 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-base text-white shadow">
                                 {{ strtoupper(substr($questionData->user->name, 0, 1)) }}
                             </div>
                         @endif
@@ -45,11 +45,10 @@
                     </div>
 
                     {{-- nl2brは/nがある時に改行する、コード内にURLがあるとpタグからaタグに変換する --}}
-                    <div>
-                        <div class="rounded border text-base leading-relaxed">
-                            {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($questionData->content))) !!}
-                        </div>
+                    <div class="text-base leading-relaxed">
+                        {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($questionData->content))) !!}
                     </div>
+
                     @if (!@empty($questionData->image_url))
                         <div class="flex justify-center my-6">
                             <img src="{{ asset('storage/' . $questionData->image_url) }}" alt="" class="w-64 h-auto rounded shadow-md border">
@@ -63,63 +62,59 @@
                             <p class="text-base font-medium">{{ $questionData->reward }}</p>
                         </div>
                     @endif
-                    <button type="button" id="openModal">回答する</button>
+                    <a href="{{ route('answer.create', ['id' => $questionData->id]) }}">回答する</a>
                 </div>
             </div>
-        </div>
+            <div>
+                {{-- 回答一覧 --}}
+            <div class="p-8 bg-[var(--bg-light-gray)] space-y-4 rounded-lg mt-6">
+                <h2 class="text-xl">回答</h2>
+                @foreach ($questionData->answers as $answer)
+                    <div class="space-y-4 border-b border-[var(--texy-brown)] pb-3">
+                        <div class="flex items-center space-x-2">
+                            @if ($answer->user->avatar)
+                                <div class="w-11 h-11 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
+                                    <img class="w-full h-full object-cover"
+                                        src="{{ asset('storage/' . $answer->user->avatar) }}"
+                                        alt="{{ $answer->user->name }}のアバター">
+                                </div>
+                            @else
+                                <div class="w-11 h-11 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-base text-white shadow">
+                                    {{ strtoupper(substr($answer->user->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <div>
+                                <p>{{ $answer->user->name }}さん</p>
+                                <p class="text-sm">{{ $answer->updated_at->format('Y/m/d H:i') }}</p>
+                            </div>
+                        </div>
+                        <div class="text-base leading-relaxed">
+                            {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($answer->content))) !!}
+                        </div>
+                        @if (!@empty($answer->image_url))
+                            <div class="flex justify-center my-6">
+                                <img src="{{ asset('storage/' . $answer->image_url) }}" alt="" class="w-64 h-auto rounded shadow-md border">
+                            </div>
+                        @endif
+                        @can('create', [App\Models\AnswerReply::class, $answer])
+                            <div>
+                                <a href="{{ route('replie.create', $answer->id) }}">返信する</a>
+                            </div>
+                        @endcan
+                        @if ($answer->AnswerReply->isNotEmpty(
 
-        {{-- 回答 --}}
-        <div>
-
-        </div>
-        {{-- 回答モーダル --}}
-        <div id="modalOverlay" class="bg-black fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 hidden">
-            <div id="modal" class="flex flex-col bg-white p-6 rounded-2xl max-w-2xl w-[90%] space-y-6 shadow-lg">
-                <!-- タイトル -->
-                <h1 class="text-2xl font-bold text-gray-800">回答モーダル</h1>
-
-                <!-- テキストエリア -->
-                <textarea
-                    name="content"
-                    rows="8"
-                    class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-sm"
-                    placeholder="ここに回答を入力してください..."></textarea>
-
-                <!-- ボタンエリア -->
-                <div class="flex justify-end space-x-4">
-                    <button
-                        type="button"
-                        id="closeModal"
-                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
-                        キャンセル
-                    </button>
-                    <button
-                        type="button"
-                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                        回答する
-                    </button>
-                </div>
+                        ))
+                            @foreach ($answer->AnswerReply as $reply)
+                                <div>
+                                    <p>{{ $reply->user->name }}</p>
+                                    <p>{{ $reply->content }}</p>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
-    <script>
-        const open = document.getElementById('openModal');
-        const close = document.getElementById('closeModal');
-        const modal = document.getElementById('modalOverlay');
-        const modalContent = document.getElementById('modal');
-        function closeModal() {
-            modal.classList.toggle('hidden');
-        }
-        open.addEventListener('click', function() {
-            closeModal();
-        });
-        close.addEventListener('click', closeModal);
-        modal.addEventListener('click', function(e) {
-            console.log(modalContent);
-            if (!modalContent.contains(e.target)) {//containsを使用することでmodalContentないの要素て一致するか判定
-                closeModal();
-            }
-        });
-    </script>
 </body>
 </html>

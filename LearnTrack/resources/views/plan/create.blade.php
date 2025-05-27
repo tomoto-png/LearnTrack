@@ -20,11 +20,11 @@
 
     <div class="px-6 max-w-xl lg:max-w-3xl w-full">
         <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] rounded-xl shadow-md">
-            <h1 class="text-xl font-semibold border-b-2 border-[var(--texy-brown)] pb-3">新規投稿</h1>
+            <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">新規投稿</h1>
 
             <form action="{{ route('plan.store') }}" method="POST">
                 @csrf
-                <div class="space-y-3 mt-2 border-b-2 border-[var(--texy-brown)] pb-3">
+                <div class="space-y-3 mt-2 border-b border-[var(--texy-brown)] pb-3">
                     <div>
                         <label for="name" class="block text-base font-semibold mb-2">
                             計画名

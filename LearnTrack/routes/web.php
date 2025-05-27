@@ -8,6 +8,7 @@ use App\Http\Controllers\TimerController;
 use App\Http\Controllers\StudyDataController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\AnswerReplyController;
 
 // 認証関連
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -56,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cancel', [QuestionController::class, 'cancel'])->name('question.cancel');
         Route::post('/', [QuestionController::class, 'store'])->name('question.store');
         Route::get('/show/{id}', [QuestionController::class, 'show'])->name('question.show');
-        Route::post('/answer', [AnswerController::class, 'store'])->name('answer.store');
+        Route::get('/{id}/answer', [AnswerController::class, 'create'])->name('answer.create');
+        Route::post('/answers/store', [AnswerController::class, 'store'])->name('answer.store');
+        Route::get('/{id}/replie', [AnswerReplyController::class, 'create']) ->name('replie.create');
+        Route::post('/replie/store', [AnswerReplyController::class, 'store'])->name('replie.store');
     });
 });

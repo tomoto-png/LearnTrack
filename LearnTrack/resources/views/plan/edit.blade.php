@@ -20,7 +20,7 @@
 
     <div class="w-full max-w-4xl p-6 bg-[var(--bg-light-gray)] rounded-xl shadow-lg">
         <header class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-[var(--text-brown)] border-b-2 border-[var(--accent-yellow)] pb-2">    ✏️ 編集</h1>
+            <h1 class="text-3xl font-bold text-[var(--text-brown)] border-b border-[var(--accent-yellow)] pb-2">    ✏️ 編集</h1>
         </header>
 
         <form action="{{ route('plan.update', ['id' => $plan->id]) }}" method="POST">

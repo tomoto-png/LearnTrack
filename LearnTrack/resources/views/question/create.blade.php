@@ -38,9 +38,9 @@
             <form id="questionForm" action="{{ route('question.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($mode === 'confirm')
-                    <h1 class="text-xl font-semibold border-b-2 border-[var(--texy-brown)] pb-3">質問確認</h1>
+                    <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">質問確認</h1>
 
-                    <div class="space-y-3 mt-2 border-b-2 border-[var(--texy-brown)] pb-3">
+                    <div class="space-y-3 mt-2 border-b border-[var(--texy-brown)] pb-3">
                         <div class="flex items-center space-x-2">
                             @if ($user->avatar)
                                 <div class="w-12 h-12 rounded-full border border-[var(--accent-yellow)] shadow overflow-hidden">
@@ -111,7 +111,7 @@
                     </div>
                 @else
                     {{-- 入力画面 --}}
-                    <h1 class="text-xl font-semibold border-b-2 border-[var(--texy-brown)] pb-3">質問投稿</h1>
+                    <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">質問投稿</h1>
                     <div class="space-y-3 mt-2">
                         <div>
                             <label for="content" class="block text-base font-semibold mb-3">質問文</label>
@@ -199,6 +199,8 @@
         const previewImage = document.getElementById('image-preview');
         const clearBtn = document.getElementById('clear-image');
         const image = document.getElementById('remove_image');
+        const modeInput = document.getElementById('modeInput');
+        const form = document.getElementById('questionForm');
 
         if (inputImage) {
             inputImage.addEventListener('change', function (event) {//ユーザーがファイルを選択（または変更）したときに "change" イベントが発生します, 	event には「どんなイベントが起きたか」の情報が入っている
@@ -227,8 +229,8 @@
             });
         }
         function submitWithMode(mode) {
-            document.getElementById('modeInput').value = mode;
-            document.getElementById('questionForm').submit();
+            modeInput.value = mode;
+            form.submit();
         };
     </script>
 </body>

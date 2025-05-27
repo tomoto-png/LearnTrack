@@ -43,7 +43,6 @@ class QuestionController extends Controller
             // 再投稿時など画像を変更しなければセッションを再利用
             $validated['image_url'] = session('temp_image_path');
         }
-
         $mode = $request->input('mode');
 
         if ($mode === 'confirm') {
@@ -91,7 +90,7 @@ class QuestionController extends Controller
     }
     public function show($id)
     {
-        $questionData = Question::find($id);
+        $questionData = Question::with(['answers.user','answers.answerReply.user'])->find($id);
         return view('question.show', compact('questionData'));
     }
 }
