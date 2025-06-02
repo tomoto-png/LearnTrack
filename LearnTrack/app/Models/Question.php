@@ -5,13 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
     protected $fillable = ["user_id","category_id", "content","image_url","reward", "auto_repost_enabled"];
-
-    use SoftDeletes;
 
     public function answers(): HasMany
     {
