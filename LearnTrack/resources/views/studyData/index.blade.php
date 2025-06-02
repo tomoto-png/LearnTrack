@@ -16,32 +16,34 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
-            --bg-green: #b3cfad;
-            --bg-light-gray: #e3e6d8;
-            --text-brown: #9f9579;
-            --accent-yellow: #d9ca79;
-            --button-hover: #d1af4d;
+            --bg-green: #a0b89c;
+            --bg-light-gray: #d6d9c8;
+            --text-brown: #6b5e3f;
+            --button-bg: #6c8c5d;
+            --button-hover: #57724a;
+            --accent-color: #3f5c38;
+            --white: white;
         }
         .fc-button:focus {
             outline: none !important;
             box-shadow: none !important;
         }
         .fc-button:hover {
-            background-color: #d1af4d !important;
-            border-color: #d1af4d !important;
+            background-color: var(--button-hover) !important;
+            border-color: var(--button-hover) !important;
         }
 
         .fc-button {
-            background-color: #d9ca79 !important;
-            border-color: #d9ca79 !important;
+            background-color: var(--button-bg) !important;
+            border-color: var(--button-hover) !important;
         }
 
         .fc-daygrid-day.selected-date {
-            outline: 2px solid #d9ca79 !important;
+            outline: 2px solid var(--button-hover) !important;
             outline-offset: -2px;
         }
         .fc-daygrid-day:hover {
-            outline: 2px solid #d1af4d !important;
+            outline: 2px solid var(--button-hover) !important;
             outline-offset: -2px;
         }
         .wheel-container {
@@ -51,7 +53,7 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)]">
-    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 hidden lg:block">
         @include('components.sidebar')
     </div>
 
@@ -63,7 +65,7 @@
                 <img src="{{ asset('images/calendar_month_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-7 h-7">
             </button>
             <button id="menuButton"
-                class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
+                class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-color)] text-[var(--white)] p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-50">
                 <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
             </button>
         </header>
@@ -89,16 +91,16 @@
             <!-- グラフタイプ切り替え -->
             <div class="flex gap-3">
                 <div id="graph-type-switch" class="relative inline-flex bg-gray-100 rounded-full p-1 shadow-inner">
-                    <span id="slider" class="absolute left-0 top-0 w-1/3 h-full bg-white rounded-full shadow transition-all duration-300"></span>
-                    <button data-type="day" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-blue-600">日</button>
+                    <span id="slider" class="absolute left-0 top-0 w-1/3 h-full bg-[var(--button-bg)] rounded-full shadow transition-all duration-300"></span>
+                    <button data-type="day" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-[var(--white)]">日</button>
                     <button data-type="month" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-gray-600">月</button>
                     <button data-type="year" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-gray-600">年</button>
                 </div>
 
                 <!-- グラフ形式切り替え -->
                 <div id="chart-type" class="flex justify-center gap-3 w-full max-w-xs">
-                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--accent-yellow)] text-white font-semibold shadow hover:bg-[var(--button-hover)]">円グラフ</button>
-                    <button data-type="bar" class="tab px-6 py-2 rounded-lg bg-white font-semibold shadow hover:bg-gray-100">棒グラフ</button>
+                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold shadow hover:bg-[var(--button-hover)]">円グラフ</button>
+                    <button data-type="bar" class="tab px-6 py-2 rounded-lg bg-[var(--white)] font-semibold shadow hover:bg-gray-100">棒グラフ</button>
                 </div>
             </div>
 
@@ -111,7 +113,7 @@
 
 
         <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-40 hidden">
-            <div id="calendarContainer" class="bg-white p-6 rounded-lg shadow-lg w-full space-y-1 max-w-3xl">
+            <div id="calendarContainer" class="bg-[var(--white)] p-6 rounded-lg shadow-lg w-full space-y-1 max-w-3xl">
                 <div id="calendar"></div>
                 <div class="flex space-x-1">
                     <span id="selectedDate" class="text-lg">----</span>
@@ -502,19 +504,27 @@
                 }, 0);
             });
             function updateSlideAppearance() {
-                const activeTab = document.querySelector('#graph-type-switch .tab.text-blue-600');
+                const tabs = document.querySelectorAll('#graph-type-switch .tab');
+                let activeTab = null;
+
+                //タグ一覧から白文字があるものを選択
+                tabs.forEach(tab => {
+                    if (tab.classList.contains('text-[var(--white)]')) {
+                        activeTab = tab;
+                    }
+                });
                 const currentType = activeTab?.getAttribute('data-type');
 
                 if (currentType !== selectedType) {
                     const tabs = document.querySelectorAll('#graph-type-switch .tab');
                     tabs.forEach(tab => {
-                        tab.classList.remove('text-blue-600');
+                        tab.classList.remove('text-[var(--white)]');
                         tab.classList.add('text-gray-600');
                     });
 
                     const targetTab = document.querySelector(`#graph-type-switch .tab[data-type="${selectedType}"]`);
                     targetTab.classList.remove('text-gray-600');
-                    targetTab.classList.add('text-blue-600');
+                    targetTab.classList.add('text-[var(--white)]');
 
                     const slider = document.getElementById('slider');
                     if (slider) {
@@ -714,13 +724,13 @@
             document.querySelectorAll('#chart-type .tab').forEach(btn =>{
                 btn.addEventListener('click',function() {
                     document.querySelectorAll('#chart-type .tab').forEach(b => {
-                        b.classList.remove('bg-[var(--accent-yellow)]', 'text-white', 'hover:bg-[var(--button-hover)]');
-                        b.classList.add('bg-white', 'hover:bg-gray-100');
+                        b.classList.remove('bg-[var(--button-bg)]', 'text-[var(--white)]', 'hover:bg-[var(--button-hover)]');
+                        b.classList.add('bg-[var(--white)]', 'hover:bg-gray-100');
                     });
 
                     // クリックされたタブに「選択中のクラス」を追加
-                    this.classList.remove('bg-white', 'hover:bg-gray-100');
-                    this.classList.add('bg-[var(--accent-yellow)]', 'text-white', 'hover:bg-[var(--button-hover)]');
+                    this.classList.remove('bg-[var(--white)]', 'hover:bg-gray-100');
+                    this.classList.add('bg-[var(--button-bg)]', 'text-[var(--white)]', 'hover:bg-[var(--button-hover)]');
                     chartType = this.getAttribute('data-type');
                     sendChartRequest();
                 })

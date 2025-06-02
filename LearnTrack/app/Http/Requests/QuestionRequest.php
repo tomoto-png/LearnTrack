@@ -30,6 +30,7 @@ class QuestionRequest extends FormRequest
             'content' => 'required|string|min:5|max:2000',
             'image_url' => 'nullable|image|max:2048',
             'auto_repost_enabled' => 'nullable|boolean',
+            'category_id' => 'nullable', 'integer', 'exists:categories,id',
             'reward' => [
                 'nullable',
                 'integer',

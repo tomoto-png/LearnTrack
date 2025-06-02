@@ -6,58 +6,99 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>プロフィール編集</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* カラーパレット */
         :root {
-            --bg-green: #b3cfad;
-            --bg-light-gray: #e3e6d8;
-            --text-brown: #9f9579;
-            --accent-yellow: #d9ca79;
+            --bg-green: #a0b89c;
+            --bg-light-gray: #d6d9c8;
+            --text-brown: #6b5e3f;
+            --button-bg: #6c8c5d;
+            --button-hover: #57724a;
+            --accent-color: #3f5c38;
+            --white: white;
         }
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex items-center justify-center">
-    <div class="container mx-auto p-6 bg-[var(--bg-light-gray)] shadow-lg rounded-lg max-w-lg">
-        <h1 class="text-3xl font-semibold mb-6 text-center">プロフィール編集</h1>
+    <div class="px-6 max-w-xl lg:max-w-2xl w-full">
+        <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] rounded-xl shadow-md">
+            <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">プロフィール編集</h1>
 
-        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-            @csrf
-            @method('PUT')
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                @method('PUT')
+                <div class="space-y-3 mt-2 border-b border-[var(--texy-brown)] pb-3">
+                    <div class="flex justify-center">
+                        <div class="bg-transparent relative w-36 h-36 border border-dashed border-gray-300 rounded-full">
+                            <div id="imagePreview" class="absolute inset-0 items-center justify-center hidden z-10">
+                                <img id="previewImage" src="" alt="プレビュー画像" class="w-full h-full object-cover rounded-full shadow-md cursor-pointer">
+                            </div>
 
-            <div>
-                <label for="name" class="block text-lg font-medium mb-2">名前</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
-                       class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">
-            </div>
+                            <!-- アイコンボタン -->
+                            <label for="image" class="flex flex-col items-center justify-center w-full h-full rounded-full bg-[var(--white)] transition cursor-pointer z-20">
+                                <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-12 h-12 opacity-70">
+                                <span class="mt-2 text-sm text-gray-600">画像を選択</span>
+                                <input type="file" name="avatar" id="image" accept="image/*" class="hidden">
+                            </label>
+                        </div>
+                        @error('avatar')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="name" class="block text-base font-semibold mb-2">
+                            名前
+                        </label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="計画名を入力" required>
+                    </div>
 
-            <div>
-                <label for="bio" class="block text-lg font-medium mb-2">自己紹介</label>
-                <textarea name="bio" id="bio" required rows="4"
-                    class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">{{ old('bio', $user->bio) }}
-                </textarea>
-                @error('bio')
-                    <p>{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="avatar" class="block text-lg font-medium mb-2">画像</label>
-                <input type="file" name="avatar"id="avatar"
-                       class="w-full px-4 py-2 border border-[var(--text-brown)] rounded-lg bg-white focus:ring-2 focus:ring-[var(--accent-yellow)] focus:outline-none">
-                @error('avatar')
-                    <p>{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mt-6 text-center text-sm flex justify-between">
-                <a class="bg-[var(--accent-yellow)] hover:bg-[var(--button-hover)] transition-colors transform hover:translate-y-[-2px] text-white px-6 py-3 rounded-lg font-semibold" href="{{ route('profile.index') }}">
-                    キャンセル
-                </a>
-                <button type="submit" class="bg-[var(--accent-yellow)] text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition">
-                    編集する
-                </button>
-            </div>
-        </form>
+                    <div>
+                        <label for="bio" class="block text-base font-semibold mb-2">
+                            自己紹介
+                        </label>
+                        <textarea id="bio" name="bio" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="自己紹介を入力（任意）" rows="4"></textarea>
+                        @error('bio')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4 mt-5">
+                    <a href="{{ route('profile.index') }}"
+                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">キャンセル</a>
+                    <button type="submit"
+                        class="px-4 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold hover:bg-[var(--button-hover)] transition">作成する</button>
+                </div>
+            </form>
+        </div>
     </div>
+    <script>
+        const previewImage = document.getElementById('previewImage');
+        document.getElementById('image').addEventListener('change', function(event) {
+            const file = event.target.files[0];  // 画像ファイルを取得
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;  // プレビュー画像を更新
+                    $('#imagePreview').removeClass('hidden').addClass('flex');  // プレビュー表示エリアを表示
+                };
+                reader.readAsDataURL(file);  // ファイルを読み込む
+            }
+        });
+
+        // 画像プレビューをクリックするとファイル選択ダイアログを開く
+        previewImage.addEventListener('click', function() {
+            document.getElementById('image').click();  // input要素をクリックしてファイルダイアログを開く
+        });
+
+        // ページ読み込み時に既存の画像を表示
+        document.addEventListener("DOMContentLoaded", function() {
+            const existingImage = "{{ $user->avatar ? $user->avatar : '' }}";
+            if (existingImage) {
+                previewImage.src = existingImage;  // 既存の画像をプレビューに設定
+                $('#imagePreview').removeClass('hidden').addClass('flex');  // プレビュー表示エリアを表示
+            }
+        });
+    </script>
 </body>
 </html>

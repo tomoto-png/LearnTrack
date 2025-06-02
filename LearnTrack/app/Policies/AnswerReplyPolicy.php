@@ -14,4 +14,5 @@ class AnswerReplyPolicy
     {
         return $user->id === $answer->user_id || $user->id === $answer->question->user_id;
     }
+
 }

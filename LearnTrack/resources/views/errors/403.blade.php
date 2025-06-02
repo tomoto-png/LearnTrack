@@ -9,7 +9,7 @@
     <div class="text-center">
         <h1 class="text-6xl font-bold text-red-600 mb-4">403</h1>
         <p class="text-xl mb-6">この操作を行う権限がありません。</p>
-        <a href="{{ url('/profile') }}" class="text-blue-600 hover:underline">トップページへ戻る</a>
+        <a href="{{ url()->previous() }}" class="text-blue-600 hover:underline">前のページへ戻る</a>
     </div>
 </body>
 </html>

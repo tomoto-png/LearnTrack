@@ -21,18 +21,19 @@ class AnswerReplyController extends Controller
     public function store(AnswerReplyRequest $request)
     {
         $answer = Answer::findOrFail($request->input('answer_id'));
+        $user = $request->user();
         $this->authorize('create', [AnswerReply::class, $answer]);
         $mode = $request->input('mode');
         $questionId = $answer->question->id;
         if ($mode === 'confirm') {
-            return view('replie.create', ['mode' => 'confirm', 'replieInput' => $request, 'input' => $answer]);
+            return view('replie.create', ['mode' => 'confirm', 'replieInput' => $request, 'input' => $answer, 'user' => $user]);
         }
         if ($mode === 'edit') {
             return view('replie.create', ['mode' => 'input', 'replieInput' => $request, 'input' => $answer, 'questionId' => $questionId]);
         }
         if ($mode === 'post') {
             AnswerReply::create([
-                'user_id' => $request->user()->id,
+                'user_id' => $user->id,
                 'answer_id' => $request->answer_id,
                 'content' => $request->content,
             ]);

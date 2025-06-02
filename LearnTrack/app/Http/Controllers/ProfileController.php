@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProfileController extends Controller
@@ -38,12 +39,13 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
+            $avatar = Storage::disk('s3')->url($s3Path);
         }
         $user->update([
             'name' => $request->name,
             'bio' => $request->bio,
-            'avatar' => $avatarPath,
+            'avatar' => $avatar,
         ]);
 
         return redirect()->route('profile.index');

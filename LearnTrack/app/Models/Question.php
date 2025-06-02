@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    protected $fillable = ["user_id","content","image_url","reward", "auto_repost_enabled"];
+    protected $fillable = ["user_id","category_id", "content","image_url","reward", "auto_repost_enabled"];
 
-    public function likes(): HasMany
-    {
-        return $this->hasMany(Like::class);
-    }
+    use SoftDeletes;
+
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
@@ -21,6 +20,10 @@ class Question extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }
 

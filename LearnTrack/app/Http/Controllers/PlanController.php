@@ -77,7 +77,7 @@ class PlanController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'target_hours' => 'required|numeric|min:5|max:21',
+            'target_hours' => 'required|numeric|min:0.5|max:100',
             'priority' => 'required|in:low,medium,high',
             'start_date' => 'nullable|date',
             'deadline' => 'nullable|date|after_or_equal:start_date',

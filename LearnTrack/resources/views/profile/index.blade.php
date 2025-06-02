@@ -7,16 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --bg-green: #b3cfad;
-            --bg-light-gray: #e3e6d8;
-            --text-brown: #9f9579;
-            --accent-yellow: #d9ca79;
+            --bg-green: #a0b89c;
+            --bg-light-gray: #d6d9c8;
+            --text-brown: #6b5e3f;
+            --button-bg: #6c8c5d;
+            --button-hover: #57724a;
+            --accent-color: #3f5c38;
+            --white: white;
         }
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex">
 
-    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 hidden lg:block">
         @include('components.sidebar')
     </div>
 
@@ -26,7 +29,7 @@
             <div class="flex items-center justify-between w-full sm:w-auto">
                 <h1 class="text-xl sm:text-2xl font-semibold">マイページ</h1>
                 <button id="menuButton"
-                    class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
+                    class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-color)] text-[var(--white)] p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-50">
                     <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
                 </button>
             </div>
@@ -35,13 +38,13 @@
         <section class="bg-[var(--bg-light-gray)] p-6 rounded-lg shadow-lg">
             <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6">
                 @if ($user->avatar)
-                    <div class="w-24 h-24 rounded-full border-4 border-[var(--accent-yellow)] shadow overflow-hidden sm:w-32 sm:h-32">
+                    <div class="w-24 h-24 rounded-full border-4 border-[var(--accent-color)] shadow overflow-hidden sm:w-32 sm:h-32">
                         <img class="w-full h-full object-cover"
-                            src="{{ asset('storage/' . $user->avatar) }}"
+                            src="{{ $user->avatar }}"
                             alt="{{ $user->name }}のアバター">
                     </div>
                 @else
-                    <div class="w-24 h-24 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-2xl text-white shadow sm:w-32 sm:h-32">
+                    <div class="w-24 h-24 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-2xl text-[var(--white)] shadow sm:w-32 sm:h-32">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                 @endif
@@ -51,23 +54,22 @@
                 </div>
             </div>
 
-            <div class="mt-6 bg-white p-4 rounded-lg shadow">
+            <div class="mt-6 bg-[var(--white)] p-4 rounded-lg shadow">
                 <h3 class="text-lg sm:text-xl font-semibold text-gray-800">自己紹介</h3>
                 <p class="text-sm sm:text-base mt-2 text-gray-600">
                     {{ $user->bio ?? '自己紹介はまだ設定されていません。' }}
                 </p>
             </div>
+            <div class="mt-6 text-right">
+                <a href="{{ route('profile.edit') }}"
+                   class="inline-block bg-[var(--button-bg)] text-[var(--white)] px-4 py-2 rounded-lg font-semibold hover:bg-[var(--button-hover)] transition">
+                    プロフィール編集
+                </a>
+            </div>
         </section>
-
-        <div class="mt-6 text-right">
-            <a href="{{ route('profile.edit') }}"
-               class="inline-block bg-[var(--accent-yellow)] text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition">
-                プロフィール編集
-            </a>
-        </div>
         <form action="{{ route('logout') }}" method="POST" class="inline ml-3 w-full sm:w-auto">
             @csrf
-            <button type="submit" class="bg-red-400 text-lg text-white px-4 py-2 rounded-lg hover:bg-red-600 w-full sm:w-auto">
+            <button type="submit" class="bg-red-400 text-lg text-[var(--white)] px-4 py-2 rounded-lg hover:bg-red-600 w-full sm:w-auto">
                 ログアウト
             </button>
         </form>

@@ -17,6 +17,7 @@ class QuestionSeeder extends Seeder
         DB::table('questions')->insert([
             [
                 'user_id' => 1,
+                'category_id' => 6,
                 'content' => 'LaravelのEloquentでリレーションの定義方法がよく分かりません。hasManyとbelongsToの違いを教えてください。',
                 'image_url' => null,
                 'auto_repost_enabled' => false,
@@ -26,6 +27,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'user_id' => 1,
+                'category_id' => 31,
                 'content' => 'Dockerでコンテナ間通信をするときのネットワーク設定がうまくいきません。どう設定すればよいですか？',
                 'image_url' => null,
                 'auto_repost_enabled' => true,
@@ -35,6 +37,7 @@ class QuestionSeeder extends Seeder
             ],
             [
                 'user_id' => 2,
+                'category_id' => 15,
                 'content' => 'SQLで複数の条件を組み合わせた検索（AND/OR）の書き方が分からないので教えてください。',
                 'image_url' => null,
                 'auto_repost_enabled' => false,

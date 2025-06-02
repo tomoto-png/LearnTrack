@@ -9,10 +9,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
-            --bg-green: #b3cfad;
-            --bg-light-gray: #e3e6d8;
-            --text-brown: #9f9579;
-            --accent-yellow: #d9ca79;
+            --bg-green: #a0b89c;
+            --bg-light-gray: #d6d9c8;
+            --text-brown: #6b5e3f;
+            --button-bg: #6c8c5d;
+            --button-hover: #57724a;
+            --accent-color: #3f5c38;
+            --white: white;
         }
         .numbers {
             font-family: 'Roboto', sans-serif;
@@ -21,7 +24,7 @@
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] flex flex-col lg:flex-row">
 
-    <div id="sidebar" class="fixed inset-y-0 left-0 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 hidden lg:block">
         @include('components.sidebar')
     </div>
 
@@ -34,14 +37,14 @@
                 <img src="{{ asset('images/settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-7 h-7">
             </a>
             <button id="menuButton"
-                class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-yellow)] text-white p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-[9999]">
+                class="fixed top-7 right-6 sm:top-10 sm:right-8 text-[var(--white)] p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-50">
                 <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
             </button>
         </header>
 
         <div class="flex items-center mb-6 max-w-2xl mx-auto space-x-10 sm:space-x-40">
             <label for="planSelect" class="block text-lg font-medium">学習プラン</label>
-            <select id="planSelect" class="flex-1 w-full p-2 mt-2 border border-gray-300 rounded-lg focus:ring-[var(--accent-yellow)] focus:border-[var(--accent-yellow)]">
+            <select id="planSelect" class="flex-1 w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
                 <option value="" selected>選択しない</option>
                 @foreach ($plans as $plan)
                     <option value="{{ $plan->id }}">{{ $plan->name }}</option>
@@ -54,37 +57,37 @@
                 <div class="relative w-full flex items-center">
 
                     <div id="seed-icon" class="flex flex-col items-center">
-                        <div id="seed-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-white">
+                        <div id="seed-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
                             <img src="{{ asset('images/seed.svg') }}" alt="種" class="w-4 h-4">
                         </div>
                     </div>
 
-                    <div class="flex-1 bg-white mx-2 rounded-full h-2">
+                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
                         <div id="progress-line" class="h-2 rounded-full"></div>
                     </div>
 
                     <div id="sprout-icon" class="flex flex-col items-center">
-                        <div id="sprout-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-white">
+                        <div id="sprout-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
                             <img src="{{ asset('images/sprout_ec.png') }}" alt="芽" class="w-6 h-6">
                         </div>
                     </div>
 
-                    <div class="flex-1 bg-white mx-2 rounded-full h-2">
+                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
                         <div id="progress-line2" class="h-2 rounded-full"></div>
                     </div>
 
                     <div id="flower-icon" class="flex flex-col items-center">
-                        <div id="flower-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-white">
+                        <div id="flower-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
                             <img src="{{ asset('images/—Pngtree—flower hand painted small tomato_7102313.png') }}" alt="花" class="w-6 h-6">
                         </div>
                     </div>
 
-                    <div class="flex-1 bg-white mx-2 rounded-full h-2">
+                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
                         <div id="progress-line3" class="h-2 rounded-full"></div>
                     </div>
 
                     <div id="tomato-icon" class="flex flex-col items-center">
-                        <div id="tomato-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-white">
+                        <div id="tomato-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
                             <img src="{{ asset('images/icons8-トマト-48.png') }}" alt="トマト" class="w-6 h-6 opacity-80">
                         </div>
                     </div>
@@ -294,10 +297,10 @@
                 $('#progress-line2').css('width', '0%');
                 $('#progress-line3').css('width', '0%');
 
-                $("#seed-icon-container").css("border-color", "white");
-                $("#sprout-icon div").css("border-color", "white");
-                $("#flower-icon div").css("border-color", "white");
-                $("#tomato-icon div").css("border-color", "white");
+                $("#seed-icon-container").css("border-color", "var(--white)");
+                $("#sprout-icon div").css("border-color", "var(--white)");
+                $("#flower-icon div").css("border-color", "var(--white)");
+                $("#tomato-icon div").css("border-color", "var(--white)");
 
                 tomatoCompleted = false;
             }

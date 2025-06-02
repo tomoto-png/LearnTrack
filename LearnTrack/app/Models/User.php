@@ -64,11 +64,6 @@ class User extends Authenticatable
         return $this->hasMany(TimerSetting::class);
     }
 
-    public function likes(): HasMany
-    {
-        return $this->hasMany(Like::class);
-    }
-
     public function resources(): HasMany
     {
         return $this->hasMany(Resource::class);

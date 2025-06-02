@@ -5,16 +5,44 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\CategoryGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuestionRequest;
+use Illuminate\Http\File;
 
 class QuestionController extends Controller
 {
     public function index()
     {
-        $questionDatas = Question::all();
+        $questionDatas = Question::with('category')->get();
         return view('question.index', compact('questionDatas'));
+    }
+    public function show($id)
+    {
+        $questionData = Question::with(['answers' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }, 'answers.user', 'answers.answerReply.user','category'])
+        ->find($id);
+
+        $questionOwnerId = $questionData->user_id;
+
+        $relatedQuestions = Question::where('category_id', $questionData->category_id)
+            ->where('id', '!=', $questionData->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $hasSameCategoryQuestions = $relatedQuestions->isNotEmpty();
+
+        if (!$hasSameCategoryQuestions) {
+            $relatedQuestions = Question::where('id', '!=', $questionData->id)
+            ->latest()
+            ->take(5)
+            ->get();
+        }
+
+        return view('question.show', compact('questionData', 'questionOwnerId', 'relatedQuestions','hasSameCategoryQuestions'));
     }
     public function create()
     {
@@ -44,11 +72,13 @@ class QuestionController extends Controller
             $validated['image_url'] = session('temp_image_path');
         }
         $mode = $request->input('mode');
-
+        Log::debug($validated);
         if ($mode === 'confirm') {
+            $categoryGroups = CategoryGroup::with('categories')->get();
             return view('question.create', [
                 'mode' => 'confirm',
                 'input' => $validated,
+                'categoryGroups' => $categoryGroups,
                 'user' => $user
             ]);
         } elseif ($mode === 'edit') {
@@ -58,23 +88,24 @@ class QuestionController extends Controller
                 'user' => $user
             ]);
         } elseif ($mode === 'post') {
-            $imagePath = null;
-            if (session('temp_image_path')) {
-                $tempPath = session('temp_image_path');
-                $newPath = 'images/' . basename($tempPath);//basename() はファイル名だけを取り出す
-                //Storage はファイル操作 move(ファイル名が変えられる) は ストレージ内のファイルを別の場所に移動
-                //第一引数：移動元のファイルパス（相対パス） 第二引数：移動先のファイルパス（相対パス）
-                Storage::disk('public')->move($tempPath, $newPath);
-                $imagePath = $newPath;
+            $tempPath = session('temp_image_path');
+            if ($tempPath) {
+                $fullTempPath = storage_path('app/public/' . $tempPath);
+                $s3Url = Storage::disk('s3')->putFile('uploads/question_images', new File($fullTempPath));
+                $imageUrl = Storage::disk('s3')->url($s3Url);
 
                 //一時保存のデータを削除
-                Storage::disk('public')->delete(session('temp_image_path'));
+                Storage::disk('public')->delete($tempPath);
                 session()->forget('temp_image_path');
+            } else {
+                $imageUrl = null;
             }
+
             Question::create([
                 'user_id' => $user->id,
+                'category_id' => $request->category_id,
                 'content' => $request->content,
-                'image_url' => $imagePath,
+                'image_url' => $imageUrl,
                 'auto_repost_enabled' => $request->has('auto_repost_enabled'),
                 'reward' => $request->reward
             ]);
@@ -87,10 +118,5 @@ class QuestionController extends Controller
             session()->forget('temp_image_path');
         }
         return redirect()->route('question.index');
-    }
-    public function show($id)
-    {
-        $questionData = Question::with(['answers.user','answers.answerReply.user'])->find($id);
-        return view('question.show', compact('questionData'));
     }
 }
