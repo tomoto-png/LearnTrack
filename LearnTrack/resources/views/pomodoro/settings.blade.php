@@ -39,7 +39,7 @@
     <div class="w-full max-w-6xl p-4">
         <div class="flex">
             <button type="submit" form="pomodoroSettingsForm"
-                    class= transition">
+                    class= "transition">
                 <span class="font-bold text-2xl">&larr;</span>
             </button>
             <h1 class="text-2xl font-semibold py-6 ml-4">ポモドーロタイマー設定</h1>

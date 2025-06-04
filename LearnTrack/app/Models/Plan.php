@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Plan extends Model
 {
-    protected $fillable = ["user_id","name","description","target_hours","priority","start_date","deadline","progress","completed"];
+    protected $fillable = ["user_id","name","description","target_hours","priority","progress","completed"];
 
     public function studySessions(): HasMany
     {

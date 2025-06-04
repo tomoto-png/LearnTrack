@@ -18,8 +18,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('target_hours', 3, 1);
             $table->enum('priority', ['low', 'medium', 'high']);
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('deadline')->nullable();
             $table->decimal('progress', 5, 2)->default(0.00);
             $table->boolean('completed')->default(false);
             $table->timestamps();

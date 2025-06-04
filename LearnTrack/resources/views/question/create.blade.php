@@ -85,6 +85,9 @@
                             </div>
                         @endif
                         <input type="hidden" name="reward" value="{{ $input['reward'] }}">
+                        @error('reward')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="border-t border-[var(--texy-brown)] pt-5 space-y-3 mb-2">
                         <div class="flex items-center justify-between">

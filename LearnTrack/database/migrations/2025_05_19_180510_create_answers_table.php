@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('question_id');
             $table->text('content');
+            $table->boolean('is_best')->default(false);
             $table->text("image_url")->nullable();
-            $table->boolean('is_venture')->default(false);
             $table->timestamps();
         });
     }

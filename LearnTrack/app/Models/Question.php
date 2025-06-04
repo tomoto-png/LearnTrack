@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
-    protected $fillable = ["user_id","category_id", "content","image_url","reward", "auto_repost_enabled"];
+    protected $fillable = ["user_id","category_id", "content","image_url","reward", "auto_repost_enabled", "is_closed"];
 
     public function answers(): HasMany
     {

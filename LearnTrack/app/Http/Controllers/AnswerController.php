@@ -71,6 +71,25 @@ class AnswerController extends Controller
         }
         return redirect()->route('question.show',['id' => $input['question_id']]);
     }
+    public function setBest(Answer $answer)
+    {
+        $this->authorize('setBest', $answer);
+        $question = $answer->question;
+        $answer->user->update([
+            'count' => $answer->user->count + $question->reward
+        ]);
+
+        Answer::where('id', $answer->id)
+            ->update(['is_best' => true]);
+
+        if ($question->is_closed) {
+            return back();
+        }
+
+        $question->update(['is_closed' => true]);
+
+        return back();
+    }
     public function cancel($id) {
         if (session('confirm_image_path')) {
             Storage::disk('public')->delete(session('confirm_image_path'));

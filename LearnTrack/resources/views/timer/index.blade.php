@@ -248,6 +248,7 @@
                 } else {
                     console.warn('タイマーは既に動作中です');
                 }
+                $("#planSelect").prop("disabled", true);
                 $("#start-button").hide();
                 $("#stop-button").show();
                 $("#reset-button").show();
@@ -385,6 +386,7 @@
                 updateTimerDisplay();
                 resetIconsAndProgress();
 
+                $("#planSelect").prop("disabled", false);
                 $('#tomatoCountDisplay').text(tomatoCount);
                 $("#restart-button").hide();
                 $('#stop-button').hide();

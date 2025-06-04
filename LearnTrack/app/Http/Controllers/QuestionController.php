@@ -5,25 +5,81 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\Answer;
+use Carbon\Carbon;
 use App\Models\CategoryGroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuestionRequest;
 use Illuminate\Http\File;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $questionDatas = Question::with('category')->get();
-        return view('question.index', compact('questionDatas'));
+        $keyword = $request->get('keyword');
+
+        $query = Question::with(['category', 'user']);
+
+        if ($keyword) {
+            $query->where('content', 'like', '%' . $keyword . '%');
+        }
+
+        switch ($request->input('sort')) {
+            case 'newest':
+                $query->latest();
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'open':
+                $query->where('is_closed', false);
+                break;
+            case 'solved':
+                $query->where('is_closed', true);
+                break;
+            case 'fewest_answers':
+                $query->withCount('answers')->orderBy('answers_count', 'asc');
+                break;
+            case 'most_answers':
+                $query->withCount('answers')->orderBy('answers_count', 'desc');
+                break;
+            case 'least_reward':
+                $query->orderBy('reward', 'asc');
+                break;
+            case 'most_reward':
+                $query->orderBy('reward', 'desc');
+                break;
+        }
+
+        $questionDatas = $query->latest()->paginate(5)->withQueryString();;
+
+        return view('question.index', compact('questionDatas', 'keyword'));
     }
     public function show($id)
     {
+        $bestAnswer = Answer::where('question_id', $id)
+            ->where('is_best', true)
+            ->with(['user', 'answerReply.user'])
+            ->first();
+
         $questionData = Question::with(['answers' => function($query) {
-            $query->orderBy('created_at', 'desc');
+            $query->where('is_best', false)->latest();
         }, 'answers.user', 'answers.answerReply.user','category'])
         ->find($id);
+
+        //受付時間の処理
+        if ($questionData->is_closed === 1) {
+            // 非公開なら受付終了
+            $remainingDays = 0;
+        } else {
+            // 通常の計算
+            $createdAt = Carbon::parse($questionData->created_at)->startOfDay(); // 作成日付を00:00に
+            $now = Carbon::now()->startOfDay(); // 現在時刻を00:00に
+            $daysElapsed = $createdAt->diffInDays($now); // 小数なしの差分日数
+            $remainingDays = max(7 - $daysElapsed, 0);   // 残り日数（マイナスにならないように）
+        }
 
         $questionOwnerId = $questionData->user_id;
 
@@ -42,7 +98,7 @@ class QuestionController extends Controller
             ->get();
         }
 
-        return view('question.show', compact('questionData', 'questionOwnerId', 'relatedQuestions','hasSameCategoryQuestions'));
+        return view('question.show', compact('bestAnswer', 'questionData', 'questionOwnerId', 'relatedQuestions','hasSameCategoryQuestions', 'remainingDays'));
     }
     public function create()
     {
@@ -88,27 +144,39 @@ class QuestionController extends Controller
                 'user' => $user
             ]);
         } elseif ($mode === 'post') {
-            $tempPath = session('temp_image_path');
-            if ($tempPath) {
-                $fullTempPath = storage_path('app/public/' . $tempPath);
-                $s3Url = Storage::disk('s3')->putFile('uploads/question_images', new File($fullTempPath));
-                $imageUrl = Storage::disk('s3')->url($s3Url);
+            DB::transaction(function () use ($user, $request) {
+                $tempPath = session('temp_image_path');
+                if ($tempPath) {
+                    $fullTempPath = storage_path('app/public/' . $tempPath);
+                    $s3Url = Storage::disk('s3')->putFile('uploads/question_images', new File($fullTempPath));
+                    $imageUrl = Storage::disk('s3')->url($s3Url);
 
-                //一時保存のデータを削除
-                Storage::disk('public')->delete($tempPath);
-                session()->forget('temp_image_path');
-            } else {
-                $imageUrl = null;
-            }
+                    //一時保存のデータを削除
+                    Storage::disk('public')->delete($tempPath);
+                    session()->forget('temp_image_path');
+                } else {
+                    $imageUrl = null;
+                }
 
-            Question::create([
-                'user_id' => $user->id,
-                'category_id' => $request->category_id,
-                'content' => $request->content,
-                'image_url' => $imageUrl,
-                'auto_repost_enabled' => $request->has('auto_repost_enabled'),
-                'reward' => $request->reward
-            ]);
+                $reward = $request->reward;
+
+                if ($user->count < $reward) {
+                    return redirect()->back()->withErrors(['reward' => 'ポイントが不足しています']);
+                }
+
+                $user->update([
+                    'count' => $user->count - $reward,
+                ]);
+
+                Question::create([
+                    'user_id' => $user->id,
+                    'category_id' => $request->category_id,
+                    'content' => $request->content,
+                    'image_url' => $imageUrl,
+                    'auto_repost_enabled' => $request->has('auto_repost_enabled'),
+                    'reward' => $reward
+                ]);
+            });
         }
         return redirect()->route('question.index');
     }

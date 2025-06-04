@@ -9,6 +9,7 @@ use App\Http\Controllers\StudyDataController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AnswerReplyController;
+use App\Http\Controllers\SearchController;
 
 // 認証関連
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -59,8 +60,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/show/{id}', [QuestionController::class, 'show'])->name('question.show');
         Route::get('/{id}/answer', [AnswerController::class, 'create'])->name('answer.create');
         Route::post('/answers/store', [AnswerController::class, 'store'])->name('answer.store');
+        Route::post('/answer/{answer}/best', [AnswerController::class, 'setBest'])->name('answer.setBest');
         Route::get('/cancel/{id}', [AnswerController::class, 'cancel'])->name('answer.cancel');
         Route::get('/{id}/replie', [AnswerReplyController::class, 'create']) ->name('replie.create');
         Route::post('/replie/store', [AnswerReplyController::class, 'store'])->name('replie.store');
+    });
+    Route::prefix('search')->group(function () {
+        Route::get('/', [SearchController::class, 'index'])->name('search.index');
+        Route::get('/category', [SearchController::class, 'category'])->name('search.category');
     });
 });

@@ -12,6 +12,9 @@ class AnswerReplyPolicy
      */
     public function create(User $user, Answer $answer)
     {
+        if ($answer->question->is_closed) {
+            return false;
+        }
         return $user->id === $answer->user_id || $user->id === $answer->question->user_id;
     }
 

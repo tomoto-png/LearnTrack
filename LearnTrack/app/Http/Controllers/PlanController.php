@@ -11,14 +11,13 @@ class PlanController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $sort = $request->input('sort');
 
-        $query = Plan::query();
+        $query = Plan::where('user_id', Auth::id());
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
         }
 
-        switch ($sort) {
+        switch ($request->input('sort')) {
             case 'newest':
                 $query->orderBy('created_at', 'desc');
                 break;
@@ -33,7 +32,7 @@ class PlanController extends Controller
                 break;
         }
 
-        $plans = $query->paginate(6);
+        $plans = $query->paginate(6)->withQueryString();;
 
         return view('plan.index', compact('plans'));
     }
@@ -47,9 +46,7 @@ class PlanController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'target_hours' => 'required|numeric|min:0.5|max:100',
-            'priority' => 'required|in:low,medium,high',
-            'start_date' => 'nullable|date',
-            'deadline' => 'nullable|date|after_or_equal:start_date',
+            'priority' => 'required|in:low,medium,high'
         ]);
 
         Plan::create([
@@ -58,8 +55,6 @@ class PlanController extends Controller
             'description' => $request->description,
             'target_hours' => $request->target_hours,
             'priority' => $request->priority,
-            'start_date' => $request->start_date,
-            'deadline' => $request->deadline,
             'progress' => 0.00,
             'completed' => false,
         ]);
@@ -79,22 +74,21 @@ class PlanController extends Controller
             'description' => 'nullable|string',
             'target_hours' => 'required|numeric|min:0.5|max:100',
             'priority' => 'required|in:low,medium,high',
-            'start_date' => 'nullable|date',
-            'deadline' => 'nullable|date|after_or_equal:start_date',
-            'progress' => 'nullable|numeric|min:0|max:100',
-            'completed' => 'nullable|boolean',
         ]);
 
         $plan = Plan::findOrFail($id);
+
+        $totalDuration = $plan->studySessions()->sum('duration');
+        $targetSeconds = $request->target_hours * 3600;
+        $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
+
         $plan->update([
             'name' => $request->name,
             'description' => $request->description,
             'target_hours' => $request->target_hours,
             'priority' => $request->priority,
-            'start_date' => $request->start_date,
-            'deadline' => $request->deadline,
-            'progress' => $request->progress ?? $plan->progress,
-            'completed' => $request->completed ?? $plan->completed,
+            'progress' => $progress,
+            'completed' => $progress >= 100,
         ]);
 
         return redirect()->route('plan.index');

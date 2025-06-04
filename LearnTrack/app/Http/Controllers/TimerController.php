@@ -16,7 +16,9 @@ class TimerController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $plans = Plan::where('user_id', $user->id)->get();
+        $plans = Plan::where('user_id', $user->id)
+            ->where('completed', false)
+            ->get();
         return view('timer.index', compact('plans'));
     }
 
@@ -63,12 +65,8 @@ class TimerController extends Controller
             $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
             $plan->update([
                 'progress' => $progress,
+                'completed' => $progress >= 100,
             ]);
-            if ($progress >= 100) {
-                $plan->update([
-                    'completed' => true,
-                ]);
-            }
         }
 
         return response()->json(['message' => 'タイマー停止']);
@@ -77,7 +75,9 @@ class TimerController extends Controller
     public function pomodoroIndex()
     {
         $user = Auth::user();
-        $plans = Plan::where('user_id', $user->id)->get();
+        $plans = Plan::where('user_id', $user->id)
+            ->where('completed', false)
+            ->get();
         return view('pomodoro.index', compact('plans'));
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text("image_url")->nullable();
             $table->unsignedInteger('reward')->default(0);
             $table->boolean('auto_repost_enabled')->default(false);
+            $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
     }

@@ -41,9 +41,7 @@
                     <div class="flex items-center rounded-lg border-2 border-gray-300 overflow-hidden">
                         <div class="relative w-40 sm:w-52 md:w-64 lg:w-80">
                             <input type="text" name="search" placeholder="計画名で検索" value="{{ request('search') }}"
-                                class="px-6 md:px-8 h-8 md:h-9 text-sm sm:text-base focus:outline-none w-full">
-                            <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
-                                class="w-5 h-5 absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                class="px-2 md:px-4 h-8 md:h-9 text-sm sm:text-base focus:outline-none w-full">
                             @if(request('search'))
                             <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
                                 onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
@@ -65,9 +63,9 @@
                     </div>
                     <button
                         type="submit"
-                        class="min-w-[60px] bg-[var(--button-bg)] text-[var(--white)] px-2 sm:px-3 h-8 md:h-9 text-xs sm:text-sm rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow"
+                        class="flex justify-center items-center min-w-[60px] bg-[var(--button-bg)] px-1 sm:px-2 h-8 md:h-9 rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow"
                     >
-                        検索
+                        <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="" class="h-5 w-5 sm:h-7 sm:w-7">
                     </button>
                 </form>
 
@@ -136,67 +134,7 @@
                     <p class="text-lg text-center text-gray-600">学習計画はまだありません。</p>
                 @endforelse
             </div>
-
-            <div class="mt-6 flex justify-center">
-                <nav class="inline-flex items-center space-x-2">
-                    @if ($plans->onFirstPage())
-                        <span class="px-3 py-2 text-base font-medium text-gray-400 bg-gray-200 border border-gray-300 rounded-full cursor-not-allowed">
-                            ←
-                        </span>
-                    @else
-                        <a href="{{ $plans->previousPageUrl() }}" class="px-3 py-2 text-base font-medium text-[var(--white)] bg-[var(--accent-color)] border border-[var(--accent-color)] rounded-full hover:bg-[var(--button-hover)] transition-transform transform hover:scale-105">
-                            ←
-                        </a>
-                    @endif
-
-                    @php
-                        $currentPage = $plans->currentPage();
-                        $lastPage = $plans->lastPage();
-                        $start = max($currentPage - 2, 1);
-                        $end = min($currentPage + 2, $lastPage);
-                    @endphp
-
-                    @if ($start > 1)
-                        <a href="{{ $plans->url(1) }}" class="px-3 py-2 text-base font-medium bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-[var(--white)] transition-transform transform hover:scale-105">
-                            1
-                        </a>
-                        @if ($start > 2)
-                            <span class="px-2 text-base text-gray-500">...</span>
-                        @endif
-                    @endif
-
-                    @for ($i = $start; $i <= $end; $i++)
-                        @if ($i == $currentPage)
-                            <span class="px-3 py-2 text-base font-semibold text-[var(--white)] bg-[var(--button-bg)] border border-gray-300 rounded-full shadow-inner">
-                                {{ $i }}
-                            </span>
-                        @else
-                            <a href="{{ $plans->url($i) }}" class="px-3 py-2 text-base font-medium bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-[var(--white)] transition-transform transform hover:scale-105">
-                                {{ $i }}
-                            </a>
-                        @endif
-                    @endfor
-
-                    @if ($end < $lastPage)
-                        @if ($end < $lastPage - 1)
-                            <span class="px-2 text-base text-gray-500">...</span>
-                        @endif
-                        <a href="{{ $plans->url($lastPage) }}" class="px-3 py-2 text-base font-medium bg-gray-200 border border-gray-300 rounded-full hover:bg-[var(--button-hover)] hover:text-[var(--white)] transition-transform transform hover:scale-105">
-                            {{ $lastPage }}
-                        </a>
-                    @endif
-
-                    @if ($plans->hasMorePages())
-                        <a href="{{ $plans->nextPageUrl() }}" class="px-3 py-2 text-base font-medium text-[var(--white)] bg-[var(--button-bg)] border border-[var(--button-bg)] rounded-full hover:bg-[var(--button-hover)] transition-transform transform hover:scale-105">
-                            →
-                        </a>
-                    @else
-                        <span class="px-3 py-2 text-base font-medium text-gray-400 bg-gray-200 border border-gray-300 rounded-full cursor-not-allowed">
-                            →
-                        </span>
-                    @endif
-                </nav>
-            </div>
+            <x-pagination.custom :paginator="$plans" />
         </div>
     </div>
 

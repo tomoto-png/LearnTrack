@@ -107,7 +107,7 @@
             <!-- グラフ表示 -->
             <div class="flex flex-col justify-center items-center w-full max-w-[1000px] aspect-[3/2] mx-auto">
                 <canvas id="studyPieChart"></canvas>
-                <p id="chartMessage" class="text-center text-gray-500"></p>
+                <p id="chartMessage" class="text-center text-xl"></p>
             </div>
         </div>
 
