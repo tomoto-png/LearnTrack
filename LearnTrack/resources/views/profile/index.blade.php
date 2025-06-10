@@ -162,70 +162,63 @@
             </div>
             <div class="mt-4">
                 @if ($filter === 'question')
-                    <div class="space-x-2">
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => '']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == '') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            全て
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'open']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'open') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            回答受付中
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'closed']) }} " class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'closed') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            解決済み
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'no_best']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'no_best') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            ベストアンサー未選択
-                        </a>
+                    <div class="space-x-2" id="filter-buttons">
+                        <button data-status="" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)] bg-[var(--button-bg)] text-[var(--white)]">全て</button>
+                        <button data-status="open" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">回答受付中</button>
+                        <button data-status="closed" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">解決済み</button>
+                        <button data-status="no_best" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">ベストアンサー未選択</button>
                     </div>
                 @else
-                    <div class="space-x-2">
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => '']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == '') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            全て
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'open']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'open') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            回答受付中
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'closed']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'closed') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            解決済み
-                        </a>
-                        <a href="{{ route('profile.index', ['filter' => $filter, 'status' => 'best']) }}" class="py-2 px-4 rounded-full border border-[var(--accent-color)] {{ ($filter == $filter && $status == 'best') ? 'text-[var(--white)] bg-[var(--button-bg)]' : '' }}">
-                            ベストアンサー
-                        </a>
+                    <div class="space-x-2" id="filter-buttons">
+                        <button data-status="" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)] bg-[var(--button-bg)] text-[var(--white)]">全て</button>
+                        <button data-status="open" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">回答受付中</button>
+                        <button data-status="closed" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">解決済み</button>
+                        <button data-status="best" class="filter-button py-1 px-4 rounded-full border border-[var(--text-brown)]">ベストアンサー</button>
                     </div>
                 @endif
             </div>
-            <div class="mt-8">
-                @forelse($datas as $data)
-                    @if ($filter === 'question')
-                        <a href="{{ route('question.show', $data->id) }}"
-                            class="block bg-white rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">
-                            <p class="mt-1 text-sm sm:text-base text-[var(--text-main)]">{{ Str::limit($data->content, 155, '...') }}</p>
-                            <div class="flex items-center text-xs sm:text-sm text-gray-500 gap-3 mt-2">
-                                <span class="px-2 py-0.5 bg-gray-100 rounded">{{ $data->category->name }}</span>
-                                <span>{{ $data->updated_at->format('Y/m/d H:i') }}</span>
-                            </div>
-                        </a>
-                    @else
-                        <a href="{{ route('question.show', $data->question->id) }}"
-                            class="block bg-white rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">
-                            <p class="text-sm text-gray-500">{{ $data->question->user->name }} さん</p>
-                            <p class="mt-1 text-sm sm:text-base text-[var(--text-main)]">{{ Str::limit($data->question->content, 155, '...') }}</p>
-                            <div class="pl-2">
-                                <div class="pl-1 border-l-2 border-[var(--text-brown)]">
-                                    <p class="mt-1 text-sm sm:text-base text-[var(--text-main)]">{{ Str::limit($data->content, 155, '...') }}</p>
-                                    <span>{{ $data->updated_at->format('Y/m/d H:i') }}</span>
-                                </div>
-                            </div>
-                        </a>
-                    @endif
-                @empty
-                    <p>該当する質問はありません。</p>
-                @endforelse
+            <div class="mt-8" id="data-list">
+                @include('components.profile_items', ['datas' => $datas, 'filter' => $filter])
             </div>
             <x-pagination.custom :paginator="$datas" />
         </div>
     </div>
 
     <script>
+           document.addEventListener('DOMContentLoaded', function () {
+                const buttons = document.querySelectorAll('.filter-button');
+                const filter = "{{ $filter }}";
+
+                buttons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const status = this.dataset.status;
+
+                        // ボタンの見た目を切り替え
+                        buttons.forEach(btn => btn.classList.remove('bg-[var(--button-bg)]', 'text-[var(--white)]'));
+                        this.classList.add('bg-[var(--button-bg)]', 'text-[var(--white)]');
+
+                        $.ajax({
+                            url: 'profile',
+                            method: 'GET',
+                            data: {
+                                filter: filter,
+                                status: status
+                            },
+                            success: function(response) {
+                                document.querySelector('#data-list').innerHTML = response.html;
+                            },
+                            error: function(xhr, status, error) {
+                                if (xhr.status === 419 || xhr.status === 401) {
+                                    alert('セッションが切れました。再度ログインしてください。');
+                                    window.location.href = '/login';
+                                } else {
+                                    console.error('送信エラー:', error);
+                                }
+                            }
+                        });
+                    });
+                });
+            });
         document.getElementById("menuButton").addEventListener("click", function() {
             const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("hidden");

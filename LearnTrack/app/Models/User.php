@@ -67,11 +67,6 @@ class User extends Authenticatable
         return $this->hasMany(TimerSetting::class);
     }
 
-    public function resources(): HasMany
-    {
-        return $this->hasMany(Resource::class);
-    }
-
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);

@@ -129,6 +129,11 @@
                 </div>
             </form>
         </div>
+        @error('error')
+            <script>
+                alert("{{ $message }}");
+            </script>
+        @enderror
     </div>
     <script>
         const previewImage = document.getElementById('previewImage');

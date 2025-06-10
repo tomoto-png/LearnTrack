@@ -33,11 +33,12 @@ class AuthController extends Controller
             $name = 'user_' . Str::random(8);
         } while (User::where('name', $name)->exists());//(条件が true);の時に再度生成する
 
-        User::create([
+        $user = User::create([
             'name' => $name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        Auth::login($user);
         return redirect()->route('profile.index');
     }
     public function showLoginForm()

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
@@ -13,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\QuestionRequest;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class QuestionController extends Controller
 {
@@ -132,7 +132,6 @@ class QuestionController extends Controller
             $validated['image_url'] = session('temp_image_path');
         }
         $mode = $request->input('mode');
-        Log::debug($validated);
         if ($mode === 'confirm') {
             $categoryGroups = CategoryGroup::with('categories')->get();
             return view('question.create', [
@@ -148,39 +147,47 @@ class QuestionController extends Controller
                 'user' => $user
             ]);
         } elseif ($mode === 'post') {
-            DB::transaction(function () use ($user, $request) {
-                $tempPath = session('temp_image_path');
-                if ($tempPath) {
-                    $fullTempPath = storage_path('app/public/' . $tempPath);
-                    $s3Url = Storage::disk('s3')->putFile('uploads/question_images', new File($fullTempPath));
-                    $imageUrl = Storage::disk('s3')->url($s3Url);
+            try{
+                DB::transaction(function () use ($user, $request) {
+                    $tempPath = session('temp_image_path');
+                    if ($tempPath) {
+                        $fullTempPath = storage_path('app/public/' . $tempPath);
+                        $s3Url = Storage::disk('s3')->putFile('uploads/question_images', new File($fullTempPath));
+                        $imageUrl = Storage::disk('s3')->url($s3Url);
 
-                    //一時保存のデータを削除
-                    Storage::disk('public')->delete($tempPath);
-                    session()->forget('temp_image_path');
-                } else {
-                    $imageUrl = null;
-                }
+                        //一時保存のデータを削除
+                        Storage::disk('public')->delete($tempPath);
+                        session()->forget('temp_image_path');
+                    } else {
+                        $imageUrl = null;
+                    }
 
-                $reward = $request->reward;
+                    $reward = $request->reward;
 
-                if ($user->count < $reward) {
-                    return redirect()->back()->withErrors(['reward' => 'ポイントが不足しています']);
-                }
+                    if ($user->count < $reward) {
+                        return redirect()->back()->withErrors(['reward' => 'ポイントが不足しています']);
+                    }
 
-                $user->update([
-                    'count' => $user->count - $reward,
-                ]);
+                    $user->update([
+                        'count' => $user->count - $reward,
+                    ]);
 
-                Question::create([
-                    'user_id' => $user->id,
-                    'category_id' => $request->category_id,
-                    'content' => $request->content,
-                    'image_url' => $imageUrl,
-                    'auto_repost_enabled' => $request->has('auto_repost_enabled'),
-                    'reward' => $reward
-                ]);
-            });
+                    $question = [
+                        'user_id' => $user->id,
+                        'content' => $request->content,
+                        'image_url' => $imageUrl,
+                        'auto_repost_enabled' => $request->has('auto_repost_enabled'),
+                        'reward' => $reward
+                    ];
+                    if ($request->category_id) {
+                        $question['category_id'] = $request->category_id;
+                    }
+
+                    Question::create($question);
+                });
+            } catch (QueryException $e) {
+                return redirect()->back()->withErrors(['error' => '質問の投稿が失敗しました']);
+            }
         }
         return redirect()->route('question.index');
     }

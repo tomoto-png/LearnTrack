@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Question;
 use App\Models\Answer;
-
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
@@ -16,11 +17,12 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $filter = $request->query('filter', 'question');
-        $status = $request->query('status');
+        $status = $request->input('status');
         $userWithCounts = User::withCount(['questions', 'answers'])
             ->find($user->id);
         if ($filter === 'question') {
-            $questionQuery = Question::where('user_id', $user->id);
+            $questionQuery = Question::where('user_id', $user->id)
+                ->with('category');
 
             switch ($status){
                 case 'open':
@@ -63,6 +65,17 @@ class ProfileController extends Controller
             $datas = $answerQuery->paginate(4);
         }
 
+        if ($request->ajax()) {
+            $html = view('components.profile_items', [
+                'datas' => $datas,
+                'filter' => $filter
+            ])->render();
+
+            return response()->json([
+                'html' => $html,
+            ]);
+        }
+
         return view('profile.index', compact('user', 'userWithCounts', 'datas', 'filter', 'status'));
     }
 
@@ -95,21 +108,26 @@ class ProfileController extends Controller
             'occupation.string' => '職業は文字列で入力してください！',
             'occupation.max' => '職業は20文字以内で入力してください！'
         ]);
-
-        if ($request->hasFile('avatar')) {
-            $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
-            $avatar = Storage::disk('s3')->url($s3Path);
-        } else {
-            $avatar = null;
+        try {
+            DB::transaction(function () {
+                if ($request->hasFile('avatar')) {
+                    $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
+                    $avatar = Storage::disk('s3')->url($s3Path);
+                } else {
+                    $avatar = null;
+                }
+                $user->update([
+                    'name' => $request->name,
+                    'bio' => $request->bio,
+                    'avatar' => $avatar,
+                    'gender' => $request->gender,
+                    'age' => $request->age,
+                    'occupation' => $request->occupation,
+                ]);
+            });
+        } catch (QueryException $e) {
+            return redirect()->back()->withErrors(['error' => '回答の投稿が失敗しました']);
         }
-        $user->update([
-            'name' => $request->name,
-            'bio' => $request->bio,
-            'avatar' => $avatar,
-            'gender' => $request->gender,
-            'age' => $request->age,
-            'occupation' => $request->occupation,
-        ]);
 
         return redirect()->route('profile.index');
     }

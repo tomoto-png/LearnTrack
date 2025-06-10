@@ -10,6 +10,8 @@ use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\File;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
 {
@@ -51,42 +53,51 @@ class AnswerController extends Controller
             return view('answer.create', ['mode' => 'input', 'questionInput' => $question, 'input' => $input]);
         }
         if ($mode === 'post') {
-            $imageUrl = null;
-            if (session('confirm_image_path')) {
-                $confirmPath = session('confirm_image_path');
-                $fullConfirmPath = storage_path('app/public/' . $confirmPath);
-                $s3Url = Storage::disk('s3')->putFile('uploads/answer_images', new File($fullConfirmPath));
-                $imageUrl = Storage::disk('s3')->url($s3Url);
+            try {
+                DB::transaction(function () use ($user, $request, $input) {
+                    $imageUrl = null;
+                    if (session('confirm_image_path')) {
+                        $confirmPath = session('confirm_image_path');
+                        $fullConfirmPath = storage_path('app/public/' . $confirmPath);
+                        $s3Url = Storage::disk('s3')->putFile('uploads/answer_images', new File($fullConfirmPath));
+                        $imageUrl = Storage::disk('s3')->url($s3Url);
 
-                //一時保存のデータを削除
-                Storage::disk('public')->delete(session('confirm_image_path'));
-                session()->forget('confirm_image_path');
+                        //一時保存のデータを削除
+                        Storage::disk('public')->delete(session('confirm_image_path'));
+                        session()->forget('confirm_image_path');
+                    }
+                    Answer::create([
+                        'user_id' => $user->id,
+                        'question_id' => $input['question_id'],
+                        'content' => $request->content,
+                        'image_url' => $imageUrl,
+                    ]);
+                });
+            } catch (QueryException $e) {
+                return redirect()->back()->withErrors(['error' => '回答の投稿が失敗しました']);
             }
-            Answer::create([
-                'user_id' => $user->id,
-                'question_id' => $input['question_id'],
-                'content' => $request->content,
-                'image_url' => $imageUrl,
-            ]);
         }
         return redirect()->route('question.show',['id' => $input['question_id']]);
     }
     public function setBest(Answer $answer)
     {
         $this->authorize('setBest', $answer);
-        $question = $answer->question;
-        $answer->user->update([
-            'count' => $answer->user->count + $question->reward
-        ]);
+        try {
+            DB::transaction(function () use ($answer) {
+                $question = $answer->question;
+                $answer->user->update([
+                    'count' => $answer->user->count + $question->reward
+                ]);
 
-        Answer::where('id', $answer->id)
-            ->update(['is_best' => true]);
+                $answer->update(['is_best' => true]);
 
-        if ($question->is_closed) {
-            return back();
+                if (!$question->is_closed) {
+                    $question->update(['is_closed' => true]);
+                }
+            });
+        } catch (QueryException $e) {
+            return redirect()->back()->withErrors(['error' => 'ベスアンサーの選択に失敗しました']);
         }
-
-        $question->update(['is_closed' => true]);
 
         return back();
     }

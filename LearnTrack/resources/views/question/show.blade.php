@@ -399,6 +399,11 @@
                     class="max-w-full max-h-full rounded shadow-lg">
         </div>
     </div>
+    @error('error')
+        <script>
+            alert("{{ $message }}");
+        </script>
+    @enderror
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};

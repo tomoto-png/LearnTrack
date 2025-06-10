@@ -91,10 +91,10 @@
                     </div>
                     <div class="border-t border-[var(--texy-brown)] pt-5 space-y-3 mb-2">
                         <div class="flex items-center justify-between">
-                          <p class="text-lg font-medium select-none">カテゴリーを選択</p>
-                          <button type="button" id="group-btn" class="text-lg pr-4">
-                            ▲
-                          </button>
+                            <p class="text-lg font-medium select-none">カテゴリーを選択</p>
+                            <button type="button" id="group-btn" class="text-lg pr-4">
+                                ▲
+                            </button>
                         </div>
                         <p class="text-sm">
                             ※ カテゴリーを選択しない場合は、自動的に「その他」カテゴリーが適用されます。

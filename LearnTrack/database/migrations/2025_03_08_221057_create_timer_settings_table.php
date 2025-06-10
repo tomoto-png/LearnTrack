@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('timer_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->integer('study_time')->default(25);
             $table->integer('break_time')->default(5);
             $table->boolean('auto_switch')->default(true);
             $table->boolean('sound_effect')->default(true);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

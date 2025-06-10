@@ -137,6 +137,11 @@
                 @endif
             </form>
         </div>
+        @error('error')
+            <script>
+                alert("{{ $message }}");
+            </script>
+        @enderror
     </div>
     <script>
         const inputImage = document.getElementById('image');

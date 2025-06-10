@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('progress', 5, 2)->default(0.00);
             $table->boolean('completed')->default(false);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
