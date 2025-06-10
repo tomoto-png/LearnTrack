@@ -275,7 +275,7 @@
 
                         }
                     }
-                }, 10);
+                }, 1000);
             }
 
             function startStudyTimer() {

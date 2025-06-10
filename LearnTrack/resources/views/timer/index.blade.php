@@ -229,7 +229,7 @@
                                 playSound1();
                             }
                         }
-                    }, 10);
+                    }, 1000);
 
                     $.ajax({
                         url: '/timer/start/' + $('#planSelect').val(),
@@ -320,7 +320,7 @@
                             resetIconsAndProgress();
                             loopSeconds = 0;
                         }
-                    }, 10);
+                    }, 1000);
                 } else {
                     console.warn('タイマーは既に動作中か、セッションIDがありません');
                 }
