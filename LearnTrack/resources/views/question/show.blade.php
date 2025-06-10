@@ -36,7 +36,7 @@
                 @endif
             </div>
             <div class="space-y-4">
-                <div class="flex items-center space-x-2">
+                <a href="{{ route('profile.show', $questionData->user->id) }}" class="flex items-center space-x-2">
                     @if ($questionData->user->avatar)
                         <div class="w-11 h-11 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                             <img class="w-full h-full object-cover"
@@ -52,7 +52,7 @@
                         <p>{{ $questionData->user->name }}さん</p>
                         <p class="text-sm">{{ $questionData->created_at->format('Y/m/d H:i') }}</p>
                     </div>
-                </div>
+                </a>
 
                 {{-- nl2brは/nがある時に改行する、コード内にURLがあるとpタグからaタグに変換する --}}
                 <div class="text-base text-[var(--text-main)] leading-relaxed">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="space-y-4 border-b-2 border-[var(--text-brown)] pb-4">
-                        <div class="flex items-center space-x-2">
+                        <a href="{{ route('profile.show', $bestAnswer->user->id)}}" class="flex items-center space-x-2">
                             @if ($bestAnswer->user->avatar)
                                 <div class="w-11 h-11 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                     <img class="w-full h-full object-cover"
@@ -111,7 +111,7 @@
                                 <p class="text-base">{{ $bestAnswer->user->name }}さん</p>
                                 <p class="text-sm">{{ $bestAnswer->created_at->format('Y/m/d H:i') }}</p>
                             </div>
-                        </div>
+                        </a>
                         <div class="text-base text-[var(--text-main)] leading-relaxed">
                             {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($bestAnswer->content))) !!}
                         </div>
@@ -123,7 +123,7 @@
                         @endphp
                         <div class="pl-4">
                             @if ($firstReply)
-                                <div class="flex items-center space-x-2">
+                                <a href="{{ route('profile.show',$firstReply->user->id)}}" class="flex items-center space-x-2">
                                     @if ($firstReply->user->avatar)
                                         <div class="w-8 h-8 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                             <img class="w-full h-full object-cover"
@@ -143,7 +143,7 @@
                                             @endif
                                         </p>
                                     </div>
-                                </div>
+                                </a>
                                 <div class="p-3">
                                     <div class="border-l-4 border-gray-400 pl-4 space-y-2">
                                         <p class="text-sm">{{ $firstReply->created_at->format('Y/m/d H:i') }}</p>
@@ -155,7 +155,7 @@
                             @endif
                             <div id="bestAnswer-{{ $bestAnswer->id }}" class="hidden">
                                 @foreach ($moreReplies as $reply)
-                                    <div class="flex items-center space-x-2">
+                                    <a href="{{ route('profile.show', $reply->user->id)}}" class="flex items-center space-x-2">
                                         @if ($reply->user->avatar)
                                             <div class="w-8 h-8 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                                 <img class="w-full h-full object-cover"
@@ -175,7 +175,7 @@
                                                 @endif
                                             </p>
                                         </div>
-                                    </div>
+                                    </a>
                                     <div class="p-3">
                                         <div class="border-l-4 border-gray-400 pl-4 space-y-2">
                                             <p class="text-sm">{{ $reply->created_at->format('Y/m/d H:i') }}</p>
@@ -206,7 +206,7 @@
                     <div class="space-y-4">
                         @foreach ($questionData->answers as $answer)
                             <div class="space-y-3 border-b border-[var(--text-brown)] pb-4">
-                                <div class="flex items-center space-x-2">
+                                <a href="{{ route('profile.show', $answer->user->id)}}" class="flex items-center space-x-2">
                                     @if ($answer->user->avatar)
                                         <div class="w-11 h-11 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                             <img class="w-full h-full object-cover"
@@ -222,7 +222,7 @@
                                         <p>{{ $answer->user->name }}さん</p>
                                         <p class="text-sm">{{ $answer->created_at->format('Y/m/d H:i') }}</p>
                                     </div>
-                                </div>
+                                </a>
                                 <div class="text-base text-[var(--text-main)] leading-relaxed">
                                     {!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i', '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 hover:underline">$1</a>', e($answer->content))) !!}
                                 </div>
@@ -256,7 +256,7 @@
                                 <div class="pl-4">
                                     {{-- 最初の1件だけ表示 --}}
                                     @if($firstReply)
-                                        <div class="flex items-center space-x-2">
+                                        <a href="{{ route('profile.show', $firstReply->user->id)}}" class="flex items-center space-x-2">
                                             @if ($firstReply->user->avatar)
                                                 <div class="w-8 h-8 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                                     <img class="w-full h-full object-cover"
@@ -276,7 +276,7 @@
                                                     @endif
                                                 </p>
                                             </div>
-                                        </div>
+                                        </a>
                                         <div class="p-3">
                                             <div class="border-l-4 border-gray-400 pl-4 space-y-2">
                                                 <p class="text-sm">{{ $firstReply->created_at->format('Y/m/d H:i') }}</p>
@@ -290,7 +290,7 @@
                                     {{-- 他の返信は非表示に --}}
                                     <div id="moreReplies-{{ $answer->id }}" class="hidden">
                                         @foreach($moreReplies as $reply)
-                                            <div class="flex items-center space-x-2">
+                                            <a href="{{ route('profile.show', $reply->user->id) }}" class="flex items-center space-x-2">
                                                 @if ($reply->user->avatar)
                                                     <div class="w-8 h-8 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
                                                         <img class="w-full h-full object-cover"
@@ -310,7 +310,7 @@
                                                         @endif
                                                     </p>
                                                 </div>
-                                            </div>
+                                            </a>
                                             <div class="p-3">
                                                 <div class="border-l-4 border-gray-400 pl-4 space-y-2">
                                                     <p class="text-sm">{{ $reply->created_at->format('Y/m/d H:i') }}</p>

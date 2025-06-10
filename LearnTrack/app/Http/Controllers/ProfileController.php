@@ -113,4 +113,9 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.index');
     }
+
+    public function show($id) {
+        $user = User::findOrFail($id);
+        return view('profile.show', compact('user'));
+    }
 }

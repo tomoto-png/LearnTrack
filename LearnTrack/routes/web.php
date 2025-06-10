@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     //マイページ管理
     Route::prefix("profile")->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/show/{id}', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/', [ProfileController::class, 'update'])->name('profile.update');
     });
