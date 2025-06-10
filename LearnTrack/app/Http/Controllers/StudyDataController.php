@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\StudySession;
-use App\Models\plan;
+use App\Models\Plan;
 use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
