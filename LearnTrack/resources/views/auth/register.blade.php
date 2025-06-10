@@ -15,25 +15,12 @@
         <form action="{{ route('register') }}" method="POST" class="space-y-4">
             @csrf
             <div>
-                <label for="name" class="block text-[#9f9579] font-medium">名前</label>
-                <div class="relative">
-                    <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
-                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
-                    <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="w-full mt-1 p-2 px-10 border border {{ $errors->has('name') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
-                </div>
-                @error('name')
-                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div>
                 <label for="email" class="block text-[#9f9579] font-medium">メールアドレス</label>
                 <div class="relative">
                     <img src="{{ asset('images/mail_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
                         class="absolute top-1/2 left-3 transform -translate-y-[40%] w-6 h-6">
                     <input type="email" id="email" name="email" value="{{ old('email') }}"
-                        class="w-full mt-1 p-2 px-10 border border {{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
+                        class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('email') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200">
                 </div>
                 @error('email')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>

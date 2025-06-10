@@ -46,29 +46,27 @@
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
-                                目標時間
-                            </label>
-                            <input type="number" id="target_hours" name="target_hours" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{old('description',$plan->target_hours) }}" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
-                            @error('target_hours')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
-                                優先度
-                            </label>
-                            <select name="priority" id="priority" required class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]">
-                                <option value="low" {{ old('priority', $plan->priority) == 'low' ? 'selected' : '' }}>🟢 低</option>
-                                <option value="medium" {{ old('priority', $plan->priority) == 'medium' ? 'selected' : '' }}>🟡 中</option>
-                                <option value="high" {{ old('priority', $plan->priority) == 'high' ? 'selected' : '' }}>🔴 高</option>
-                            </select>
-                            @error('priority')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <div>
+                        <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
+                            目標時間
+                        </label>
+                        <input type="number" id="target_hours" name="target_hours" class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{old('description',$plan->target_hours) }}" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
+                        @error('target_hours')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
+                            優先度
+                        </label>
+                        <select name="priority" id="priority" required class="w-44 p-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]">
+                            <option value="low" {{ old('priority', $plan->priority) == 'low' ? 'selected' : '' }}>🟢 低</option>
+                            <option value="medium" {{ old('priority', $plan->priority) == 'medium' ? 'selected' : '' }}>🟡 中</option>
+                            <option value="high" {{ old('priority', $plan->priority) == 'high' ? 'selected' : '' }}>🔴 高</option>
+                        </select>
+                        @error('priority')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <div class="flex justify-end space-x-4 mt-5">

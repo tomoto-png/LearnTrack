@@ -69,6 +69,10 @@ class QuestionController extends Controller
         }, 'answers.user', 'answers.answerReply.user','category'])
         ->find($id);
 
+        if (!$questionData) {
+            abort(404, '質問が見つかりませんでした');
+        }
+
         //受付時間の処理
         if ($questionData->is_closed === 1) {
             // 非公開なら受付終了

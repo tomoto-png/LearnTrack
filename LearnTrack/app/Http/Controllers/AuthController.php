@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -17,11 +18,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed'
         ],[
-            'name.required' => '名前を入力してください！',
             'email.required' => 'メールアドレスを入力してください！',
             'email.email' => '正しいメールアドレスの形式で入力してください!',
             'email.unique' => 'このメールアドレスは既に登録されています！',
@@ -29,8 +28,13 @@ class AuthController extends Controller
             'password.min' => 'パスワードは8文字以上である必要があります。',
             'password.confirmed' => 'パスワードが一致しません。'
         ]);
+
+        do {
+            $name = 'user_' . Str::random(8);
+        } while (User::where('name', $name)->exists());//(条件が true);の時に再度生成する
+
         User::create([
-            'name' => $request->name,
+            'name' => $name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

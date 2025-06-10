@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>検索</title>
     <style>
         :root {
@@ -19,7 +20,7 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)]">
-    <div class="fixed inset-y-0 left-0 z-50 hidden lg:block">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 hidden lg:block">
         @include('components.sidebar')
     </div>
     <div id="mainContent" class="flex-1 p-4 mt-4 sm:p-6 sm:mt-6 lg:ml-72">
@@ -101,5 +102,11 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("menuButton").addEventListener("click", function() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("hidden");
+        });
+    </script>
 </body>
 </html>

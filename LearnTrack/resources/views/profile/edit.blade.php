@@ -27,9 +27,9 @@
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
-                <div class="space-y-3 mt-2 border-b border-[var(--texy-brown)] pb-3">
+                <div class="space-y-3 mt-2 border-b border-[var(--texy-brown)] pb-4">
                     <div class="flex justify-center">
-                        <div class="bg-transparent relative w-36 h-36 border border-dashed border-gray-300 rounded-full">
+                        <div class="bg-transparent relative w-32 h-32 border border-dashed border-gray-300 rounded-full">
                             <div id="imagePreview" class="absolute inset-0 items-center justify-center hidden z-10">
                                 <img id="previewImage" src="" alt="プレビュー画像" class="w-full h-full object-cover rounded-full shadow-md cursor-pointer">
                             </div>
@@ -49,14 +49,73 @@
                         <label for="name" class="block text-base font-semibold mb-2">
                             名前
                         </label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="計画名を入力" required>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{ old('name', $user->name ?? '') }}" placeholder="20文字以内で入力してください" required>
+                        @error('name')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="gender" class="block text-base font-semibold mb-2">
+                            性別
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="male" class="accent-[var(--accent-color)]"
+                                    {{ old('gender', $user->gender) === 'male' ? 'checked' : '' }}>
+                                <span class="ml-2">男性</span>
+                            </label>
+
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="female" class="accent-[var(--accent-color)]"
+                                    {{ old('gender', $user->gender) === 'female' ? 'checked' : '' }}>
+                                <span class="ml-2">女性</span>
+                            </label>
+
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="other" class="accent-[var(--accent-color)]"
+                                    {{ old('gender', $user->gender) === 'other' ? 'checked' : '' }}>
+                                <span class="ml-2">その他</span>
+                            </label>
+
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="" class="accent-[var(--accent-color)]"
+                                    {{ empty(old('gender', $user->gender)) ? 'checked' : '' }}>
+                                <span class="ml-2">非公開</span>
+                            </label>
+
+                            @error('gender')
+                                <p>{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div>
+                        <label for="age" class="block text-base font-semibold mb-2">
+                            年齢
+                        </label>
+                        <select id="age" name="age" class="p-2 rounded-md">
+                            <option value="" {{ empty($user->age) ? 'selected' : '' }}>非公開</option>
+                            <option value="under_10" {{ $user->age === 'under_10' ? 'selected' : '' }}>10歳未満（小学生以下）</option>
+                            <option value="10s" {{ $user->age === '10s' ? 'selected' : '' }}>10代（中高生など）</option>
+                            <option value="20s" {{ $user->age === '20s' ? 'selected' : '' }}>20代（大学生・社会人など）</option>
+                            <option value="30_and_over" {{ $user->age === '30_and_over' ? 'selected' : '' }}>30歳以上</option>
+                        </select>
+                        @error('age')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="occupation" class="block text-base font-semibold mb-2">
+                            職業
+                        </label>
+                        <input type="text" id="occupation" name="occupation" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"maxlength="20" placeholder="20文字以内で入力してください" value="{{ old('occupation', $user->occupation ?? '') }}">
                     </div>
 
                     <div>
                         <label for="bio" class="block text-base font-semibold mb-2">
                             自己紹介
                         </label>
-                        <textarea id="bio" name="bio" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="自己紹介を入力（任意）" rows="4"></textarea>
+                        <textarea id="bio" name="bio" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="500文字以内で入力してください（任意）" rows="4">{{ $user->bio ?? ''}}</textarea>
                         @error('bio')
                             <p>{{ $message }}</p>
                         @enderror

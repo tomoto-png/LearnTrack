@@ -41,23 +41,21 @@
                         <textarea id="description" name="description" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" placeholder="計画の詳細を入力（任意）" rows="4"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
-                                目標時間
-                            </label>
-                            <input type="number" id="target_hours" name="target_hours" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
-                        </div>
-                        <div>
-                            <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
-                                優先度
-                            </label>
-                            <select name="priority" id="priority" required class="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
-                                <option value="low" class="text-green-600">🟢 低</option>
-                                <option value="medium" class="text-yellow-600">🟡 中</option>
-                                <option value="high" class="text-red-600">🔴 高</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
+                            目標時間
+                        </label>
+                        <input type="number" id="target_hours" name="target_hours" class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
+                    </div>
+                    <div>
+                        <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
+                            優先度
+                        </label>
+                        <select name="priority" id="priority" required class="mt-2 w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <option value="low" class="text-green-600">🟢 低</option>
+                            <option value="medium" class="text-yellow-600">🟡 中</option>
+                            <option value="high" class="text-red-600">🔴 高</option>
+                        </select>
                     </div>
                 </div>
                 <div class="flex justify-end space-x-4 mt-5">

@@ -25,7 +25,7 @@
         {{-- 質問 --}}
         <div class="py-5 px-8 bg-[var(--bg-light-gray)] rounded-md">
             <div class="flex items-center text-base font-semibold gap-3 mb-3 border-b border-[var(--text-brown)] pb-3">
-                <a href="{{ url()->previous()}}">
+                <a href="{{ route('question.index') }}">
                     <span class="font-bold py-8 text-2xl">&larr;</span>
                 </a>
                 <img src="{{ asset('images/alarm_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
