@@ -52,69 +52,74 @@
                 @endforeach
             </select>
         </div>
-        <div class="w-full px-4 py-6 max-w-4xl mx-auto flex items-center space-x-6">
-            <div class="flex-1">
-                <div class="relative w-full flex items-center">
-                    <!-- 種 アイコン -->
-                    <div id="seed-icon" class="flex flex-col items-center">
-                        <div id="seed-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
-                            <img src="{{ asset('images/seed.svg') }}" alt="種" class="w-4 h-4">
-                        </div>
-                    </div>
+        <div class="w-full px-2 md:px-4 py-4 md:py-6 max-w-full md:max-w-4xl mx-auto flex items-center space-x-2 md:space-x-6 overflow-x-auto">
+            <div class="flex-1 min-w-0">
+                <div class="w-full flex items-center justify-between gap-1 md:gap-2">
 
-                    <!-- 進行ライン -->
-                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
-                        <div id="progress-line" class="h-2 rounded-full"></div>
+                <!-- Seed Icon -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
+                    <img src="{{ asset('images/seed.svg') }}" alt="種" class="w-3.5 h-3.5 md:w-4 md:h-4">
                     </div>
+                </div>
 
-                    <!-- 芽 アイコン -->
-                    <div id="sprout-icon" class="flex flex-col items-center">
-                        <div id="sprout-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
-                            <img src="{{ asset('images/sprout_ec.png') }}" alt="芽" class="w-6 h-6">
-                        </div>
+                <div class="flex-1 bg-[var(--white)] rounded-full h-1.5 md:h-2">
+                    <div id="progress-line" class="h-1.5 md:h-2 rounded-full"></div>
+                </div>
+
+                <!-- Sprout Icon -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
+                    <img src="{{ asset('images/sprout_ec.png') }}" alt="芽" class="w-5 h-5 md:w-6 md:h-6">
                     </div>
+                </div>
 
-                    <!-- 進行ライン -->
-                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
-                        <div id="progress-line2" class="h-2 rounded-full"></div>
+                <div class="flex-1 bg-[var(--white)] rounded-full h-1.5 md:h-2">
+                    <div id="progress-line2" class="h-1.5 md:h-2 rounded-full"></div>
+                </div>
+
+                <!-- Flower Icon -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
+                    <img src="{{ asset('images/—Pngtree—flower hand painted small tomato_7102313.png') }}" alt="花" class="w-5 h-5 md:w-6 md:h-6">
                     </div>
+                </div>
 
-                    <div id="flower-icon" class="flex flex-col items-center">
-                        <div id="flower-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
-                            <img src="{{ asset('images/—Pngtree—flower hand painted small tomato_7102313.png') }}" alt="芽" class="w-6 h-6">
-                        </div>
-                    </div>
+                <div class="flex-1 bg-[var(--white)] rounded-full h-1.5 md:h-2">
+                    <div id="progress-line3" class="h-1.5 md:h-2 rounded-full"></div>
+                </div>
 
-                    <div class="flex-1 bg-[var(--white)] mx-2 rounded-full h-2">
-                        <div id="progress-line3" class="h-2 rounded-full"></div>
-                    </div>
-
-                    <!-- トマト アイコン -->
-                    <div id="tomato-icon" class="flex flex-col items-center">
-                        <div id="tomato-icon-container" class="w-10 h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
-                            <img src="{{ asset('images/icons8-トマト-48.png') }}" alt="トマト" class="w-6 h-6 opacity-80">
-                        </div>
+                <!-- Tomato Icon -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex justify-center items-center border-4 border-[var(--white)]">
+                    <img src="{{ asset('images/icons8-トマト-48.png') }}" alt="トマト" class="w-5 h-5 md:w-6 md:h-6 opacity-80">
                     </div>
                 </div>
             </div>
-            <div class="flex items-center space-x-1">
-                <img src="{{ asset('images/icons8-トマト-48.png') }}" alt="トマト" class="w-7 h-7">
-                <p class="text-lg font-semibold">
-                    <span>&#x2715;</span>
-                    <span id="tomatoCountDisplay">0</span>
-                </p>
-            </div>
         </div>
-        <div class="relative w-[470px] h-[470px] mb-8 max-w-2xl mx-auto flex justify-center items-center">
+
+        <!-- Tomato Count -->
+        <div class="flex items-center space-x-1 shrink-0">
+            <img src="{{ asset('images/icons8-トマト-48.png') }}" alt="トマト" class="w-6 h-6 md:w-7 md:h-7">
+            <p class="text-base md:text-lg font-semibold">
+            <span>&#x2715;</span>
+            <span id="tomatoCountDisplay">0</span>
+            </p>
+        </div>
+        </div>
+        <!-- タイマー本体 -->
+        <div class="relative w-full aspect-square max-w-[90vw] sm:max-w-[400px] md:max-w-[470px] mb-8 mx-auto flex justify-center items-center">
+            <!-- 外円 -->
             <svg class="w-full h-full absolute" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" stroke="#e1e1e4" stroke-width="2" fill="none" />
             </svg>
 
+            <!-- プログレス円 -->
             <svg class="absolute top-0 left-0 w-full h-full rotate-[-90deg]" viewBox="0 0 100 100">
                 <circle id="progress-circle" cx="50" cy="50" r="45"
-                    stroke="url(#progressGradient)" stroke-width="2" fill="none"
-                    stroke-dasharray="282.74" stroke-dashoffset="282.74"
-                    stroke-linecap="round"/>
+                        stroke="url(#progressGradient)" stroke-width="2" fill="none"
+                        stroke-dasharray="282.74" stroke-dashoffset="282.74"
+                        stroke-linecap="round"/>
                 <defs>
                     <linearGradient id="studyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#ff8c00"/>
@@ -124,33 +129,37 @@
                         <stop offset="0%" stop-color="#32CD32"/>
                         <stop offset="100%" stop-color="#008000"/>
                     </linearGradient>
+                    <linearGradient id="progressGradient" xlink:href="#studyGradient" />
                 </defs>
             </svg>
-            <div class="relative flex flex-col justify-center items-center">
-                <span id="timer" class="text-7xl numbers font-semibold">
+
+            <!-- タイマー表示 -->
+            <div class="relative flex flex-col justify-center items-center text-center">
+                <span id="timer" class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl numbers font-semibold">
                     {{ str_pad(Auth::user()->timerSetting->study_time ?? 25, 2, '0', STR_PAD_LEFT) }}:00
                 </span>
-                <p class="text-base font-medium mt-2">
+                <p class="text-sm sm:text-base font-medium mt-2">
                     <span id="pomodoroCountDisplay">0</span>ポモドーロ
                 </p>
-                <p id="timer-status" class="text-xl absolute top-28">
+                <p id="timer-status" class="text-base sm:text-lg md:text-xl absolute top-[7.5rem]">
                     未開始
                 </p>
             </div>
         </div>
 
-        <div class="flex justify-center gap-4 z-10">
+        <!-- コントロールボタン -->
+        <div class="flex justify-center gap-3 flex-wrap px-4">
             <button id="start-button">
-                <img src="{{ asset(('images/play_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg')) }}" class="w-16 h-16">
+                <img src="{{ asset('images/play_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-12 sm:w-14 md:w-16">
             </button>
             <button id="restart-button" style="display: none;">
-                <img src="{{ asset(('images/play_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg')) }}" class="w-16 h-16">
+                <img src="{{ asset('images/play_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-12 sm:w-14 md:w-16">
             </button>
             <button id="stop-button" style="display: none;">
-                <img src="{{ asset(('images/pause_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg')) }}" class="w-16 h-16">
+                <img src="{{ asset('images/pause_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-12 sm:w-14 md:w-16">
             </button>
             <button id="reset-button" style="display: none;">
-                <img src="{{ asset('images/replay_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-16 h-16">
+                <img src="{{ asset('images/replay_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-12 sm:w-14 md:w-16">
             </button>
         </div>
         <audio id="sound1" src="{{ asset('sounds/決定ボタンを押す5.mp3') }}" preload="auto"></audio>

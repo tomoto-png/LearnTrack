@@ -35,15 +35,16 @@
                 </button>
             </div>
         </header>
+
         <div class="bg-[var(--bg-light-gray)] p-8 rounded-lg shadow-lg">
             <div class="flex flex-col sm:flex-row sm:items-center w-full sm:justify-between gap-2 sm:gap-0">
-                <form action="{{ route('plan.index') }}" method="GET" class="flex items-center space-x-2">
+                <form action="{{ route('plan.index') }}" method="GET">
                     <div class="flex items-center rounded-lg border-2 border-gray-300 overflow-hidden">
-                        <div class="relative w-40 sm:w-52 md:w-64 lg:w-80">
+                        <div class="w-full md:w-64 lg:w-80">
                             <input type="text" name="search" placeholder="計画名で検索" value="{{ request('search') }}"
                                 class="px-2 md:px-4 h-8 md:h-9 text-sm sm:text-base focus:outline-none w-full">
                             @if(request('search'))
-                            <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
+                            <button type="button" class="right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
                                 onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -60,17 +61,17 @@
                             <option value="priority_high" {{ request('sort') === 'priority_high' ? 'selected' : '' }}>優先度が高い順</option>
                             <option value="priority_low" {{ request('sort') === 'priority_low' ? 'selected' : '' }}>優先度が低い順</option>
                         </select>
+                        <button
+                            type="submit"
+                            class="flex justify-center items-center min-w-[60px] bg-[var(--button-bg)] px-1 sm:px-2 h-8 md:h-9 hover:bg-[var(--button-hover)] transition-shadow shadow"
+                        >
+                            <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="" class="h-5 w-5">
+                        </button>
                     </div>
-                    <button
-                        type="submit"
-                        class="flex justify-center items-center min-w-[60px] bg-[var(--button-bg)] px-1 sm:px-2 h-8 md:h-9 rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow"
-                    >
-                        <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="" class="h-5 w-5 sm:h-7 sm:w-7">
-                    </button>
                 </form>
 
                 <a href="{{ route('plan.create') }}"
-                    class="flex items-center justify-center bg-[var(--button-bg)] text-[var(--white)] px-3 md:px-4 h-8 md:h-9 text-sm sm:text-base rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow">
+                    class="flex items-center justify-center bg-[var(--button-bg)] text-[var(--white)] px-3 md:px-4 h-8 md:h-9 text-sm sm:text-base rounded-md hover:bg-[var(--button-hover)] transition-shadow whitespace-nowrap">
                     新規作成
                 </a>
             </div>

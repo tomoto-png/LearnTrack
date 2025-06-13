@@ -69,27 +69,27 @@
                 <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
             </button>
         </header>
-        <div class="flex flex-col items-center space-y-6">
-            <div class="grid grid-cols-3 items-center w-full max-w-md mx-auto">
-                {{-- justify-start で左寄せ --}}
+        <div class="flex flex-col w-full items-center space-y-6 px-4">
+            {{-- 日付切り替え --}}
+            <div class="grid grid-cols-3 items-center justify-center max-w-xl w-full">
                 <div class="flex justify-start">
                     <button id="prevDateButton">
                         <img src="{{ asset('images/arrow_back_ios_new_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
                     </button>
                 </div>
-                {{-- text-center でテキストを中央寄せ --}}
                 <div class="text-center">
-                    <h1 id="selectedDateLabel" class="text-xl font-bold">今日</h1>
+                    <h1 id="selectedDateLabel" class="text-xl font-bold whitespace-nowrap">今日</h1>
                 </div>
-                {{-- justify-end で右寄せ --}}
                 <div class="flex justify-end">
                     <button id="nextDateButton">
                         <img src="{{ asset('images/arrow_forward_ios_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
                     </button>
                 </div>
             </div>
-            <!-- グラフタイプ切り替え -->
-            <div class="flex gap-3">
+
+            {{-- グラフタイプ & 形式切り替え --}}
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-center">
+                {{-- グラフタイプ（日/月/年） --}}
                 <div id="graph-type-switch" class="relative inline-flex bg-gray-100 rounded-full p-1 shadow-inner">
                     <span id="slider" class="absolute left-0 top-0 w-1/3 h-full bg-[var(--button-bg)] rounded-full shadow transition-all duration-300"></span>
                     <button data-type="day" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-[var(--white)]">日</button>
@@ -97,23 +97,24 @@
                     <button data-type="year" class="tab relative z-10 w-20 text-center py-2 text-sm font-medium text-gray-600">年</button>
                 </div>
 
-                <!-- グラフ形式切り替え -->
-                <div id="chart-type" class="flex justify-center gap-3 w-full max-w-xs">
-                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold shadow hover:bg-[var(--button-hover)]">円グラフ</button>
-                    <button data-type="bar" class="tab px-6 py-2 rounded-lg bg-[var(--white)] font-semibold shadow hover:bg-gray-100">棒グラフ</button>
+                {{-- グラフ形式（円/棒） --}}
+                <div id="chart-type" class="flex flex-wrap justify-center gap-3">
+                    <button data-type="pie" class="tab px-6 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold shadow hover:bg-[var(--button-hover)] whitespace-nowrap">円グラフ</button>
+                    <button data-type="bar" class="tab px-6 py-2 rounded-lg bg-[var(--white)] font-semibold shadow hover:bg-gray-100 whitespace-nowrap">棒グラフ</button>
                 </div>
             </div>
 
-            <!-- グラフ表示 -->
-            <div class="flex flex-col justify-center items-center w-full max-w-[1000px] aspect-[3/2] mx-auto">
-                <canvas id="studyPieChart"></canvas>
-                <p id="chartMessage" class="text-center text-xl"></p>
+            {{-- グラフ表示 --}}
+            <div class="flex flex-col justify-center items-center w-full max-w-[700px] mx-auto px-2">
+                <div class="min-w-[500px] sm:w-full h-full">
+                    <canvas id="studyPieChart" class="w-full h-full"></canvas>
+                </div>
+                <p id="chartMessage" class="text-center text-lg sm:text-xl mt-2"></p>
             </div>
         </div>
 
-
-        <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-40 hidden">
-            <div id="calendarContainer" class="bg-[var(--white)] p-6 rounded-lg shadow-lg w-full space-y-1 max-w-3xl">
+        <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50 hidden px-4">
+            <div id="calendarContainer" class="bg-[var(--white)] p-4 rounded-lg shadow-lg w-full max-w-3xl space-y-3 overflow-y-auto">
                 <div id="calendar"></div>
                 <div class="flex space-x-1">
                     <span id="selectedDate" class="text-lg">----</span>

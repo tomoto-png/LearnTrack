@@ -34,33 +34,45 @@
             </div>
         </header>
         <div class="bg-[var(--bg-light-gray)] p-8 rounded-lg">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <form action="{{ route('question.index') }}" method="GET" class="flex-grow flex gap-4">
-                        <div class="flex rounded-md overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 w-full">
+                <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+                    <form action="{{ route('question.index') }}" method="GET" class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                        <div class="flex border rounded-md overflow-hidden ">
                             <input type="text" name="keyword" placeholder="キーワードを入力" value="{{ request('keyword') }}"
-                                class="border px-2 md:px-4 h-8 md:h-9 w-40 sm:w-52 md:w-64 lg:w-80"  />
-                            <button type="submit" class="bg-[var(--button-bg)] text-[var(--white)] px-3 h-8 md:h-9 hover:bg-[var(--button-hover)]">
-                                <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="" class="h-7 w-7">
+                                class="px-2 md:px-4 h-9 w-full sm:w-64 lg:w-80 focus:outline-none" />
+                            <button type="submit"
+                                class="bg-[var(--button-bg)] text-[var(--white)] px-3 h-9 hover:bg-[var(--button-hover)]">
+                                <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt=""
+                                    class="h-6 w-6">
                             </button>
                         </div>
-                        <select name="sort" onchange="this.form.submit()" class="rounded-md px-3 py-2">
-                            <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>質問日時の新しい順</option>
-                            <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>質問日時の古い順</option>
-                            <option value="open" {{ request('sort') === 'open' ? 'selected' : '' }}>回答受付中</option>
-                            <option value="solved" {{ request('sort') === 'solved' ? 'selected' : '' }}>解決済み</option>
-                            <option value="fewest_answers" {{ request('sort') === 'fewest_answers' ? 'selected' : '' }}>回答数の少ない順</option>
-                            <option value="most_answers" {{ request('sort') === 'most_answers' ? 'selected' : '' }}>回答数の多い順</option>
-                            <option value="least_reward" {{ request('sort') === 'least_reward' ? 'selected' : '' }}>お礼の少ない順</option>
-                            <option value="most_reward" {{ request('sort') === 'most_reward' ? 'selected' : '' }}>お礼の多い順</option>
-                        </select>
+                        <div class="flex items-center justify-between gap-4">
+                            <select name="sort" onchange="this.form.submit()"
+                                class="h-9 border rounded-md px-2 text-sm focus:outline-none w-auto">
+                                <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>質問日時の新しい順</option>
+                                <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>質問日時の古い順</option>
+                                <option value="open" {{ request('sort') === 'open' ? 'selected' : '' }}>回答受付中</option>
+                                <option value="solved" {{ request('sort') === 'solved' ? 'selected' : '' }}>解決済み</option>
+                                <option value="fewest_answers" {{ request('sort') === 'fewest_answers' ? 'selected' : '' }}>回答数の少ない順</option>
+                                <option value="most_answers" {{ request('sort') === 'most_answers' ? 'selected' : '' }}>回答数の多い順</option>
+                                <option value="least_reward" {{ request('sort') === 'least_reward' ? 'selected' : '' }}>お礼の少ない順</option>
+                                <option value="most_reward" {{ request('sort') === 'most_reward' ? 'selected' : '' }}>お礼の多い順</option>
+                            </select>
+                            <a href="{{ route('search.category') }}"
+                                class="text-base md:text-lg hover:border-b-2 border-[var(--text-brown)] pb-1 whitespace-nowrap">
+                                カテゴリー
+                            </a>
+                        </div>
                     </form>
-                    <a href="{{ route('search.category') }}" class="text-lg hover:border-b-2 border-[var(--text-brown)] pb-1">カテゴリー</a>
                 </div>
-                <a href="{{ route('question.create') }}"
-                    class="flex items-center justify-center bg-[var(--button-bg)] text-[var(--white)] px-3 md:px-4 h-8 md:h-9 text-sm sm:text-base rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow">
-                    質問する
-                </a>
+
+                {{-- 質問するボタン --}}
+                <div class="w-full md:w-auto">
+                    <a href="{{ route('question.create') }}"
+                        class="flex items-center justify-center bg-[var(--button-bg)] text-[var(--white)] px-4 h-9 text-sm sm:text-base rounded-md hover:bg-[var(--button-hover)] transition-shadow shadow w-full md:w-auto whitespace-nowrap">
+                        質問する
+                    </a>
+                </div>
             </div>
             <div class="mt-6">
                 <!-- 質問一覧 -->
