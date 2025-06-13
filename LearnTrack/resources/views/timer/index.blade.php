@@ -41,7 +41,7 @@
             </button>
         </header>
 
-        <div class="bg-[var(--bg-light-gray)] p-8 rounded-lg shadow-lg">
+        <div class="flex items-center mb-6 max-w-2xl mx-auto space-x-10 sm:space-x-40">
             <label for="planSelect" class="block text-lg font-medium">学習プラン</label>
             <select id="planSelect" class="flex-1 w-full p-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
                 <option value="" selected>選択しない</option>

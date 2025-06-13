@@ -106,7 +106,7 @@
 
             {{-- グラフ表示 --}}
             <div class="flex flex-col justify-center items-center w-full max-w-[700px] mx-auto px-2">
-                <div class="min-w-[500px] sm:w-full h-full">
+                <div class="min-w-[500px] min-h-[500px] sm:w-full sm:h-full">
                     <canvas id="studyPieChart" class="w-full h-full"></canvas>
                 </div>
                 <p id="chartMessage" class="text-center text-lg sm:text-xl mt-2"></p>
