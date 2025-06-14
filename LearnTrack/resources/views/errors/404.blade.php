@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>403 Forbidden</title>
+    <title>404 Not Found</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -20,12 +20,12 @@
     <div class="px-6 max-w-xl w-full">
         <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] rounded-xl shadow-md text-center space-y-6">
             <div>
-                <h1 class="text-2xl font-bold">403</h1>
-                <h1 class="text-2xl font-bold">Forbidden</h1>
+                <h1 class="text-2xl font-bold">404</h1>
+                <h1 class="text-2xl font-bold">Not Found</h1>
             </div>
             <div>
                 <p class="text-xl">申し訳ありません！</p>
-                <p class="text-xl">アクセスしようとしたページは表示できませんでした！</p>
+                <p class="text-xl">アクセスしようとしたページは見つかりませんでした！</p>
             </div>
             <div>
                 <a href="{{ route('profile.index') }}" class="px-4 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold hover:bg-[var(--button-hover)] transition">マイページに戻る</a>
