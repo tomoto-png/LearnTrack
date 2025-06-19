@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\CategoryGroup;
+use App\Models\Category;
 
 class SearchController extends Controller
 {
@@ -61,13 +62,13 @@ class SearchController extends Controller
 
         $questions = $query->latest()->paginate(5)->withQueryString();;
 
-        // 最初の質問からカテゴリ・グループ名取得
-        $firstQuestion = $questions->first();
-        $categoryName = $firstQuestion ? optional($firstQuestion->category)->name : null;
-        $group = $firstQuestion ? optional($firstQuestion->category)->group : null;
-
-
-        return view('search.index', compact('questions', 'categoryName', 'group'));
+        $category = Category::with('group')->find($categoryId);
+        if ($groupId) {
+            $group = CategoryGroup::find($groupId);
+        } elseif ($category) {
+            $group = $category->group;
+        }
+        return view('search.index', compact('questions', 'category', 'group'));
     }
     public function category()
     {

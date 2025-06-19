@@ -1,4 +1,4 @@
-<aside class="flex flex-col w-72 bg-[var(--bg-light-gray)] shadow-lg min-h-screen p-6">
+<aside class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50 hidden md:flex flex-col">
     <div class="ml-4">
         <div class="mb-10 mt-5 flex items-center space-x-2">
             <img src="{{ asset('images/tomototomato.png') }}" class="w-[25px] h-[28px] object-cover">

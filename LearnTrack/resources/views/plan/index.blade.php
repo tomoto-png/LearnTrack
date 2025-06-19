@@ -40,18 +40,18 @@
             <div class="flex flex-col sm:flex-row sm:items-center w-full sm:justify-between gap-2 sm:gap-0">
                 <form action="{{ route('plan.index') }}" method="GET">
                     <div class="flex items-center rounded-lg border-2 border-gray-300 overflow-hidden">
-                        <div class="w-full md:w-64 lg:w-80">
+                        <div class="relative w-full md:w-64 lg:w-80">
                             <input type="text" name="search" placeholder="計画名で検索" value="{{ request('search') }}"
                                 class="px-2 md:px-4 h-8 md:h-9 text-sm sm:text-base focus:outline-none w-full">
                             @if(request('search'))
-                            <button type="button" class="right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
-                                onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                                <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
+                                    onclick="document.querySelector('input[name=\'search\']').value=''; this.form.submit();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
                             @endif
                         </div>
                         <div class="h-8 md:h-9 w-[2px] bg-gray-300"></div>

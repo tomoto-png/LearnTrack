@@ -26,13 +26,13 @@
 </style>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex items-center justify-center">
     <div class="px-6 max-w-xl lg:max-w-3xl w-full">
-        <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] h-[570px] rounded-xl shadow-md">
+        <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] h-[600px] rounded-xl shadow-md">
             <form id="questionForm" action="{{ route('replie.store') }}" method="POST">
                 @csrf
                 @if ($mode === 'confirm')
                     <div>
                         <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">返信確認</h1>
-                        <div class="space-y-3 mt-2 h-[415px] overflow-y-auto border-b border-[var(--texy-brown)] pb-3 px-1">
+                        <div class="space-y-3 mt-2 h-[440px] overflow-y-auto border-b border-[var(--texy-brown)] pb-3 px-1">
                             <div class="flex items-center space-x-2">
                                 @if ($user->avatar)
                                     <div class="w-12 h-12 rounded-full border border-[var(--accent-color)] shadow overflow-hidden">
@@ -73,7 +73,7 @@
                 @elseif ($mode === 'input')
                     <div>
                         <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">返信投稿</h1>
-                        <div class="space-y-3 mt-2 h-[415px] overflow-y-auto border-b border-[var(--texy-brown)] pb-3 px-1">
+                        <div class="space-y-3 mt-2 h-[440px] overflow-y-auto border-b border-[var(--texy-brown)] pb-3 px-1">
                             <div>
                                 <p class="block text-base font-semibold mb-2">回答内容</p>
                                 <div class="p-1 border-l-4 border-gray-400 pl-4 space-y-1">
@@ -86,6 +86,9 @@
                                 <textarea name="content" id="content"
                                     class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none h-40 sm:h-46 lg:h-52 focus:ring-2 focus:ring-[var(--accent-color)]"
                                     placeholder="5文字〜2000文字で入力してください。">{{ old('content', $replieInput->content ?? '')}}</textarea>
+                                <p class="text-sm mb-2">
+                                    ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
+                                </p>
                                 @error('content')
                                     <p class="text-red-500">{{ $message }}</p>
                                 @enderror

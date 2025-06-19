@@ -109,7 +109,7 @@ class ProfileController extends Controller
             'occupation.max' => '職業は20文字以内で入力してください！'
         ]);
         try {
-            DB::transaction(function () {
+            DB::transaction(function () use ($request, $user) {
                 if ($request->hasFile('avatar')) {
                     $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
                     $avatar = Storage::disk('s3')->url($s3Path);

@@ -105,11 +105,16 @@
             </div>
 
             {{-- グラフ表示 --}}
-            <div class="flex flex-col justify-center items-center w-full max-w-[700px] mx-auto px-2">
-                <div class="min-w-[500px] min-h-[500px] sm:w-full sm:h-full">
-                    <canvas id="studyPieChart" class="w-full h-full"></canvas>
+            <div class="flex flex-col items-center w-full px-2">
+                <!-- グラフ領域 -->
+                <div id="chartWrapper" class="relative w-full max-w-[1000px] min-w-[430px] h-[450px] sm:h-[700px]">
+                    <canvas id="studyPieChart" class="absolute inset-0 w-full h-full"></canvas>
                 </div>
-                <p id="chartMessage" class="text-center text-lg sm:text-xl mt-2"></p>
+
+                <!-- メッセージ -->
+                <p id="chartMessage" class="text-center text-base sm:text-lg md:text-xl mt-6">
+                    学習データがありません
+                </p>
             </div>
         </div>
 
@@ -141,7 +146,7 @@
 
         function createChart(labels, data) {
             const ctx = document.getElementById('studyPieChart').getContext('2d');
-            const chartCanvas = document.getElementById('studyPieChart');
+            const chartWrapper = document.getElementById('chartWrapper');
             const chartMessage = document.getElementById('chartMessage');
 
             if (chart) {
@@ -149,12 +154,11 @@
             }
 
             if (labels.length === 0 || data.length === 0) {
-                chartCanvas.style.display = 'none'; //グラフのデザインを適用しない
-                chartMessage.textContent = '学習データがありません';
-                return;
+                chartWrapper.style.display = 'none';  // グラフ全体の親を非表示にする
+                chartMessage.style.display = 'flex';  // メッセージを表示（flexに戻す）
             } else {
-                chartCanvas.style.display = 'block'; //グラフのデザインを適用する
-                chartMessage.textContent = ''; // メッセージを消す
+                chartWrapper.style.display = 'flex';  // グラフ表示の親を表示
+                chartMessage.style.display = 'none'; // メッセージ非表示
             }
             //グラフの色を決まり部分
             const predefinedColors = [

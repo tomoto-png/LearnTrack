@@ -38,8 +38,20 @@
                 <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
                     <form action="{{ route('question.index') }}" method="GET" class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                         <div class="flex border rounded-md overflow-hidden ">
-                            <input type="text" name="keyword" placeholder="キーワードを入力" value="{{ request('keyword') }}"
-                                class="px-2 md:px-4 h-9 w-full sm:w-64 lg:w-80 focus:outline-none" />
+                            <div class="relative w-full sm:w-64 lg:w-80">
+                                <input type="text" name="keyword" placeholder="キーワードを入力" value="{{ request('keyword') }}"
+                                    class="px-2 md:px-4 h-9 w-full focus:outline-none"/>
+                                @if(request('keyword'))
+                                    <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-howaitp"
+                                        onclick="document.querySelector('input[name=\'keyword\']').value=''; this.form.submit();">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </div>
                             <button type="submit"
                                 class="bg-[var(--button-bg)] text-[var(--white)] px-3 h-9 hover:bg-[var(--button-hover)]">
                                 <img src="{{ asset('images/search_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt=""

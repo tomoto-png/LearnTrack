@@ -63,6 +63,12 @@
                                 カテゴリー
                             </a>
                         </div>
+                        @if(request('group'))
+                            <input type="hidden" name="group" value="{{ request('group') }}">
+                        @endif
+                        @if(request('category'))
+                            <input type="hidden" name="category" value="{{ request('category') }}">
+                        @endif
                     </form>
                 </div>
 
@@ -76,17 +82,19 @@
             </div>
             <div class="mt-6">
                 @if ($questions->isNotEmpty())
-                    @if ($group)
-                        <p class="text-lg font-medium mb-3">
-                            <a href="{{ route('search.index', ['group' => $group->id]) }}" class="hover:underline">
-                                {{ $group->name }}
-                            </a>
-                            <span class="mx-1">/</span>
-                            <span>{{ $categoryName }}</span>
-                        </p>
-                    @elseif ($categoryName)
-                        <p class="text-lg font-medium">{{ $categoryName }}</p>
-                    @endif
+                    <div class="mb-3">
+                        @if ($category)
+                            <div class="flex">
+                                <a href="{{ route('search.index', ['group' => $group->id]) }}" class="text-lg font-medium hover:underline">
+                                    {{ $group->name }}
+                                </a>
+                                <span class="mx-1">/</span>
+                                <p class="text-lg font-medium">{{ $category->name }}</p>
+                            </div>
+                        @else
+                            <p class="text-lg font-medium">{{ $group->name }}</p>
+                        @endif
+                        </div>
                     @foreach ($questions as $question)
                         <a href="{{ route('question.show', $question->id) }}"
                             class="block bg-white rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">
