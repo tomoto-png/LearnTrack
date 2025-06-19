@@ -20,9 +20,12 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)]">
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 hidden lg:block">
+    <aside id="sidebar"
+        class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50
+            transform -translate-x-full transition-transform duration-300 ease-in-out
+            lg:translate-x-0">
         @include('components.sidebar')
-    </div>
+    </aside>
     <div id="mainContent" class="flex-1 p-4 mt-4 sm:p-6 sm:mt-6 lg:ml-72">
         <header class="flex sm:flex-row justify-between items-center space-y-4 sm:space-y-0 mb-8">
             <div class="flex items-center justify-between w-full sm:w-auto">
@@ -118,7 +121,7 @@
     <script>
         document.getElementById("menuButton").addEventListener("click", function() {
             const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("hidden");
+            sidebar.classList.toggle("-translate-x-full");
         });
     </script>
 </body>
