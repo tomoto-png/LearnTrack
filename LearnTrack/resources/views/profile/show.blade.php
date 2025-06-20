@@ -37,7 +37,7 @@
                         </div>
                     @else
                         <div class="w-24 h-24 rounded-full bg-[var(--bg-green)] flex items-center justify-center border-4 border-[var(--bg-light-gray)] text-2xl text-[var(--white)]">
-                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-10 h-10 opacity-70">
                         </div>
                     @endif
 

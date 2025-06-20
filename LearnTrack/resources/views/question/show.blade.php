@@ -45,7 +45,7 @@
                         </div>
                     @else
                         <div class="w-11 h-11 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-base text-[var(--white)] shadow">
-                            {{ strtoupper(substr($questionData->user->name, 0, 1)) }}
+                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-5 h-5 opacity-70">
                         </div>
                     @endif
                     <div>
@@ -104,7 +104,7 @@
                                 </div>
                             @else
                                 <div class="w-11 h-11 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-base text-[var(--white)] shadow">
-                                    {{ strtoupper(substr($bestAnswer->user->name, 0, 1)) }}
+                                    <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-5 h-5 opacity-70">
                                 </div>
                             @endif
                             <div>
@@ -132,7 +132,7 @@
                                         </div>
                                     @else
                                         <div class="w-8 h-8 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-[var(--white)] shadow">
-                                            {{ strtoupper(substr($firstReply->user->name, 0, 1)) }}
+                                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-4 h-4 opacity-70">
                                         </div>
                                     @endif
                                     <div>
@@ -164,7 +164,7 @@
                                             </div>
                                         @else
                                             <div class="w-8 h-8 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-[var(--white)] shadow">
-                                                {{ strtoupper(substr($reply->user->name, 0, 1)) }}
+                                                <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-4 h-4 opacity-70">
                                             </div>
                                         @endif
                                         <div>
@@ -215,7 +215,7 @@
                                         </div>
                                     @else
                                         <div class="w-11 h-11 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-base text-[var(--white)] shadow">
-                                            {{ strtoupper(substr($answer->user->name, 0, 1)) }}
+                                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-5 h-5 opacity-70">
                                         </div>
                                     @endif
                                     <div>
@@ -265,7 +265,7 @@
                                                 </div>
                                             @else
                                                 <div class="w-8 h-8 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-[var(--white)] shadow">
-                                                    {{ strtoupper(substr($firstReply->user->name, 0, 1)) }}
+                                                    <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-4 h-4 opacity-70">
                                                 </div>
                                             @endif
                                             <div>
@@ -299,7 +299,7 @@
                                                     </div>
                                                 @else
                                                     <div class="w-8 h-8 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-[var(--white)] shadow">
-                                                        {{ strtoupper(substr($reply->user->name, 0, 1)) }}
+                                                        <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-4 h-4 opacity-70">
                                                     </div>
                                                 @endif
                                                 <div>

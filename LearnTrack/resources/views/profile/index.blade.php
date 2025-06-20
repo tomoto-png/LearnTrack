@@ -48,8 +48,8 @@
                                 alt="{{ $user->name }}のアバター">
                         </div>
                     @else
-                        <div class="w-20 h-20 rounded-full bg-[var(--bg-green)] border-2 border-[var(--accent-color)] flex items-center justify-center text-2xl text-[var(--white)] md:w-28 md:h-28">
-                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                        <div class="w-20 h-20 rounded-full bg-[var(--bg-green)] border-2 border-[var(--accent-color)] flex items-center justify-center md:w-28 md:h-28">
+                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-10 h-10 opacity-70">
                         </div>
                     @endif
 

@@ -52,7 +52,7 @@
                                 </div>
                             @else
                                 <div class="w-12 h-12 rounded-full bg-[var(--bg-green)] flex items-center justify-center text-sm text-[var(--white)] shadow">
-                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-4 h-4 opacity-70">
                                 </div>
                             @endif
                             <div>
