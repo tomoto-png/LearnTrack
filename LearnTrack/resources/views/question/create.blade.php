@@ -164,9 +164,7 @@
                                     class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none h-40 sm:h-48 lg:h-56 focus:ring-2 focus:ring-[var(--accent-color)]"
                                     placeholder="例：〇〇の解き方がわからないので教えてください。"
                                     maxlength="2000"
-                                >
-                                    {{ old('content', $input['content'] ?? '') }}
-                                </textarea>
+                                >{{ old('content', $input['content'] ?? '') }}</textarea>
                                 <p class="text-sm mb-2">
                                     ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
                                 </p>

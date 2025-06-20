@@ -66,12 +66,12 @@
                 </div>
             </div>
 
-            <div class="mt-4 p-2 md:p-4 flex flex-col space-y-6  md:grid md:grid-cols-3 md:gap-12 md:space-y-0">
+            <div class="grid grid-cols-1 gap-6 mt-4 p-2 md:grid-cols-3 md:gap-12 md:p-4">
                 <!-- プロフィール -->
                 <div class="flex-1">
                     <div class="flex items-center mb-2 sm:mb-4">
-                    <h3 class="text-lg font-semibold">プロフィール</h3>
-                    <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
+                        <h3 class="text-lg font-semibold">プロフィール</h3>
+                        <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
                     </div>
                     <p class="mb-2 flex justify-between">
                     <span class="font-semibold">性別：</span>

@@ -95,9 +95,7 @@
                                 minlength="5"
                                 maxlength="2000"
                                 placeholder="5文字〜2000文字で入力してください。"
-                            >
-                                {{ old('content', $input['content'] ?? '') }}
-                            </textarea>
+                            >{{ old('content', $input['content'] ?? '') }}</textarea>
                             <p class="text-sm mb-2">
                                 ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
                             </p>

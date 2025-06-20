@@ -56,10 +56,7 @@
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
                             placeholder="255文字以内で入力してください(任意)"
                             maxlength="255"
-                            rows="4"
-                        >
-                            {{ old('description', $plan->description) }}
-                        </textarea>
+                            rows="4">{{ old('description', $plan->description) }}</textarea>
                         @error('description')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror

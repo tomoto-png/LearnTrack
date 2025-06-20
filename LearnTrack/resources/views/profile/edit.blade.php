@@ -150,13 +150,10 @@
                         <textarea
                             id="bio"
                             name="bio"
-                            class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            placeholder="200文字以内で入力してください(任意)"
+                            class="w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
                             maxlength="200"
-                            placeholder="200文字以内で入力してください（任意）"
-                            rows="4"
-                        >
-                            {{ $user->bio ?? ''}}
-                        </textarea>
+                            rows="4">{{ $user->bio ?? ''}}</textarea>
                         @error('bio')
                             <p>{{ $message }}</p>
                         @enderror

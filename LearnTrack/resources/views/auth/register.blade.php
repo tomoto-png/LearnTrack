@@ -37,7 +37,6 @@
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="8文字以上で入力してください"
                             minlength="8"
                             class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('password') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200"
                             required
@@ -62,7 +61,6 @@
                             type="password"
                             id="password_confirmation"
                             name="password_confirmation"
-                            placeholder="確認のため、同じパスワードを入力してください"
                             minlength="8"
                             class="w-full mt-1 p-2 px-10 border border-{{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-[#9f9579]'}} rounded-md focus:outline-none focus:ring-2 focus:ring-[#d9ca79] hover:scale-103 hover:shadow-lg transition-all duration-200"
                             required

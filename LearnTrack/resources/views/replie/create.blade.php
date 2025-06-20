@@ -89,10 +89,7 @@
                                     class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none h-40 sm:h-46 lg:h-52 focus:ring-2 focus:ring-[var(--accent-color)]"
                                     placeholder="5文字〜2000文字で入力してください。"
                                     minlength="5"
-                                    maxlength="2000"
-                                >
-                                    {{ old('content', $replieInput->content ?? '')}}
-                                </textarea>
+                                    maxlength="2000">{{ old('content', $replieInput->content ?? '')}}</textarea>
                                 <p class="text-sm mb-2">
                                     ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
                                 </p>

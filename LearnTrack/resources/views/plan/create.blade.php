@@ -52,9 +52,7 @@
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
                             placeholder="255文字以内で入力してください(任意)"
                             maxlength="255"
-                            rows="4"
-                        >
-                        </textarea>
+                            rows="4"></textarea>
                     </div>
 
                     <div>
