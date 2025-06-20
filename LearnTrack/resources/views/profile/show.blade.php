@@ -46,9 +46,9 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row sm:space-x-4 mt-2">
+                <div class="grid grid-cols-1 gap-4 p-2 md:grid-cols-3 md:gap-8 md:p-4">
                     <!-- プロフィール -->
-                    <div class="flex-1 p-6">
+                    <div class="flex-1">
                         <div class="flex items-center mb-4">
                             <h3 class="text-lg font-semibold">プロフィール</h3>
                             <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
@@ -89,13 +89,15 @@
                                 @endswitch
                             </span>
                         </p>
-                        <p class="mb-0 flex justify-between">
-                            <span class="font-semibold">職業：</span>
-                            <span>{{ $user->occupation ?? '非公開' }}</span>
+                        <p class="mb-2 flex justify-between">
+                            <span class="font-semibold whitespace-nowrap">職業：</span>
+                            <span class="break-words text-left max-h-6 overflow-y-auto">
+                                {{ $user->occupation ?? '非公開' }}
+                            </span>
                         </p>
                     </div>
 
-                    <div class="flex-1 p-6 mt-2 sm:mt-0">
+                    <div class="flex-1">
                         <div class="flex items-center mb-4">
                             <h3 class="text-lg font-semibold">活動状況</h3>
                             <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
@@ -114,12 +116,12 @@
                           </p>
                     </div>
                     <!-- 自己紹介 -->
-                    <div class="flex-1 p-6 mt-2 sm:mt-0">
+                    <div class="flex-1">
                         <div class="flex items-center mb-4">
                             <h3 class="text-lg font-semibold">自己紹介</h3>
                             <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
                         </div>
-                        <div>
+                        <div class="max-h-24 overflow-y-auto break-words">
                             <p class="text-sm sm:text-base text-[var(--text-main)]">
                                 {{ $user->bio ?? '自己紹介はまだ設定されていません。' }}
                             </p>

@@ -151,7 +151,7 @@
                             id="bio"
                             name="bio"
                             placeholder="200文字以内で入力してください(任意)"
-                            class="w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
                             maxlength="200"
                             rows="4">{{ $user->bio ?? ''}}</textarea>
                         @error('bio')
