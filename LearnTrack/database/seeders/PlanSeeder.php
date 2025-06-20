@@ -34,17 +34,7 @@ class PlanSeeder extends Seeder
                 'progress' => 1.0,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'user_id' => 2,
-                'name' => '英語の単語暗記',
-                'description' => null,
-                'target_hours' => 2.0,
-                'priority' => 'low',
-                'progress' => 0.0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]
         ]);
     }
 }

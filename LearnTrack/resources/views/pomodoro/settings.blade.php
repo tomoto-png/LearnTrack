@@ -54,9 +54,14 @@
                         学習時間
                     </label>
                     <div class="flex items-center gap-2">
-                        <input type="number" id="studyTime" name="study_time" min="1" max="180"
-                                class="w-[70px] p-2 border border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
-                                value="{{ old('study_time', Auth::user()->timerSetting->study_time ?? 25) }}">
+                        <input
+                            type="number"
+                            id="studyTime"
+                            name="study_time"
+                            min="1"
+                            max="180"
+                            class="w-[70px] p-2 border border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+                            value="{{ old('study_time', Auth::user()->timerSetting->study_time ?? 25) }}">
                         <p>分</p>
                     </div>
                     @error('study_time')
@@ -68,7 +73,12 @@
                         休憩時間
                     </label>
                     <div class="flex items-center gap-2">
-                        <input type="number" id="breakTime" name="break_time" min="1" max="60"
+                        <input
+                            type="number"
+                            id="breakTime"
+                            name="break_time"
+                            min="1"
+                            max="60"
                             class="w-[70px] p-2 border border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
                             value="{{ old('break_time', Auth::user()->timerSetting->break_time ?? 5) }}">
                         <p>分</p>

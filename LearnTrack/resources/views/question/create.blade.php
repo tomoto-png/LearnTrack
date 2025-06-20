@@ -158,9 +158,15 @@
                         <div class="h-[430px] overflow-y-auto px-1">
                             <div>
                                 <label for="content" class="block text-base font-semibold mb-3">質問文</label>
-                                <textarea name="content" id="content"
+                                <textarea
+                                    name="content"
+                                    id="content"
                                     class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none h-40 sm:h-48 lg:h-56 focus:ring-2 focus:ring-[var(--accent-color)]"
-                                    placeholder="例：〇〇の解き方がわからないので教えてください。">{{ old('content', $input['content'] ?? '') }}</textarea>
+                                    placeholder="例：〇〇の解き方がわからないので教えてください。"
+                                    maxlength="2000"
+                                >
+                                    {{ old('content', $input['content'] ?? '') }}
+                                </textarea>
                                 <p class="text-sm mb-2">
                                     ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
                                 </p>

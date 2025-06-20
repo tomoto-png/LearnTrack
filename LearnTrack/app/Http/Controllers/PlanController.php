@@ -43,10 +43,21 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name' => 'required|string|max:30',
+            'description' => 'nullable|string|max:255',
             'target_hours' => 'required|numeric|min:0.5|max:100',
             'priority' => 'required|in:low,medium,high'
+        ], [
+            'name.required' => '名前は必須です。',
+            'name.string' => '名前は文字列で入力してください。',
+            'name.max' => '名前は30文字以内で入力してください。',
+            'description.string' => '説明は文字列で入力してください。',
+            'description.max' => '説明は225文字以内で入力してください。',
+            'target_hours.required' => '目標時間は必須です。',
+            'target_hours.numeric' => '目標時間は数値で入力してください。',
+            'target_hours.min' => '目標時間は0.5時間以上で入力してください。',
+            'target_hours.max' => '目標時間は100時間以内で入力してください。',
+            'priority.required' => '優先度は必須です。'
         ]);
 
         Plan::create([

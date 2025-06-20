@@ -34,17 +34,7 @@ class QuestionSeeder extends Seeder
                 'reward' => 10,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ],
-            [
-                'user_id' => 2,
-                'category_id' => 15,
-                'content' => 'SQLで複数の条件を組み合わせた検索（AND/OR）の書き方が分からないので教えてください。',
-                'image_url' => null,
-                'auto_repost_enabled' => false,
-                'reward' => 5,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+            ]
         ]);
     }
 }

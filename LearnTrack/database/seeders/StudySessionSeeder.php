@@ -36,14 +36,7 @@ class StudySessionSeeder extends Seeder
                 'duration' => 60,
                 'created_at' => Carbon::now()->subDays(2),
                 'updated_at' => Carbon::now()->subDays(2),
-            ],
-            [
-                'user_id' => 2,
-                'plan_id' => null,
-                'duration' => 90,
-                'created_at' => Carbon::now()->subDays(3),
-                'updated_at' => Carbon::now()->subDays(3),
-            ],
+            ]
         ]);
     }
 }

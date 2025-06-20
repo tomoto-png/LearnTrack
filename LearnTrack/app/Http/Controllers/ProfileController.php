@@ -92,7 +92,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:20',
             'avatar' => 'nullable|image|max:2048',
-            'bio' => 'nullable|string|max:500',
+            'bio' => 'nullable|string|max:200',
             'gender' => 'nullable|string',
             'age' => 'nullable|string',
             'occupation' => 'nullable|string|max:20',
@@ -100,7 +100,7 @@ class ProfileController extends Controller
             'name.required' => '名前を入力してください。',
             'name.string' => '名前は文字列で入力してください。',
             'bio.string' => '自己紹介文は文字列で入力してください。',
-            'bio.max' => '自己紹介文は500文字以内で入力してください。',
+            'bio.max' => '自己紹介文は200文字以内で入力してください。',
             'avatar.image' => '画像形式でアップロードしてください。',
             'avatar.max' => '画像は2MB以内でアップロードしてください。',
             'gender.string' => '性別は文字列で入力してください！',

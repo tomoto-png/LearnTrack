@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row md:space-x-12 mt-4 p-2 md:p-4">
+            <div class="mt-4 p-2 md:p-4 flex flex-col space-y-6  md:grid md:grid-cols-3 md:gap-12 md:space-y-0">
                 <!-- プロフィール -->
                 <div class="flex-1">
                     <div class="flex items-center mb-2 sm:mb-4">
@@ -109,9 +109,11 @@
                         @endswitch
                     </span>
                     </p>
-                    <p class="mb-0 flex justify-between">
-                    <span class="font-semibold">職業：</span>
-                    <span>{{ $user->occupation ?? '非公開' }}</span>
+                    <p class="mb-2 flex justify-between">
+                        <span class="font-semibold whitespace-nowrap">職業：</span>
+                        <span class="break-words text-left max-h-6 overflow-y-auto">
+                            {{ $user->occupation ?? '非公開' }}
+                        </span>
                     </p>
                 </div>
 
@@ -139,7 +141,7 @@
                         <h3 class="text-lg font-semibold">自己紹介</h3>
                         <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
                     </div>
-                    <div>
+                    <div class="max-h-24 overflow-y-auto break-words">
                         <p class="text-sm sm:text-base text-[var(--text-main)]">
                             {{ $user->bio ?? '自己紹介はまだ設定されていません。' }}
                         </p>

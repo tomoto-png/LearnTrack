@@ -49,7 +49,16 @@
                         <label for="name" class="block text-base font-semibold mb-2">
                             名前
                         </label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{ old('name', $user->name ?? '') }}" placeholder="20文字以内で入力してください" required>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            value="{{ old('name', $user->name ?? '') }}"
+                            placeholder="20文字以内で入力してください"
+                            maxlength="20"
+                            required
+                        >
                         @error('name')
                             <p>{{ $message }}</p>
                         @enderror
@@ -61,14 +70,24 @@
                         </label>
                         <div class="flex items-center space-x-4">
                             <label class="flex items-center">
-                                <input type="radio" name="gender" value="male" class="accent-[var(--accent-color)]"
-                                    {{ old('gender', $user->gender) === 'male' ? 'checked' : '' }}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="male"
+                                    class="accent-[var(--accent-color)]"
+                                    {{ old('gender', $user->gender) === 'male' ? 'checked' : '' }}
+                                >
                                 <span class="ml-2">男性</span>
                             </label>
 
                             <label class="flex items-center">
-                                <input type="radio" name="gender" value="female" class="accent-[var(--accent-color)]"
-                                    {{ old('gender', $user->gender) === 'female' ? 'checked' : '' }}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="female"
+                                    class="accent-[var(--accent-color)]"
+                                    {{ old('gender', $user->gender) === 'female' ? 'checked' : '' }}
+                                >
                                 <span class="ml-2">女性</span>
                             </label>
 
@@ -79,8 +98,13 @@
                             </label>
 
                             <label class="flex items-center">
-                                <input type="radio" name="gender" value="" class="accent-[var(--accent-color)]"
-                                    {{ empty(old('gender', $user->gender)) ? 'checked' : '' }}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value=""
+                                    class="accent-[var(--accent-color)]"
+                                    {{ empty(old('gender', $user->gender)) ? 'checked' : '' }}
+                                >
                                 <span class="ml-2">非公開</span>
                             </label>
 
@@ -108,14 +132,31 @@
                         <label for="occupation" class="block text-base font-semibold mb-2">
                             職業
                         </label>
-                        <input type="text" id="occupation" name="occupation" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"maxlength="20" placeholder="20文字以内で入力してください" value="{{ old('occupation', $user->occupation ?? '') }}">
+                        <input
+                            type="text"
+                            id="occupation"
+                            name="occupation"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            maxlength="20"
+                            placeholder="20文字以内で入力してください"
+                            value="{{ old('occupation', $user->occupation ?? '') }}"
+                        >
                     </div>
 
                     <div>
                         <label for="bio" class="block text-base font-semibold mb-2">
                             自己紹介
                         </label>
-                        <textarea id="bio" name="bio" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="500文字以内で入力してください（任意）" rows="4">{{ $user->bio ?? ''}}</textarea>
+                        <textarea
+                            id="bio"
+                            name="bio"
+                            class="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            maxlength="200"
+                            placeholder="200文字以内で入力してください（任意）"
+                            rows="4"
+                        >
+                            {{ $user->bio ?? ''}}
+                        </textarea>
                         @error('bio')
                             <p>{{ $message }}</p>
                         @enderror

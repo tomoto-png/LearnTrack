@@ -31,14 +31,30 @@
                         <label for="name" class="block text-base font-semibold mb-2">
                             計画名
                         </label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" placeholder="計画名を入力" required>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+                            placeholder="30文字以内で入力してください"
+                            maxlength="30"
+                            required
+                        >
                     </div>
 
                     <div>
                         <label for="description" class="block text-base font-semibold mb-2">
                             詳細
                         </label>
-                        <textarea id="description" name="description" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" placeholder="計画の詳細を入力（任意）" rows="4"></textarea>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+                            placeholder="255文字以内で入力してください(任意)"
+                            maxlength="255"
+                            rows="4"
+                        >
+                        </textarea>
                     </div>
 
                     <div>

@@ -32,7 +32,16 @@
                         <label for="name" class="block text-base font-semibold mb-2">
                             計画名
                         </label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{ old('name', $plan->name) }}" placeholder="計画名を入力" required>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            value="{{ old('name', $plan->name) }}"
+                            placeholder="30文字以内で入力してください"
+                            maxlength="30"
+                            required
+                        >
                         @error('name')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
@@ -41,7 +50,16 @@
                         <label for="description" class="block text-base font-semibold mb-2">
                             詳細
                         </label>
-                        <textarea id="description" name="description" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" placeholder="計画の詳細を入力（任意）" rows="4">{{ old('description', $plan->description) }}</textarea>
+                        <textarea
+                            id="description"
+                            name="description"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            placeholder="255文字以内で入力してください(任意)"
+                            maxlength="255"
+                            rows="4"
+                        >
+                            {{ old('description', $plan->description) }}
+                        </textarea>
                         @error('description')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
@@ -50,7 +68,18 @@
                         <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
                             目標時間
                         </label>
-                        <input type="number" id="target_hours" name="target_hours" class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]" value="{{old('description',$plan->target_hours) }}" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
+                        <input
+                            type="number"
+                            id="target_hours"
+                            name="target_hours"
+                            class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            value="{{old('description',$plan->target_hours) }}"
+                            min="0.5"
+                            max="100"
+                            step="0.5"
+                            placeholder="目標時間を入力"
+                            required
+                        >
                         @error('target_hours')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
