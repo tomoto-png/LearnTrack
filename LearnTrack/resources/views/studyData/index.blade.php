@@ -417,7 +417,7 @@
                                     closeCalendarModal();
                                     updateSlideAppearance();
                                 },
-                                error: function(xhr, status, error) {
+                                error: function(xhr, error) {
                                     if (xhr.status === 419 || xhr.status === 401) {
                                         alert('セッションが切れました。再度ログインしてください。');
                                         window.location.href = '/login';
@@ -473,7 +473,7 @@
                                             closeCalendarModal();
                                             updateSlideAppearance();
                                         },
-                                        error: function(xhr, status, error) {
+                                        error: function(xhr, error) {
                                             if (xhr.status === 419 || xhr.status === 401) {
                                                 alert('セッションが切れました。再度ログインしてください。');
                                                 window.location.href = '/login';
@@ -759,7 +759,7 @@
                     success: function(response) {
                         createChart(response.labels, response.data);
                     },
-                    error: function(xhr, status, error) {
+                    error: function(xhr, error) {
                         if (xhr.status === 419 || xhr.status === 401) {
                             alert('セッションが切れました。再度ログインしてください。');
                             window.location.href = '/login';
@@ -813,7 +813,7 @@
                     success: function(response) {
                         createChart(response.labels, response.data);
                     },
-                    error: function(xhr, status, error) {
+                    error: function(xhr, error) {
                         if (xhr.status === 419 || xhr.status === 401) {
                             alert('セッションが切れました。再度ログインしてください。');
                             window.location.href = '/login';

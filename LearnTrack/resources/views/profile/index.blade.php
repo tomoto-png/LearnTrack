@@ -219,7 +219,7 @@
                         success: function(response) {
                             document.querySelector('#data-list').innerHTML = response.html;
                         },
-                        error: function(xhr, status, error) {
+                        error: function(xhr, error) {
                             if (xhr.status === 419 || xhr.status === 401) {
                                 alert('セッションが切れました。再度ログインしてください。');
                                 window.location.href = '/login';

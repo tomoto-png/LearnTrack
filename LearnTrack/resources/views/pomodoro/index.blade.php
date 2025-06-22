@@ -392,8 +392,13 @@
                         success: function (response) {
                             console.log('タイマー停止: ', response);
                         },
-                        error: function (xhr, status, error) {
-                            console.error('エラーが発生しました:', error);
+                        error: function(xhr, error) {
+                            if (xhr.status === 419 || xhr.status === 401) {
+                                alert('セッションが切れました。再度ログインしてください。');
+                                window.location.href = '/login';
+                            } else {
+                                console.error('送信エラー:', error);
+                            }
                         }
                     });
                     count = 0;
