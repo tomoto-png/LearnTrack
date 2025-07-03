@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\AnswerReply;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\AnswerReplyRequest;
 
@@ -21,7 +22,7 @@ class AnswerReplyController extends Controller
     public function store(AnswerReplyRequest $request)
     {
         $answer = Answer::findOrFail($request->input('answer_id'));
-        $user = $request->user();
+        $user = Auth::user();
         $this->authorize('create', [AnswerReply::class, $answer]);
         $mode = $request->input('mode');
         $questionId = $answer->question->id;

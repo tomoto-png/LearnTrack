@@ -201,6 +201,12 @@
             const buttons = document.querySelectorAll('.filter-button');
             const filter = "{{ $filter }}";
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             buttons.forEach(button => {
                 button.addEventListener('click', function () {
                     const status = this.dataset.status;

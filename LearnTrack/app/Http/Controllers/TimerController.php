@@ -15,8 +15,7 @@ class TimerController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $plans = Plan::where('user_id', $user->id)
+        $plans = Plan::where('user_id', Auth::id())
             ->where('completed', false)
             ->get();
         return view('timer.index', compact('plans'));
@@ -24,9 +23,9 @@ class TimerController extends Controller
 
     public function start(Plan $plan = null)
     {
-        $user = Auth::user();
+        $userId = Auth::id();
 
-        $unfinishedSession = StudySession::where('user_id', $user->id)
+        $unfinishedSession = StudySession::where('user_id', $userId)
         ->whereNull('duration')
         ->first();
 
@@ -35,7 +34,7 @@ class TimerController extends Controller
         }
 
         $newSession = StudySession::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'plan_id' => $plan?->id,
         ]);
 
@@ -83,8 +82,8 @@ class TimerController extends Controller
 
     public function pomodoroStart(Plan $plan = null)
     {
-        $user = Auth::user();
-        $unfinishedSession = StudySession::where('user_id', $user->id)
+        $userId = Auth::id();
+        $unfinishedSession = StudySession::where('user_id', $userId)
         ->whereNull('duration')
         ->first();
         if ($unfinishedSession) {
@@ -92,7 +91,7 @@ class TimerController extends Controller
         }
 
         $newSession = StudySession::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'plan_id' => $plan?->id,
         ]);
 
@@ -157,7 +156,6 @@ class TimerController extends Controller
             'auto_switch.boolean' => '自動切り替えの値が不正です。',
             'sound_effect.boolean' => '効果音の設定が不正です。',
         ]);
-        $user = Auth::user();
         $timerSetting = $user->timerSetting;
 
         if ($timerSetting) {
@@ -169,7 +167,7 @@ class TimerController extends Controller
             ]);
         } else {
             TimerSetting::create([
-                'user_id' => $user->id,
+                'user_id' => Auth::id(),
                 'study_time' => $request->input('study_time'),
                 'break_time' => $request->input('break_time'),
                 'auto_switch' => $request->has('auto_switch'),

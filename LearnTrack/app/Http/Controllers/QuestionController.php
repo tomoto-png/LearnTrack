@@ -111,7 +111,7 @@ class QuestionController extends Controller
     }
     public function store(QuestionRequest $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
         $validated = $request->validated();
         if ($request->input('remove_image') === 'true') {
             if (session('temp_image_path')) {
