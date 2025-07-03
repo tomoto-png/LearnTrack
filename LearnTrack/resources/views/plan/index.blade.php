@@ -80,11 +80,14 @@
             </div>
             <div class="grid grid-cols-1 mt-6 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 @forelse ($plans as $plan)
-                <div class="relative p-4 sm:p-5 rounded-xl shadow-lg
-                    @if($plan['priority'] === 'high')bg-red-200 border-red-500
-                    @elseif($plan['priority'] === 'medium') bg-yellow-200 border-yellow-500
-                    @else bg-green-200 border-green-500 @endif
-                    flex flex-col justify-between">
+                @php
+                    $priorityColor = match ($plan['priority']) {
+                        'high' => 'bg-red-200 border-red-500',
+                        'medium' => 'bg-yellow-200 border-yellow-500',
+                        default => 'bg-green-200 border-green-500',
+                    };
+                @endphp
+                <div class="relative p-4 sm:p-5 rounded-xl shadow-lg {{ $priorityColor }} flex flex-col justify-between">
 
                     <div class="flex flex-wrap justify-between items-start sm:items-center space-y-2 sm:space-y-0">
                         <div class="w-full sm:w-auto min-w-0">
