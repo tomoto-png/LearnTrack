@@ -11,10 +11,18 @@ class AnswerPolicy
 {
     public function create(User $user, Question $question)
     {
+        // デバッグ出力
+        dd([
+            'user_id' => $user->id,
+            'question_user_id' => $question->user_id,
+            'is_closed' => $question->is_closed,
+            'can_create' => !$question->is_closed && $user->id !== $question->user_id,
+        ]);
+
         if ($question->is_closed) {
             return false;
         }
-        // 質問の投稿者以外にのみ許可
+
         return $user->id !== $question->user_id;
     }
     public function setBest(User $user, Answer $answer)
