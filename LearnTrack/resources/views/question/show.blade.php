@@ -232,11 +232,11 @@
                                     </div>
                                 @endif
                                 <div class="flex gap-2">
-                                    @can('create', [App\Models\AnswerReply::class, $answer])
-                                        <div class="bg-[var(--button-bg)] flex items-center py-1 px-2 text-sm text-[var(--white)] rounded-md hover:bg-[var(--button-hover)]">
-                                            <a href="{{ route('replie.create', $answer->id) }}">返信する</a>
-                                        </div>
-                                    @endcan
+                                    {{-- @can('create', [App\Models\AnswerReply::class, $answer]) --}}
+                                    <div class="bg-[var(--button-bg)] flex items-center py-1 px-2 text-sm text-[var(--white)] rounded-md hover:bg-[var(--button-hover)]">
+                                        <a href="{{ route('replie.create', $answer->id) }}">返信する</a>
+                                    </div>
+                                    {{-- @endcan --}}
                                     {{-- @can('setBest', $answer) --}}
                                     <button onclick="openBestModal()"
                                             class="flex items-center gap-1 bg-yellow-500 text-white text-sm px-2 py-1 rounded-md hover:bg-yellow-600 transition">
