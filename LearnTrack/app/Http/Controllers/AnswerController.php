@@ -81,7 +81,6 @@ class AnswerController extends Controller
     }
     public function setBest(Answer $answer)
     {
-        dd(Auth::user()->id, $answer->question->user_id);
         $this->authorize('setBest', $answer);
         try {
             DB::transaction(function () use ($answer) {
