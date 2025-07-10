@@ -81,9 +81,6 @@ class AnswerController extends Controller
     }
     public function setBest(Answer $answer)
     {
-        $answer->load('question');
-
-        $this->authorize('setBest', $answer);
         try {
             DB::transaction(function () use ($answer) {
                 $question = $answer->question;
