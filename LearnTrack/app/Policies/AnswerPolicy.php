@@ -21,13 +21,19 @@ class AnswerPolicy
     public function setBest(User $user, Answer $answer)
     {
         $question = $answer->question;
-        $alreadyHasBest = $question->answers()->where('is_best', true)->exists();//exists()1件でも存在すれば true
-        Log::info('[Policy] setBest called', [
-            'user_id' => $user->id,
-            'question_user_id' => $question->user_id,
-            'already_has_best' => $alreadyHasBest,
-            'question_id' => $question->id,
+
+        \Log::info('[Policy] setBest check', [
+            'auth_user' => $user->id,
+            'question_user_id' => optional($question)->user_id,
+            'already_has_best' => optional($question)->answers()->where('is_best', true)->exists(),
+            'question_exists' => !is_null($question),
         ]);
-        return !$alreadyHasBest && $user->id === $answer->question->user_id;
+
+        if (!$question) {
+            return false;
+        }
+
+        $alreadyHasBest = $question->answers()->where('is_best', true)->exists();
+        return !$alreadyHasBest && $user->id === $question->user_id;
     }
 }
