@@ -68,10 +68,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/e9c7f9cc-98c3-46d0-bcd1-2a1436d839fa" />
+      <img width="1440" alt="学習計画一覧ページ" src="https://github.com/user-attachments/assets/efa82b07-2a0e-478f-8197-487447d59548" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/e281cb96-610d-4784-87a3-9e9e83c5b44a" />
+      <img width="1440" alt="学習計画作成ページ" src="https://github.com/user-attachments/assets/e281cb96-610d-4784-87a3-9e9e83c5b44a" />
     </td>
   </tr>
   <tr>
@@ -81,10 +81,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/b4e752fc-eb7d-4553-a01d-9f420156578b" />
+      <img width="1440" alt="学習データページ（円グラフ）" src="https://github.com/user-attachments/assets/35502236-f567-4b21-bcb8-b6c5de9eea4e" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/61b118ec-7ee0-4331-8832-c75c1627c5f4" />
+      <img width="1440" alt="学習データページ（棒グラフ）" src="https://github.com/user-attachments/assets/2a704fbd-e4d9-4b4c-9e29-cb63b8c93f0e" />
     </td>
   </tr>
   <tr>
@@ -94,10 +94,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/ad415268-4c05-4d04-a06e-0c0d5ddafa6b" />
+      <img width="1440" alt="学習データページ（カレンダー）" src="https://github.com/user-attachments/assets/09a38187-7851-45c4-97c2-8668dbd646ff" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/f3dc78cb-af1c-4ab1-9250-895712f62631" />
+      <img width="1440" alt="学習データページ（カレンダー移動付き）" src="https://github.com/user-attachments/assets/e3a21b4a-1a20-4d22-847a-38bbd705c416" />
     </td>
   </tr>
       <tr>
@@ -107,10 +107,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/a18efd51-2e90-45d6-a2af-b92408a91b4f" />
+      <img width="1440" alt="集中タイマーページ" src="https://github.com/user-attachments/assets/bf288f80-a59b-498e-98c5-d021b5b6cc27" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/8018b07c-6cdc-4990-b54d-da3cb71757c7" />
+      <img width="1440" alt="集中タイマーページ(開始中)" src="https://github.com/user-attachments/assets/27318bd3-0439-4d9e-8acf-220504116208" />
     </td>
   </tr>
   <tr>
@@ -123,10 +123,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/69ee8dc3-680a-487a-82b3-d3273a9f6373" />
+      <img width="1440" alt="ポモドーロタイマーページ" src="https://github.com/user-attachments/assets/8294092b-c17b-4a99-970b-a026eab0b5b7" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/ae27256a-29f5-471d-a265-bded206afad4" />
+      <img width="1440" alt="ポモドーロタイマーページ（設定）" src="https://github.com/user-attachments/assets/ae27256a-29f5-471d-a265-bded206afad4" />
     </td>
   </tr>
     <tr>
@@ -139,10 +139,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/f92b25c3-8816-4ccd-9ebb-f424ae76eca0" />
+      <img width="1440" alt="質問一覧ページ" src="https://github.com/user-attachments/assets/f92b25c3-8816-4ccd-9ebb-f424ae76eca0" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/85e89526-c628-4b3c-9d6f-4771a0871a49" />
+      <img width="1440" alt="質問詳細ページ" src="https://github.com/user-attachments/assets/85e89526-c628-4b3c-9d6f-4771a0871a49" />
     </td>
   </tr>
   <tr>
@@ -155,10 +155,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/315afcc5-49bb-400c-abb1-9ac11a301169" />
+      <img width="1440" alt="質問投稿ページ" src="https://github.com/user-attachments/assets/68418205-4ba5-4c35-8e9e-f237d2469047" />
     </td>
     <td>
-      <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/8dcfbec3-44fa-4e87-a869-daf8c14558f8" />
+      <img width="1440" alt="質問確認ページ" src="https://github.com/user-attachments/assets/94b11b0e-f9df-48d1-9a45-dae0d0412f79" />
     </td>
   </tr>
     <tr>
