@@ -156,6 +156,7 @@ class TimerController extends Controller
             'auto_switch.boolean' => '自動切り替えの値が不正です。',
             'sound_effect.boolean' => '効果音の設定が不正です。',
         ]);
+        $user = Auth::user();
         $timerSetting = $user->timerSetting;
 
         if ($timerSetting) {
@@ -167,7 +168,7 @@ class TimerController extends Controller
             ]);
         } else {
             TimerSetting::create([
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
                 'study_time' => $request->input('study_time'),
                 'break_time' => $request->input('break_time'),
                 'auto_switch' => $request->has('auto_switch'),

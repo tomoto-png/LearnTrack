@@ -37,10 +37,10 @@
   </tr>
   <tr>
     <td>
-        <img width="1440" alt="スクリーンショット 2024-12-25 20 23 09" src="https://github.com/user-attachments/assets/5e4f30ae-1b8b-4a4d-92af-f7a24dbc566b" />
+      <img width="1440" alt="新規登録" src="https://github.com/user-attachments/assets/f2353827-acff-4fa3-a7fc-695e0723912f" /> 
     </td>
     <td>
-        <img width="1440" alt="スクリーンショット 2024-12-25 20 23 55" src="https://github.com/user-attachments/assets/35576a8e-4cbb-41ad-ae34-87e52f42fdb6" />
+        <img width="1440" alt="ログイン" src="https://github.com/user-attachments/assets/1502664a-600c-46f8-88b7-956b79c84f9c" />
     </td>
   </tr>
   <tr>
@@ -52,10 +52,10 @@
   </tr>
   <tr>
     <td>
-        <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/d08ebcc7-39a7-491f-a121-0ccd93d8375c" />
+      <img width="1440" alt="マイページ" src="https://github.com/user-attachments/assets/a03741a3-3b5e-4e46-9ec8-b338dbab4487" />
     </td>
     <td>
-        <img width="1440" alt="Image" src="https://github.com/user-attachments/assets/d345f5f2-5508-45c8-963d-c9707134572f" />
+      <img width="1440" alt="マイページ編集" src="https://github.com/user-attachments/assets/263c029b-2d5f-4872-99f4-bd642fd26b43" />
     </td>
   </tr>
   <tr>
