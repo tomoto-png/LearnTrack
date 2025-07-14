@@ -52,7 +52,7 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="マイページ" src="https://github.com/user-attachments/assets/a03741a3-3b5e-4e46-9ec8-b338dbab4487" />
+      <img width="1440" alt="マイページ" src="https://github.com/user-attachments/assets/52c23a07-7270-423e-bda8-7b40a5370beb" />
     </td>
     <td>
       <img width="1440" alt="マイページ編集" src="https://github.com/user-attachments/assets/263c029b-2d5f-4872-99f4-bd642fd26b43" />
