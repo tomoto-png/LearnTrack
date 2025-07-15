@@ -39,6 +39,7 @@ class ProfileController extends Controller
                 default:
                     break;
             }
+            $questionQuery->orderBy('created_at', 'desc');
             $datas = $questionQuery->paginate(4);
         } elseif ($filter === 'answer') {
             $answerQuery = Answer::where('user_id', $user->id)
@@ -61,7 +62,7 @@ class ProfileController extends Controller
                 default:
                     break;
             }
-
+            $answerQuery->orderBy('created_at', 'desc');
             $datas = $answerQuery->paginate(4);
         }
 

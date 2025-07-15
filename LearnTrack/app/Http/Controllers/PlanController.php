@@ -10,6 +10,7 @@ class PlanController extends Controller
 {
     public function index(Request $request)
     {
+        // dd($request->all());
         $search = $request->get('search');
 
         $query = Plan::where('user_id', Auth::id());
@@ -17,7 +18,7 @@ class PlanController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        switch ($request->input('sort')) {
+        switch ($request->input('sort', 'newest')) {
             case 'newest':
                 $query->orderBy('created_at', 'desc');
                 break;
@@ -25,10 +26,12 @@ class PlanController extends Controller
                 $query->orderBy('created_at', 'asc');
                 break;
             case 'priority_high':
-                $query->orderByRaw("FIELD(priority, 'high', 'medium', 'low')");
+                $query->orderByRaw("FIELD(priority, 'high', 'medium', 'low')")
+                    ->orderBy('created_at', 'desc');
                 break;
             case 'priority_low':
-                $query->orderByRaw("FIELD(priority, 'low', 'medium', 'high')");
+                $query->orderByRaw("FIELD(priority, 'low', 'medium', 'high')")
+                    ->orderBy('created_at', 'desc');
                 break;
         }
 

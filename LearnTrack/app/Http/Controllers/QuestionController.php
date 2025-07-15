@@ -26,12 +26,12 @@ class QuestionController extends Controller
             $query->where('content', 'like', '%' . $keyword . '%');
         }
 
-        switch ($request->input('sort')) {
+        switch ($request->input('sort','newest')) {
             case 'newest':
-                $query->latest();
+                $query->orderBy('created_at', 'desc');
                 break;
             case 'oldest':
-                $query->oldest();
+                $query->orderBy('created_at', 'asc');
                 break;
             case 'open':
                 $query->where('is_closed', false);
