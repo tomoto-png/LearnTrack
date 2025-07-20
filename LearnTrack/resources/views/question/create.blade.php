@@ -116,7 +116,7 @@
                                         <label class="cursor-pointer select-none">
                                             <input type="radio" name="category_id" value="{{ $category->id }}" class="hidden peer" {{ old('category_id', $input['category_id'] ?? '') == $category->id ? 'checked' : '' }}/>
                                             <div
-                                                class="px-3 py-1 rounded-full border border-[var(--accent-color)] peer-checked:bg-[var(--button-bg)] peer-checked:text-white peer-checked:border-transparent transition-colors duration-200 select-none">
+                                                class="px-3 py-1 rounded-full border border-[var(--accent-color)] peer-checked:bg-[var(--button-bg)] peer-checked:text-[var(--white)] peer-checked:border-transparent transition-colors duration-200 select-none">
                                                 {{ $category->name }}
                                             </div>
                                         </label>

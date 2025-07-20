@@ -93,7 +93,7 @@
                 <!-- 質問一覧 -->
                 @forelse ($questionDatas as $data)
                     <a href="{{ route('question.show', $data->id) }}"
-                       class="block bg-white rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">
+                       class="block bg-[var(--white)] rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">
                         <p class="text-xs text-gray-500">{{ $data->user->name }} さん</p>
                         <p class="mt-1 text-sm sm:text-base text-[var(--text-main)]">{{ Str::limit($data->content, 155, '...') }}</p>
                         <div class="flex items-center text-xs sm:text-sm text-gray-500 gap-3 mt-2">

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use App\Models\Question;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -35,8 +34,6 @@ class ManageQuestions extends Command
             ->where('is_closed', false)
             ->update(['is_closed' => true]);
 
-        Log::info("受付終了を{$closedCount}件処理しました。");
-
         //削除再投稿指定してない投稿を削除
         $oldQuestions = Question::where('created_at', '<', now()->subDays(7))
             ->where('auto_repost_enabled', false)
@@ -49,7 +46,6 @@ class ManageQuestions extends Command
             if ($question->image_url) {
                 $url = $question->image_url;
                 $path = Str::after($url, config('filesystems.disks.s3.url') . '/');
-                Log::debug($path);
                 Storage::disk('s3')->delete($path);
             }
             $user = $question->user;
@@ -62,8 +58,6 @@ class ManageQuestions extends Command
             $question->delete();
             $deletedCount++;
         }
-
-        Log::info("古い投稿を{$deletedCount}件削除しました。");
 
         //指定した投稿を再投稿
         $questions = Question::where('created_at', '<', now()->subDays(7))
@@ -85,7 +79,6 @@ class ManageQuestions extends Command
             $reposted++;
         }
 
-        Log::info("再投稿を{$reposted}件処理しました。");
         $this->info("削除：{$deletedCount}件 / 再投稿：{$reposted}件 / 受付終了：{$closedCount}件 を処理しました。");
     }
 }

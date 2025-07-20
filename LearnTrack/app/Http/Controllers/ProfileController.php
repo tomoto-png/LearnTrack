@@ -23,7 +23,6 @@ class ProfileController extends Controller
         if ($filter === 'question') {
             $questionQuery = Question::where('user_id', $user->id)
                 ->with('category');
-
             switch ($status){
                 case 'open':
                     $questionQuery->where('is_closed', false);
@@ -77,7 +76,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return view('profile.index', compact('user', 'userWithCounts', 'datas', 'filter', 'status'));
+        return view('profile.index', compact('user', 'userWithCounts', 'datas', 'filter'));
     }
 
     public function edit()

@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             PlanSeeder::class,
             StudySessionSeeder::class,
-            CategoryGroupSeeder::class,
-            CategorySeeder::class,
             QuestionSeeder::class,
         ]);
     }

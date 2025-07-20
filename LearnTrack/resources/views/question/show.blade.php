@@ -239,7 +239,7 @@
                                     @endcan
                                     @can('setBest', $answer)
                                         <button onclick="openBestModal()"
-                                                class="flex items-center gap-1 bg-yellow-500 text-white text-sm px-2 py-1 rounded-md hover:bg-yellow-600 transition">
+                                                class="flex items-center gap-1 bg-yellow-500 text-[var(--white)] text-sm px-2 py-1 rounded-md hover:bg-yellow-600 transition">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 -960 960 960" fill="#ffffff"><path d="m387-412 35-114-92-74h114l36-112 36 112h114l-93 74 35 114-92-71-93 71ZM240-40v-309q-38-42-59-96t-21-115q0-134 93-227t227-93q134 0 227 93t93 227q0 61-21 115t-59 96v309l-240-80-240 80Zm240-280q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70ZM320-159l160-41 160 41v-124q-35 20-75.5 31.5T480-240q-44 0-84.5-11.5T320-283v124Zm160-62Z"/></svg>
                                             ベストアンサー
                                         </button>
@@ -330,7 +330,7 @@
                             </div>
                             <!-- ベストアンサー選択モーダル -->
                             <div id="bestAnswerModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
-                                <div class="bg-white p-6 rounded-lg max-w-md shadow-lg space-y-6">
+                                <div class="bg-[var(--white)] p-6 rounded-lg max-w-md shadow-lg space-y-6">
                                     <h2 class="text-lg font-semibold border-b border-[var(--texy-brown)] pb-2">
                                         この回答をベストアンサーに設定しますか？
                                     </h2>
@@ -350,7 +350,7 @@
                                         <form id="bestAnswerForm" action="{{ route('answer.setBest', $answer->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
-                                                    class="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+                                                    class="px-3 py-1 bg-yellow-500 text-[var(--white)] rounded-md hover:bg-yellow-600">
                                                 ベストアンサーにする
                                             </button>
                                         </form>
@@ -390,7 +390,7 @@
     <!-- モーダル本体（初期は非表示） -->
     <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
         <!-- 背景に対して絶対位置 -->
-        <button id="closeModal" class="absolute top-10 right-10 w-14 h-14 bg-[var(--button-bg)] text-white text-2xl font-bold rounded-full flex items-center justify-center z-50">&times;</button>
+        <button id="closeModal" class="absolute top-10 right-10 w-14 h-14 bg-[var(--button-bg)] text-[var(--white)] text-2xl font-bold rounded-full flex items-center justify-center z-50">&times;</button>
 
         <!-- 中央の画像 -->
         <div>

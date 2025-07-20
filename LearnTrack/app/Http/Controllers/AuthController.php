@@ -62,12 +62,4 @@ class AuthController extends Controller
             return back()->withErrors(['login_error' => 'メールアドレスまたはパスワードが間違っています。']);
         }
     }
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
-    }
 }

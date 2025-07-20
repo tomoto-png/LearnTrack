@@ -37,10 +37,10 @@
   </tr>
   <tr>
     <td>
-      <img width="1440" alt="新規登録" src="https://github.com/user-attachments/assets/f2353827-acff-4fa3-a7fc-695e0723912f" /> 
+      <img width="1440" alt="新規登録" src="https://github.com/user-attachments/assets/78529ff5-63c7-4535-bc9f-80652dc29e32" />
     </td>
     <td>
-        <img width="1440" alt="ログイン" src="https://github.com/user-attachments/assets/1502664a-600c-46f8-88b7-956b79c84f9c" />
+      <img width="1440" alt="ログイン" src="https://github.com/user-attachments/assets/9034745a-a9c7-4693-844e-eb6f714325c7" />
     </td>
   </tr>
   <tr>

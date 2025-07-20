@@ -11,7 +11,6 @@
             --text-brown: #6b5e3f;
             --button-bg: #6c8c5d;
             --button-hover: #57724a;
-            --accent-color: #3f5c38;
             --white: white;
         }
     </style>
