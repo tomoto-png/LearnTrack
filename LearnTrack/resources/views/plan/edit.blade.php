@@ -18,11 +18,9 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex justify-center items-center">
-
     <div class="px-6 max-w-xl lg:max-w-2xl w-full">
         <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] rounded-xl shadow-md">
             <h1 class="text-xl font-semibold border-b border-[var(--texy-brown)] pb-3">学習計画編集</h1>
-
             <form action="{{ route('plan.update', ['id' => $plan->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -40,7 +38,7 @@
                             placeholder="30文字以内で入力してください"
                             maxlength="30"
                             required
-                        >
+                        />
                         @error('name')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
@@ -68,14 +66,14 @@
                             type="number"
                             id="target_hours"
                             name="target_hours"
-                            class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
+                            class="w-44 py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]"
                             value="{{old('description',$plan->target_hours) }}"
                             min="0.5"
                             max="100"
                             step="0.5"
                             placeholder="目標時間を入力"
                             required
-                        >
+                        />
                         @error('target_hours')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
@@ -84,7 +82,7 @@
                         <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
                             優先度
                         </label>
-                        <select name="priority" id="priority" required class="w-44 p-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]">
+                        <select name="priority" id="priority" required class="w-44 py-2 px-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--button-bg)]">
                             <option value="low" {{ old('priority', $plan->priority) == 'low' ? 'selected' : '' }}>🟢 低</option>
                             <option value="medium" {{ old('priority', $plan->priority) == 'medium' ? 'selected' : '' }}>🟡 中</option>
                             <option value="high" {{ old('priority', $plan->priority) == 'high' ? 'selected' : '' }}>🔴 高</option>
@@ -103,7 +101,6 @@
             </form>
         </div>
     </div>
-
 </body>
 </html>
 

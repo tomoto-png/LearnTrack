@@ -8,7 +8,7 @@
 ## 使用技術スタック
 - フレームワーク: Laravel
 - データベース: Mysql
-- フロントエンド関連: JQuery
+- フロントエンド関連: JQuery, JavaScript
 - 開発: Docker, Git
 - インフラ: AWS（EC2, S3）
 ## 創意工夫

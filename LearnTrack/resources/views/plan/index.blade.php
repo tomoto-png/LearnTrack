@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>学習計画一覧</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --bg-green: #a0b89c;
@@ -19,8 +18,7 @@
         }
     </style>
 </head>
-<body class="bg-[var(--bg-green)] text-[var(--text-brown)] flex">
-
+<body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex justify-center">
     <aside id="sidebar"
         class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50
             transform -translate-x-full transition-transform duration-300 ease-in-out
@@ -144,13 +142,11 @@
             <x-pagination.custom :paginator="$plans" />
         </div>
     </div>
-
     <script>
         document.getElementById("menuButton").addEventListener("click", () => {
             const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("-translate-x-full");
         });
     </script>
-
 </body>
 </html>

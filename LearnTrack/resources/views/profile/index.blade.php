@@ -18,8 +18,7 @@
         }
     </style>
 </head>
-<body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex">
-
+<body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex justify-center">
     <aside id="sidebar"
         class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50
             transform -translate-x-full transition-transform duration-300 ease-in-out
@@ -33,7 +32,7 @@
                 <h1 class="text-xl sm:text-2xl font-semibold">マイページ</h1>
                 <button id="menuButton"
                     class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-color)] text-[var(--white)] p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-50">
-                    <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" class="w-6 h-6">
+                    <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="ハンバーガーメニュー" class="w-6 h-6">
                 </button>
             </div>
         </header>
@@ -49,7 +48,7 @@
                         </div>
                     @else
                         <div class="w-20 h-20 rounded-full bg-[var(--bg-green)] border-2 border-[var(--accent-color)] flex items-center justify-center md:w-28 md:h-28">
-                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-10 h-10 opacity-70">
+                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="アイコン" class="w-10 h-10 opacity-70">
                         </div>
                     @endif
 
@@ -59,7 +58,7 @@
                     <a href="{{ route('profile.edit') }}"
                         class="inline-flex items-center gap-2 bg-[var(--button-bg)] text-[var(--white)] px-2 py-1 sm:px-4 sm:py-2 rounded-lg font-medium hover:bg-[var(--button-hover)] transition-all duration-300">
                         <img src="{{ asset('images/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
-                            alt="編集アイコン"
+                            alt="編集"
                             class="w-5 h-5">
                         <span class="text-base">編集</span>
                     </a>
@@ -73,48 +72,40 @@
                         <h3 class="text-lg font-semibold">プロフィール</h3>
                         <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
                     </div>
-                    <p class="mb-2 flex justify-between">
-                    <span class="font-semibold">性別：</span>
-                    <span>
-                        @switch($user->gender)
-                            @case('female')
+                    <div class="mb-2 flex justify-between">
+                        <span class="font-semibold">性別：</span>
+                        <span>
+                            @if ($user->gender === 'female')
                                 女性
-                                @break
-                            @case('male')
+                            @elseif ($user->gender === 'male')
                                 男性
-                                @break
-                            @default
+                            @else
                                 非公開
-                        @endswitch
-                    </span>
-                    </p>
-                    <p class="mb-2 flex justify-between">
-                    <span class="font-semibold">年齢：</span>
-                    <span>
-                        @switch($user->age)
-                            @case('under_10')
+                            @endif
+                        </span>
+                    </div>
+                    <div class="mb-2 flex justify-between">
+                        <span class="font-semibold">年齢：</span>
+                        <span>
+                            @if ($user->age === 'under_10')
                                 10歳未満
-                                @break
-                            @case('10s')
+                            @elseif ($user->age === '10s')
                                 10代
-                                @break
-                            @case('20s')
+                            @elseif ($user->age === '20s')
                                 20代
-                                @break
-                            @case('30_and_over')
+                            @elseif ($user->age === '30_and_over')
                                 30歳以上
-                                @break
-                            @default
+                            @else
                                 非公開
-                        @endswitch
-                    </span>
-                    </p>
-                    <p class="mb-2 flex justify-between">
+                            @endif
+                        </span>
+                    </div>
+                    <div class="mb-2 flex justify-between">
                         <span class="font-semibold whitespace-nowrap">職業：</span>
                         <span class="break-words text-left max-h-6 overflow-y-auto">
                             {{ $user->occupation ?? '非公開' }}
                         </span>
-                    </p>
+                    </div>
                 </div>
 
                 <div class="flex-1">
@@ -122,18 +113,18 @@
                         <h3 class="text-lg font-semibold">活動状況</h3>
                         <div class="flex-grow border-t border-[var(--text-brown)] ml-4"></div>
                     </div>
-                    <p class="mb-2 flex justify-between">
+                    <div class="mb-2 flex justify-between">
                         <span class="font-semibold">トマト数：</span>
                         <span>{{ $userWithCounts->count ?? 0 }}個</span>
-                    </p>
-                    <p class="mb-2 flex justify-between">
+                    </div>
+                    <div class="mb-2 flex justify-between">
                         <span class="font-semibold">質問回数：</span>
-                        <span>{{ $userWithCounts->questions_count?? 0 }}回</span>
-                    </p>
-                    <p class="mb-0 flex justify-between">
+                        <span>{{ $userWithCounts->questions_count ?? 0 }}回</span>
+                    </div>
+                    <div class="mb-0 flex justify-between">
                         <span class="font-semibold">回答回数：</span>
                         <span>{{ $userWithCounts->answers_count ?? 0 }}回</span>
-                    </p>
+                    </div>
                 </div>
                 <!-- 自己紹介 -->
                 <div class="flex-1">
@@ -151,7 +142,7 @@
         </div>
 
         <div class="mt-6 bg-[var(--bg-light-gray)] rounded-lg overflow-hidden shadow-lg p-8">
-            <div class="flex justify-center sm:justify-start gap-4 text-lg">
+            <div class="flex justify-center sm:justify-start gap-5 text-lg">
                 <a href="{{ route('profile.index', ['filter' => 'question']) }}"
                    class="pb-1 border-b-2 transition duration-200 {{ $filter == 'question' ? 'border-[var(--accent-color)] text-[var(--accent-color)] font-semibold' : 'border-transparent' }}">
                     質問一覧
@@ -236,10 +227,13 @@
                     });
                 });
             });
-        });
-        document.getElementById("menuButton").addEventListener("click", function() {
+            const menuButton = document.getElementById("menuButton");
             const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("-translate-x-full");
+            if (menuButton && sidebar) {
+                menuButton.addEventListener("click", function () {
+                    sidebar.classList.toggle("-translate-x-full");
+                });
+            }
         });
     </script>
 </body>

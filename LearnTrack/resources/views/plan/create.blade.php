@@ -39,7 +39,7 @@
                             placeholder="30文字以内で入力してください"
                             maxlength="30"
                             required
-                        >
+                        />
                     </div>
 
                     <div>
@@ -59,13 +59,23 @@
                         <label for="target_hours" class="block text-base mb-2 font-semibold text-[var(--text-brown)]">
                             目標時間
                         </label>
-                        <input type="number" id="target_hours" name="target_hours" class="w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" min="0.5" max="100" step="0.5" placeholder="目標時間を入力" required>
+                        <input
+                            type="number"
+                            id="target_hours"
+                            name="target_hours"
+                            class="w-44 py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"
+                            min="0.5"
+                            max="100"
+                            step="0.5"
+                            placeholder="目標時間を入力"
+                            required
+                        />
                     </div>
                     <div>
                         <label for="priority" class="block text-base font-semibold text-[var(--text-brown)]">
                             優先度
                         </label>
-                        <select name="priority" id="priority" required class="mt-2 w-44 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                        <select name="priority" id="priority" required class="mt-2 w-44 py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
                             <option value="low" class="text-green-600">🟢 低</option>
                             <option value="medium" class="text-yellow-600">🟡 中</option>
                             <option value="high" class="text-red-600">🔴 高</option>
@@ -81,6 +91,5 @@
             </form>
         </div>
     </div>
-
 </body>
 </html>

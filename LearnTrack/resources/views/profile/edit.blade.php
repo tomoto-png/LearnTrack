@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>プロフィール編集</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --bg-green: #a0b89c;
@@ -39,6 +38,9 @@
                                 <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-12 h-12 opacity-70">
                                 <span class="mt-2 text-sm text-gray-600">画像を選択</span>
                                 <input type="file" name="avatar" id="image" accept="image/*" class="hidden">
+                                @if ($user->avatar)
+                                    <input type="hidden" name="existing_avatar" value="{{ $user->avatar }}">
+                                @endif
                             </label>
                         </div>
                         @error('avatar')
@@ -163,7 +165,7 @@
                     <a href="{{ route('profile.index') }}"
                         class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">キャンセル</a>
                     <button type="submit"
-                        class="px-4 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold hover:bg-[var(--button-hover)] transition">作成する</button>
+                        class="px-4 py-2 rounded-lg bg-[var(--button-bg)] text-[var(--white)] font-semibold hover:bg-[var(--button-hover)] transition">更新する</button>
                 </div>
             </form>
         </div>
@@ -174,32 +176,45 @@
         @enderror
     </div>
     <script>
-        const previewImage = document.getElementById('previewImage');
-        document.getElementById('image').addEventListener('change', function(event) {
-            const file = event.target.files[0];  // 画像ファイルを取得
+        document.addEventListener('DOMContentLoaded', function () {
+            const previewImage = document.getElementById('previewImage');
+            const imageInput = document.getElementById('image');
+            const imagePreviewWrapper = document.getElementById('imagePreview');
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImage.src = e.target.result;  // プレビュー画像を更新
-                    $('#imagePreview').removeClass('hidden').addClass('flex');  // プレビュー表示エリアを表示
-                };
-                reader.readAsDataURL(file);  // ファイルを読み込む
+            const existingImage = "{{ $user->avatar ?? '' }}";
+            function showImage(src) {
+                previewImage.src = src;
+                imagePreviewWrapper.classList.remove('hidden');
+                imagePreviewWrapper.classList.add('flex');
             }
-        });
-
-        // 画像プレビューをクリックするとファイル選択ダイアログを開く
-        previewImage.addEventListener('click', function() {
-            document.getElementById('image').click();  // input要素をクリックしてファイルダイアログを開く
-        });
-
-        // ページ読み込み時に既存の画像を表示
-        document.addEventListener("DOMContentLoaded", function() {
-            const existingImage = "{{ $user->avatar ? $user->avatar : '' }}";
             if (existingImage) {
-                previewImage.src = existingImage;  // 既存の画像をプレビューに設定
-                $('#imagePreview').removeClass('hidden').addClass('flex');  // プレビュー表示エリアを表示
+                showImage(existingImage)
             }
+            // ファイル選択時のプレビュー表示
+            imageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        imagePreviewWrapper.classList.remove('hidden');
+                        imagePreviewWrapper.classList.add('flex');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    if (existingImage) {
+                        showImage(existingImage);
+                    } else {
+                        imagePreviewWrapper.classList.add('hidden');
+                        imagePreviewWrapper.classList.remove('flex');
+                        previewImage.src = '';
+                    }
+                }
+            });
+
+            previewImage.addEventListener('click', function() {
+                imageInput.click();
+            });
         });
     </script>
 </body>

@@ -22,5 +22,11 @@
         </a>
     @endif
 @empty
-    <p>該当する質問はありません。</p>
+    <div class="text-center text-lg">
+        @if ($filter === 'question')
+            <p>該当する質問はありません。</p>
+        @else
+            <p>該当する回答はありません。</p>
+        @endif
+    </div>
 @endforelse

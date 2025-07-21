@@ -23,7 +23,6 @@
     </style>
 </head>
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] flex flex-col lg:flex-row">
-
     <aside id="sidebar"
         class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50
             transform -translate-x-full transition-transform duration-300 ease-in-out

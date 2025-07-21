@@ -21,7 +21,7 @@
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex items-center justify-center">
     <div class="px-6 max-w-2xl lg:max-w-5xl  w-full">
         <div class="p-6 lg:p-8 bg-[var(--bg-light-gray)] rounded-xl shadow-md">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 mb-3">
                 <a href="{{ url()->previous()}}">
                     <span class="font-bold py-8 text-2xl">&larr;</span>
                 </a>
@@ -40,7 +40,6 @@
                             <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="画像アップロード" class="w-10 h-10 opacity-70">
                         </div>
                     @endif
-
                     <div class="mt-2">
                         <h2 class="text-xl sm:text-2xl font-semibold">{{ $user->name }}さん</h2>
                     </div>

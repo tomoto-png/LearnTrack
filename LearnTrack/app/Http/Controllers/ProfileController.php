@@ -111,10 +111,15 @@ class ProfileController extends Controller
         try {
             DB::transaction(function () use ($request, $user) {
                 if ($request->hasFile('avatar')) {
+                    if ($user->avatar) {
+                        // S3上のパスを取得するため、URLからパスを抜き出す
+                        $oldPath = str_replace(Storage::disk('s3')->url(''), '', $user->avatar);//接頭辞を削除したファイルパスを残す、str_replaceは文字列の一部置き換え
+                        Storage::disk('s3')->delete($oldPath);
+                    }
                     $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
                     $avatar = Storage::disk('s3')->url($s3Path);
                 } else {
-                    $avatar = null;
+                    $avatar = $user->avatar;
                 }
                 $user->update([
                     'name' => $request->name,

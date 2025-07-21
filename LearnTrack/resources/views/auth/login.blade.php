@@ -43,7 +43,7 @@
                             id="email"
                             name="email"
                             value="{{ old("email") }}"
-                            class="w-full mt-1 p-2 px-10 border border-[var(--text-brown)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--text-brown)] hover:scale-103 hover:shadow-lg transition-all duration-200"
+                            class="w-full mt-1 p-2 px-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--text-brown)] hover:scale-103 hover:shadow-lg transition-all duration-200"
                             required
                         />
                     </div>
@@ -63,7 +63,7 @@
                             name="password"
                             value="{{ old('password') }}"
                             minlength="8"
-                            class="w-full mt-1 p-2 px-10 border border-[var(--text-brown)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--text-brown)] hover:scale-103 hover:shadow-lg transition-all duration-200"
+                            class="w-full mt-1 p-2 px-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--text-brown)] hover:scale-103 hover:shadow-lg transition-all duration-200"
                             required
                         />
                         <button type="button" id="toggle-password"

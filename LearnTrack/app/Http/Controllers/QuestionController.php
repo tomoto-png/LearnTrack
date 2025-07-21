@@ -19,7 +19,6 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('keyword');
-
         $query = Question::with(['category', 'user']);
 
         if ($keyword) {
@@ -34,10 +33,12 @@ class QuestionController extends Controller
                 $query->orderBy('created_at', 'asc');
                 break;
             case 'open':
-                $query->where('is_closed', false);
+                $query->where('is_closed', false)
+                    ->orderBy('created_at', 'desc');
                 break;
             case 'solved':
-                $query->where('is_closed', true);
+                $query->where('is_closed', true)
+                    ->orderBy('created_at', 'desc');
                 break;
             case 'fewest_answers':
                 $query->withCount('answers')->orderBy('answers_count', 'asc');
@@ -53,40 +54,38 @@ class QuestionController extends Controller
                 break;
         }
 
-        $questionDatas = $query->latest()->paginate(5)->withQueryString();;
+        $questionDatas = $query->paginate(5)->withQueryString();;
 
         return view('question.index', compact('questionDatas', 'keyword'));
     }
+
     public function show($id)
     {
-        $bestAnswer = Answer::where('question_id', $id)
-            ->where('is_best', true)
-            ->with(['user', 'answerReply.user'])
-            ->first();
-
         $questionData = Question::with(['answers' => function($query) {
             $query->where('is_best', false)->latest();
         }, 'answers.user', 'answers.answerReply.user','category'])
         ->find($id);
 
         if (!$questionData) {
-            abort(404, '質問が見つかりませんでした');
+            abort(404);
         }
+        $questionOwnerId = $questionData->user_id;
 
-        //受付時間の処理
+        $bestAnswer = Answer::where('question_id', $id)
+            ->where('is_best', true)
+            ->with(['user', 'answerReply.user'])
+            ->first();
+
         if ($questionData->is_closed === 1) {
-            // 非公開なら受付終了
             $remainingDays = 0;
         } else {
-            // 通常の計算
             $createdAt = Carbon::parse($questionData->created_at)->startOfDay(); // 作成日付を00:00に
             $now = Carbon::now()->startOfDay(); // 現在時刻を00:00に
             $daysElapsed = $createdAt->diffInDays($now); // 小数なしの差分日数
             $remainingDays = max(7 - $daysElapsed, 0);   // 残り日数（マイナスにならないように）
         }
 
-        $questionOwnerId = $questionData->user_id;
-
+        //関連カテゴリーを取得
         $relatedQuestions = Question::where('category_id', $questionData->category_id)
             ->where('id', '!=', $questionData->id)
             ->latest()
@@ -97,23 +96,25 @@ class QuestionController extends Controller
 
         if (!$hasSameCategoryQuestions) {
             $relatedQuestions = Question::where('id', '!=', $questionData->id)
-            ->latest()
-            ->take(5)
-            ->get();
+                ->latest()
+                ->take(5)
+                ->get();
         }
 
         return view('question.show', compact('bestAnswer', 'questionData', 'questionOwnerId', 'relatedQuestions','hasSameCategoryQuestions', 'remainingDays'));
     }
+
     public function create()
     {
         $user = Auth::user();
         return view('question.create', compact('user'), ['mode' => 'input']);
     }
+
     public function store(QuestionRequest $request)
     {
         $user = Auth::user();
         $validated = $request->validated();
-        if ($request->input('remove_image') === 'true') {
+        if ($request->input('remove_image') === 'true') {//画像が削除された時の処理
             if (session('temp_image_path')) {
                 Storage::disk('public')->delete(session('temp_image_path'));//フォルダ内に保存された画像を消去
                 session()->forget('temp_image_path');//セッション内の画像を消去する
@@ -123,7 +124,6 @@ class QuestionController extends Controller
             if (session('temp_image_path')) {
                 Storage::disk('public')->delete(session('temp_image_path'));
             }
-
             $tempPath = $request->file('image_url')->store('temp', 'public');
             session(['temp_image_path' => $tempPath]); //セッションに確認用保存
             $validated['image_url'] = $tempPath; //フォルダ内に保存した画像を確認用データに再代入
@@ -148,7 +148,7 @@ class QuestionController extends Controller
             ]);
         } elseif ($mode === 'post') {
             try{
-                DB::transaction(function () use ($user, $request) {
+                DB::transaction(function () use ($user, $validated) {
                     $tempPath = session('temp_image_path');
                     if ($tempPath) {
                         $fullTempPath = storage_path('app/public/' . $tempPath);
@@ -162,7 +162,7 @@ class QuestionController extends Controller
                         $imageUrl = null;
                     }
 
-                    $reward = $request->reward;
+                    $reward = $validated['reward'];
 
                     if ($user->count < $reward) {
                         return redirect()->back()->withErrors(['reward' => 'ポイントが不足しています']);
@@ -174,13 +174,13 @@ class QuestionController extends Controller
 
                     $question = [
                         'user_id' => $user->id,
-                        'content' => $request->content,
+                        'content' => $validated['content'],
                         'image_url' => $imageUrl,
-                        'auto_repost_enabled' => $request->has('auto_repost_enabled'),
+                        'auto_repost_enabled' => isset($validated['auto_repost_enabled']),
                         'reward' => $reward
                     ];
-                    if ($request->category_id) {
-                        $question['category_id'] = $request->category_id;
+                    if (isset($validated['category_id'])) {
+                        $question['category_id'] = $validated['category_id'];
                     }
 
                     Question::create($question);
@@ -191,6 +191,7 @@ class QuestionController extends Controller
         }
         return redirect()->route('question.index');
     }
+
     public function cancel() {
         if (session('temp_image_path')) {
             Storage::disk('public')->delete(session('temp_image_path'));

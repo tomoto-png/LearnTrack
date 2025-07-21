@@ -10,9 +10,7 @@ class PlanController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request->all());
         $search = $request->get('search');
-
         $query = Plan::where('user_id', Auth::id());
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
