@@ -97,7 +97,7 @@
                         @else
                             <p class="text-lg font-medium">{{ $group->name }}</p>
                         @endif
-                        </div>
+                    </div>
                     @foreach ($questions as $question)
                         <a href="{{ route('question.show', $question->id) }}"
                             class="block bg-[var(--white)] rounded-lg shadow-sm p-4 mb-4 hover:shadow-md transition">

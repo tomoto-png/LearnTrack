@@ -173,7 +173,7 @@
         $soundEffect = Auth::user()->timerSetting->sound_effect ?? true;
     @endphp
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             let timerInterval = null;
             let totalSeconds = 0;
             let isBreakTime = false;
@@ -209,22 +209,12 @@
                 $("#timer-status").text(status);
             }
 
-            function playSound1() {
-                const sound = document.getElementById('sound1');
-                sound.currentTime = 0; // 毎回先頭から
-                sound.play();
-            }
-
-            function playSound2() {
-                const sound = document.getElementById('sound2');
-                sound.currentTime = 0;
-                sound.play();
-            }
-
-            function playSound3() {
-                const sound = document.getElementById('sound3');
-                sound.currentTime = 0;
-                sound.play();
+            function playSoundById(id) {
+                const sound = document.getElementById(id);
+                if (sound) {
+                    sound.currentTime = 0; // 毎回先頭から
+                    sound.play();
+                }
             }
 
             function updateProgressCircle() {
@@ -281,7 +271,7 @@
                             resetIconsAndProgress();
                             loopSeconds = 0;
                             if (soundEffect) {
-                                playSound1();
+                                playSoundById("sound1");
                             }
 
                         }
@@ -297,7 +287,7 @@
                     console.log("勉強タイマー終了");
                     totalStudyTime += studyCycleTime;
                     if (soundEffect) {
-                        playSound3();
+                        playSoundById("sound3");
                     }
                     startBreakTimer();
                 });
@@ -311,7 +301,7 @@
                     $("#pomodoroCountDisplay").text(pomodoroCount);
                     startStudyTimer();
                     if (soundEffect){
-                        playSound2();
+                        playSoundById("sound2");
                     }
                     if (!autoSwitch) {
                         stop();
@@ -382,7 +372,7 @@
                     }
 
                     $.ajax({
-                        url: '/timer/pomodoro/stop/' + studySessionId,
+                        url: '/timer/stop/' + studySessionId,
                         type: 'PUT',
                         data: {
                             count: count,
@@ -413,7 +403,7 @@
                 if (!timerInterval) {
                     startStudyTimer();
                     $.ajax({
-                        url: '/timer/pomodoro/start/' + $('#planSelect').val(),
+                        url: '/timer/start/' + $('#planSelect').val(),
                         type: 'POST',
                         success: function (response) {
                             if (response.studySessionId) {
@@ -509,10 +499,13 @@
                 $("#reset-button").hide();
                 $("#start-button").show();
             });
-        });
-
-        document.getElementById("menuButton").addEventListener("click", () => {
-            document.getElementById("sidebar").classList.toggle("-translate-x-full");
+            const menuButton = document.getElementById("menuButton");
+            const sidebar = document.getElementById("sidebar");
+            if (menuButton && sidebar) {
+                menuButton.addEventListener("click", function () {
+                    sidebar.classList.toggle("-translate-x-full");
+                });
+            }
         });
     </script>
 </body>

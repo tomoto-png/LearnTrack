@@ -140,13 +140,15 @@ class QuestionController extends Controller
                 'categoryGroups' => $categoryGroups,
                 'user' => $user
             ]);
-        } elseif ($mode === 'edit') {
+        }
+        if ($mode === 'edit') {
             return view('question.create', [
                 'mode' => 'input',
                 'input' => $validated,
                 'user' => $user
             ]);
-        } elseif ($mode === 'post') {
+        }
+        if ($mode === 'post') {
             try{
                 DB::transaction(function () use ($user, $validated) {
                     $tempPath = session('temp_image_path');

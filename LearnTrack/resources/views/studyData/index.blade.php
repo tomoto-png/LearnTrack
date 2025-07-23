@@ -146,12 +146,11 @@
         let selectedType = 'day';
         let chartType = 'pie';
         let labelText = '';
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
+        let calendarInitialized = false;
+        let selectedDateEl = null;
+        let calendar;
+        let targetDate = new Date().toISOString().split('T')[0];
+        const todayStr = new Date().toISOString().split('T')[0];
         function createChart(labels, data) {
             const ctx = document.getElementById('studyPieChart').getContext('2d');
             const chartWrapper = document.getElementById('chartWrapper');
@@ -352,35 +351,34 @@
                 options: options
             });
         }
+        function closeCalendarModal() {
+            $('#calendarModal').removeClass('flex').addClass('hidden');
 
+            if (!yearPicker.classList.contains('hidden')) {
+                yearPicker.classList.add('hidden');
+            }
+            if (!monthPicker.classList.contains('hidden')) {
+                monthPicker.classList.add('hidden');
+            }
+            if (!changeCalendarBtn.classList.contains('hidden')) {
+                changeCalendarBtn.classList.toggle('hidden');
+                option.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            }
+
+            isFirstOpen = true;
+        }
         document.addEventListener('DOMContentLoaded', function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             createChart(@json($labels), @json($data));//グラフ初期描画
             //カレンダー機能
             const calendarBtn = document.getElementById('calendarToggleBtn');
             const calendarModal = document.getElementById('calendarModal');
-            let calendarInitialized = false;
-            let selectedDateEl = null;
-            const todayStr = new Date().toISOString().split('T')[0];
-            let calendar;
-            let targetDate = todayStr;
-
-            function closeCalendarModal() {
-                $('#calendarModal').removeClass('flex').addClass('hidden');
-
-                if (!yearPicker.classList.contains('hidden')) {
-                    yearPicker.classList.add('hidden');
-                }
-                if (!monthPicker.classList.contains('hidden')) {
-                    monthPicker.classList.add('hidden');
-                }
-                if (!changeCalendarBtn.classList.contains('hidden')) {
-                    changeCalendarBtn.classList.toggle('hidden');
-                    option.classList.toggle('hidden');
-                    closeIcon.classList.toggle('hidden');
-                }
-
-                isFirstOpen = true;
-            }
 
             calendarBtn.addEventListener('click', function () {
                 if (calendarModal.classList.contains('hidden')) {
@@ -828,11 +826,13 @@
                     }
                 })
             }
-        });
-
-        document.getElementById("menuButton").addEventListener("click", function() {
+            const menuButton = document.getElementById("menuButton");
             const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("-translate-x-full");
+            if (menuButton && sidebar) {
+                menuButton.addEventListener("click", function () {
+                    sidebar.classList.toggle("-translate-x-full");
+                });
+            }
         });
     </script>
 </body>

@@ -15,52 +15,56 @@ class SearchController extends Controller
         $categoryId = $request->input('category');
         $keyword = $request->input('keyword');
 
-        $query = Question::with('category.group');
+        $Question = Question::with('category.group');
 
         // 絞り込み（グループまたはカテゴリ）
         if ($groupId) {
-            $query->whereHas('category.group', function ($q) use ($groupId) {
-                $q->where('id', $groupId);
+            $Question->whereHas('category.group', function ($query) use ($groupId) {
+                $query->where('id', $groupId);
             });
         } elseif ($categoryId) {
-            $query->where('category_id', $categoryId);
+            $Question->where('category_id', $categoryId);
         }
 
         // キーワード検索（選択されたカテゴリ内で）
         if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('content', 'like', "%$keyword%");
+            $Question->where(function ($query) use ($keyword) {
+                $query->where('content', 'like', "%$keyword%");
             });
         }
 
         switch ($request->input('sort')) {
             case 'newest':
-                $query->latest();
+                $Question->orderBy('created_at', 'desc');
                 break;
             case 'oldest':
-                $query->oldest();
+                $Question->orderBy('created_at', 'asc');
                 break;
             case 'open':
-                $query->where('is_closed', false);
+                $Question->where('is_closed', false)
+                    ->orderBy('created_at', 'desc');
                 break;
             case 'solved':
-                $query->where('is_closed', true);
+                $Question->where('is_closed', true)
+                    ->orderBy('created_at', 'desc');
                 break;
             case 'fewest_answers':
-                $query->withCount('answers')->orderBy('answers_count', 'asc');
+                $Question->withCount('answers')
+                    ->orderBy('answers_count', 'asc');
                 break;
             case 'most_answers':
-                $query->withCount('answers')->orderBy('answers_count', 'desc');
+                $Question->withCount('answers')
+                    ->orderBy('answers_count', 'desc');
                 break;
             case 'least_reward':
-                $query->orderBy('reward', 'asc');
+                $Question->orderBy('reward', 'asc');
                 break;
             case 'most_reward':
-                $query->orderBy('reward', 'desc');
+                $Question->orderBy('reward', 'desc');
                 break;
         }
 
-        $questions = $query->latest()->paginate(5)->withQueryString();;
+        $questions = $Question->paginate(5)->withQueryString();;
 
         $category = Category::with('group')->find($categoryId);
         if ($groupId) {

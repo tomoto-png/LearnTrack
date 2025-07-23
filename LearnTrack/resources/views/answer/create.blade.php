@@ -147,77 +147,79 @@
         @enderror
     </div>
     <script>
-        const inputImage = document.getElementById('image');
-        const image = document.getElementById('remove_image');
-        const previewImage = document.getElementById('image-preview');
-        const previewArea = document.getElementById('preview-area');
-        const clearBtn = document.getElementById('clear-image');
-        const modeInput = document.getElementById('modeInput');
-        const form = document.getElementById('questionForm');
-        const text = document.getElementById('text');
-        const btn = document.getElementById('toggleBtn');
-
-        if (inputImage) {
-
-            inputImage.addEventListener('change', function (event) {//ユーザーがファイルを選択（または変更）したときに "change" イベントが発生します, 	event には「どんなイベントが起きたか」の情報が入っている
-                const file = event.target.files[0];//event.target は <input type="file"> 要素を取得
-                if (file) {
-                    image.value = 'false';
-                    const reader = new FileReader();//FileReader を作成, ローカルファイルを読み込むためのツール
-                    reader.onload = function(e) {   //reader.onload はファイルの読み込みが完了したときに実行される処理
-                        previewImage.src = e.target.result;//読み込んだBase64形式のデータURLを<img>のsrcに
-                        previewArea.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);//画像ファイルを Base64 のURLとして読み込み開始
-                } else {
-                    previewImage.src = '';
-                    previewArea.classList.add('hidden');
-                }
-            });
-        }
-
-        if (clearBtn) {
-            clearBtn.addEventListener('click', function () {
-                inputImage.value = '';// ファイル選択をクリア
-                previewImage.src = '';
-                previewArea.classList.add('hidden');
-                image.value = 'true';
-            });
-        }
-
         function submitWithMode(mode) {
+            const modeInput = document.getElementById('modeInput');
+            const form = document.getElementById('questionForm');
             modeInput.value = mode;
             form.submit();
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputImage = document.getElementById('image');
+            const image = document.getElementById('remove_image');
+            const previewImage = document.getElementById('image-preview');
+            const previewArea = document.getElementById('preview-area');
+            const clearBtn = document.getElementById('clear-image');
+            const text = document.getElementById('text');
+            const btn = document.getElementById('toggleBtn');
 
+            if (inputImage) {
+                inputImage.addEventListener('change', function (event) {//ユーザーがファイルを選択（または変更）したときに "change" イベントが発生します, 	event には「どんなイベントが起きたか」の情報が入っている
+                    const file = event.target.files[0];//event.target は <input type="file"> 要素を取得
+                    if (file) {
+                        image.value = 'false';
+                        const reader = new FileReader();//FileReader を作成, ローカルファイルを読み込むためのツール
+                        reader.onload = function(e) {   //reader.onload はファイルの読み込みが完了したときに実行される処理
+                            previewImage.src = e.target.result;//読み込んだBase64形式のデータURLを<img>のsrcに
+                            previewArea.classList.remove('hidden');
+                            previewArea.classList.add('flex');
+                        };
+                        reader.readAsDataURL(file);//画像ファイルを Base64 のURLとして読み込み開始
+                    } else {
+                        previewImage.src = '';
+                        previewArea.classList.add('hidden');
+                        previewArea.classList.remove('flex');
+                    }
+                });
+            }
 
-        const computedStyle = window.getComputedStyle(text);//スタイル情報を取得
-        const lineHeight = parseFloat(computedStyle.lineHeight);//1行分の高さを取得
-        const lineCount = text.scrollHeight / lineHeight;//全体の質問文の高さと1行分高さの計算で行数が出る
-        const mode = "{{ $mode }}";
-        const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};
-        const limitLines = (mode === 'confirm') ?  19: 2;
-        let styleHeight;
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    inputImage.value = '';// ファイル選択をクリア
+                    previewImage.src = '';
+                    previewArea.classList.add('hidden');
+                    previewArea.classList.remove('flex');
+                    image.value = 'true';
+                });
+            }
 
-        if (mode === 'confirm' && hasImage) {
-            styleHeight = 'max-h-52';
-        } else if (mode === 'confirm') {
-            styleHeight = 'max-h-custom';
-        } else {
-            styleHeight = 'max-h-12';
-        }
-        if (lineCount > limitLines) {
-            btn.classList.remove('hidden');
-            btn.addEventListener('click', () => {
-                if (text.className.includes(styleHeight)) {
-                    text.classList.remove(styleHeight);
-                    btn.textContent = '閉じる';
-                } else {
-                    text.classList.add(styleHeight);
-                    btn.textContent = '...続きを読む';
-                }
-            })
-        }
+            const computedStyle = window.getComputedStyle(text);//スタイル情報を取得
+            const lineHeight = parseFloat(computedStyle.lineHeight);//1行分の高さを取得
+            const lineCount = text.scrollHeight / lineHeight;//全体の質問文の高さと1行分高さの計算で行数が出る
+            const mode = "{{ $mode }}";
+            const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};
+            const limitLines = (mode === 'confirm') ?  19: 2;
+            let styleHeight;
+
+            if (mode === 'confirm' && hasImage) {
+                styleHeight = 'max-h-52';
+            } else if (mode === 'confirm') {
+                styleHeight = 'max-h-custom';
+            } else {
+                styleHeight = 'max-h-12';
+            }
+            if (lineCount > limitLines) {
+                btn.classList.remove('hidden');
+                btn.addEventListener('click', () => {
+                    if (text.className.includes(styleHeight)) {
+                        text.classList.remove(styleHeight);
+                        btn.textContent = '閉じる';
+                    } else {
+                        text.classList.add(styleHeight);
+                        btn.textContent = '...続きを読む';
+                    }
+                })
+            }
+        });
     </script>
 </body>
 </html>

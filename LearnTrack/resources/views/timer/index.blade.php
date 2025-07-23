@@ -156,7 +156,7 @@
     @endphp
 
     <script>
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function () {
             let timerInterval;
             let totalSeconds = 0;
             let studySessionId = null;
@@ -186,16 +186,12 @@
                     `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
                 );
             }
-            function playSound1() {
-                const sound = document.getElementById('sound1');
-                sound.currentTime = 0; // 毎回先頭から
-                sound.play();
-            }
-
-            function playSound2() {
-                const sound = document.getElementById('sound2');
-                sound.currentTime = 0; // 毎回先頭から
-                sound.play();
+            function playSoundById(id) {
+                const sound = document.getElementById(id);
+                if (sound) {
+                    sound.currentTime = 0; // 毎回先頭から
+                    sound.play();
+                }
             }
 
             function updateProgressCircle() {
@@ -209,7 +205,7 @@
 
                 if (progress < previousProgress) {
                     if (soundEffect) {
-                        playSound2(); // 効果音を再生
+                        playSoundById('sound2');
                     }
                 }
 
@@ -233,7 +229,7 @@
                             resetIconsAndProgress();
                             loopSeconds = 0;
                             if (soundEffect) {
-                                playSound1();
+                                playSoundById('sound1');
                             }
                         }
                     }, 1000);
@@ -346,7 +342,6 @@
                     clearInterval(timerInterval);
                     timerInterval = null;
 
-                    console.log(count);
                     $.ajax({
                         url: '/timer/stop/' + studySessionId,
                         type: 'PUT',
@@ -410,10 +405,13 @@
                 $('#reset-button').hide();
                 $("#start-button").show();
             });
-        });
-
-        document.getElementById("menuButton").addEventListener("click", () => {
-            document.getElementById("sidebar").classList.toggle("-translate-x-full");
+            const menuButton = document.getElementById("menuButton");
+            const sidebar = document.getElementById("sidebar");
+            if (menuButton && sidebar) {
+                menuButton.addEventListener("click", function () {
+                    sidebar.classList.toggle("-translate-x-full");
+                });
+            }
         });
     </script>
 </body>

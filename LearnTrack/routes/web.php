@@ -44,8 +44,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/saveTimerSettings', [TimerController::class, 'saveTimerSettings'])->name('pomodoro.saveTimerSettings');
         //ポモドーロタイマー管理
         Route::get('/pomodoro', [TimerController::class, 'pomodoroIndex'])->name('pomodoro.index');
-        Route::post('/pomodoro/start/{plan?}', [TimerController::class, 'pomodoroStart'])->name('pomodoro.start');
-        Route::put('/pomodoro/stop/{studySession}', [TimerController::class, 'pomodoroStop'])->name('pomodoro.stop');
         Route::get('/pomodoro/settings', [TimerController::class, 'pomodoroSettings'])->name('pomodoro.settings');
         Route::post('/pomodoro/savePomodoroSettings', [TimerController::class, 'savePomodoroSettings'])->name('pomodoro.savePomodoroSettings');
     });

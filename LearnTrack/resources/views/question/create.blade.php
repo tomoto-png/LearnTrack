@@ -104,8 +104,8 @@
                             <div class="p-4 border-b border-[var(--texy-brown)] pb-2 group hidden">
                                 <!-- 展開ボタン -->
                                 <button type="button"
-                                class="toggle-btn flex justify-between items-center w-full text-base font-light focus:outline-none"
-                                data-target="group-{{ $group->id }}">
+                                    class="toggle-btn flex justify-between items-center w-full text-base font-light focus:outline-none"
+                                    data-target="group-{{ $group->id }}">
                                 <span>{{ $group->name }}</span>
                                 <span class="arrow text-lg">▲</span>
                                 </button>
@@ -184,7 +184,7 @@
                             @php
                                 $previewImagePath = old('image_url') ?: session('temp_image_path');
                             @endphp
-                            <div class="mt-4 {{ $previewImagePath ? '' : 'hidden' }}" id="preview-area">
+                            <div class="mt-4 {{ $previewImagePath ? 'flex' : 'hidden' }}" id="preview-area">
                                 <div class="relative inline-block">
                                     <img id="image-preview" src="{{ $previewImagePath ? asset('storage/' . $previewImagePath) : '' }}" class="w-32 h-auto rounded border" />
                                     <input type="hidden" name="remove_image" id="remove_image" value="false">
@@ -243,83 +243,83 @@
         </div>
     </div>
     <script>
-        const inputImage = document.getElementById('image');
-        const previewArea = document.getElementById('preview-area');
-        const previewImage = document.getElementById('image-preview');
-        const clearBtn = document.getElementById('clear-image');
-        const image = document.getElementById('remove_image');
-        const modeInput = document.getElementById('modeInput');
-        const form = document.getElementById('questionForm');
-        const text = document.getElementById('text');
-        const btn = document.getElementById('toggleBtn');
-        const mode = "{{ $mode }}";
-
-        if (inputImage) {
-            inputImage.addEventListener('change', function (event) {//ユーザーがファイルを選択（または変更）したときに "change" イベントが発生します, 	event には「どんなイベントが起きたか」の情報が入っている
-                const file = event.target.files[0];//event.target は <input type="file"> 要素を取得
-                if (file) {
-                    image.value = 'false';
-                    const reader = new FileReader();//FileReader を作成, ローカルファイルを読み込むためのツール
-                    reader.onload = function(e) {   //reader.onload はファイルの読み込みが完了したときに実行される処理
-                        previewImage.src = e.target.result;//読み込んだBase64形式のデータURLを<img>のsrcに
-                        previewArea.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);//画像ファイルを Base64 のURLとして読み込み開始
-                } else {
-                    previewImage.src = '';
-                    previewArea.classList.add('hidden');
-                }
-            });
-        }
-
-        if (clearBtn) {
-            clearBtn.addEventListener('click', function () {
-                inputImage.value = '';// ファイル選択をクリア
-                previewImage.src = '';
-                previewArea.classList.add('hidden');
-                image.value = 'true';
-            });
-        }
         function submitWithMode(mode) {
+            const modeInput = document.getElementById('modeInput');
+            const form = document.getElementById('questionForm');
             modeInput.value = mode;
             form.submit();
-        };
-        if (mode === 'confirm') {
-            const computedStyle = window.getComputedStyle(text);
-            const lineHeight = parseFloat(computedStyle.lineHeight);
-
-            const lineCount = text.scrollHeight / lineHeight;
-            const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};
-            let limitLines;
-            let styleHeight;
-            if (hasImage) {
-                limitLines = 3;
-                styleHeight = 'max-h-20';
-            } else {
-                limitLines = 10;
-                styleHeight = 'max-h-64';
-            }
-
-
-            if (lineCount > limitLines) {
-                btn.classList.remove('hidden');
-                btn.addEventListener('click', () => {
-                    if (text.className.includes(styleHeight)) {
-                        text.classList.remove(styleHeight);
-                        btn.textContent = '閉じる';
-                    } else {
-                        text.classList.add(styleHeight);
-                        btn.textContent = '...続きを読む';
-                    }
-                })
-            }
         }
+
         document.addEventListener('DOMContentLoaded', function () {
+            const inputImage = document.getElementById('image');
+            const previewArea = document.getElementById('preview-area');
+            const previewImage = document.getElementById('image-preview');
+            const clearBtn = document.getElementById('clear-image');
+            const image = document.getElementById('remove_image');
+
+            const text = document.getElementById('text');
+            const btn = document.getElementById('toggleBtn');
+            const mode = "{{ $mode }}";
+
+            if (inputImage) {
+                inputImage.addEventListener('change', function (event) {//ユーザーがファイルを選択（または変更）したときに "change" イベントが発生します, 	event には「どんなイベントが起きたか」の情報が入っている
+                    const file = event.target.files[0];//event.target は <input type="file"> 要素を取得
+                    if (file) {
+                        image.value = 'false';
+                        const reader = new FileReader();//FileReader を作成, ローカルファイルを読み込むためのツール
+                        reader.onload = function(e) {   //reader.onload はファイルの読み込みが完了したときに実行される処理
+                            previewImage.src = e.target.result;//読み込んだBase64形式のデータURLを<img>のsrcに
+                            previewArea.classList.remove('hidden');
+                            previewArea.classList.add('flex');
+                        };
+                        reader.readAsDataURL(file);//画像ファイルを Base64 のURLとして読み込み開始
+                    } else {
+                        previewImage.src = '';
+                        previewArea.classList.add('hidden');
+                        previewArea.classList.remove('flex');
+                    }
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    inputImage.value = '';// ファイル選択をクリア
+                    previewImage.src = '';
+                    previewArea.classList.add('hidden');
+                    previewArea.classList.remove('flex');
+                    image.value = 'true';
+                });
+            }
+
+            if (mode === 'confirm') {
+                const computedStyle = window.getComputedStyle(text);
+                const lineHeight = parseFloat(computedStyle.lineHeight);
+
+                const lineCount = text.scrollHeight / lineHeight;
+                const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};
+                let limitLines;
+                let styleHeight;
+                if (hasImage) {
+                    limitLines = 3;
+                    styleHeight = 'max-h-20';
+                } else {
+                    limitLines = 10;
+                    styleHeight = 'max-h-64';
+                }
+
+
+                if (lineCount > limitLines) {
+                    btn.classList.remove('hidden');
+                    btn.addEventListener('click', () => {
+                        const isCollapsed = text.classList.toggle(styleHeight);
+                        btn.textContent = isCollapsed ? '...続きを読む' : '閉じる';
+                    })
+                }
+            }
+            //カテゴリー処理
             const buttons = document.querySelectorAll('.toggle-btn');//すべてのボタンを取得
             const groupBtn = document.getElementById('group-btn');
             const groups = document.querySelectorAll('.group');
-            const radios = document.querySelectorAll('input[type="radio"][name="category_id"]');
-            let lastChecked = null
 
             if (groupBtn && groups.length > 0) {
                 groupBtn.addEventListener('click', function () {
@@ -328,17 +328,6 @@
                     });
                     groupBtn.textContent = groups[0].classList.contains('hidden') ? '▲' : '▼';
                 })
-
-                radios.forEach(radio => {
-                    radio.addEventListener('click', function (e) {
-                        if (lastChecked === this) {
-                            this.checked = false;
-                            lastChecked = null;
-                        } else {
-                            lastChecked = this;
-                        }
-                    });
-                });
             }
 
             if (buttons.length > 0) {

@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Plan;
 use App\Models\StudySession;
 use App\Models\TimerSetting;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
+
 
 class TimerController extends Controller
 {
@@ -21,56 +21,6 @@ class TimerController extends Controller
         return view('timer.index', compact('plans'));
     }
 
-    public function start(Plan $plan = null)
-    {
-        $userId = Auth::id();
-
-        $unfinishedSession = StudySession::where('user_id', $userId)
-        ->whereNull('duration')
-        ->first();
-
-        if ($unfinishedSession) {
-            $unfinishedSession->delete();
-        }
-
-        $newSession = StudySession::create([
-            'user_id' => $userId,
-            'plan_id' => $plan?->id,
-        ]);
-
-        return response()->json(['message' => 'タイマー開始', 'studySessionId' => $newSession->id], 200);
-    }
-
-    public function stop(StudySession $studySession)
-    {
-        $user = Auth::user();
-        $durationInSeconds = request()->input('duration');
-        $count = request()->input('count');
-        $userCount = $user->count + $count;
-
-        $studySession->update([
-            'duration' => $durationInSeconds,
-        ]);
-
-        $user->update([
-            'count' => $userCount
-        ]);
-
-        $plan = $studySession->plan;
-
-        if ($plan && $plan->target_hours > 0) {
-            $totalDuration = $plan->studySessions()->sum('duration');
-            $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
-            $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
-            $plan->update([
-                'progress' => $progress,
-                'completed' => $progress >= 100,
-            ]);
-        }
-
-        return response()->json(['message' => 'タイマー停止']);
-    }
-
     public function pomodoroIndex()
     {
         $user = Auth::user();
@@ -80,12 +30,14 @@ class TimerController extends Controller
         return view('pomodoro.index', compact('plans'));
     }
 
-    public function pomodoroStart(Plan $plan = null)
+    public function start(Plan $plan = null)
     {
         $userId = Auth::id();
+
         $unfinishedSession = StudySession::where('user_id', $userId)
-        ->whereNull('duration')
-        ->first();
+            ->whereNull('duration')
+            ->first();
+
         if ($unfinishedSession) {
             $unfinishedSession->delete();
         }
@@ -98,33 +50,40 @@ class TimerController extends Controller
         return response()->json(['studySessionId' => $newSession->id], 200);
     }
 
-    public function pomodoroStop(StudySession $studySession)
+    public function stop(StudySession $studySession)
     {
         $user = Auth::user();
-        $duration = request()->input('duration');
-        $count = request()->input('count');
-        $userCount = $user->count + $count;
 
-        $studySession->update([
-            'duration' => $duration
-        ]);
+        try{
+            DB::transaction(function () use ($user, $studySession) {
+                $duration = request()->input('duration');
+                $count = request()->input('count');
+                $userCount = $user->count + $count;
+                $studySession->update([
+                    'duration' => $duration,
+                ]);
 
-        $user->update([
-            'count' => $userCount,
-        ]);
-        //目標時間のパーセント計算
-        $plan = $studySession->plan;
+                $user->update([
+                    'count' => $userCount
+                ]);
 
-        if ($plan && $plan->target_hours > 0) {
-            $totalDuration = $plan->studySessions()->sum('duration');
-            $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
-            $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
-            $plan->update([
-                'progress' => $progress,
-            ]);
+                $plan = $studySession->plan;
+
+                if ($plan && $plan->target_hours > 0) {
+                    $totalDuration = $plan->studySessions()->sum('duration');
+                    $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
+                    $progress = min(round(($totalDuration / $targetSeconds) * 100 ,2),100);//round(,1)で小数点1まで,	min(, 100)で最大値100まで指定
+                    $plan->update([
+                        'progress' => $progress,
+                        'completed' => $progress >= 100,
+                    ]);
+                }
+            });
+        } catch (QueryException $e) {
+            return redirect()->back()->withErrors(['error' => 'タイマーの終了に失敗しました']);
         }
 
-        return response()->json(['message' => 'タイマー停止', 'duration' => $duration]);
+        return response()->json(['message' => 'タイマー停止']);
     }
 
     public function timerSettings()

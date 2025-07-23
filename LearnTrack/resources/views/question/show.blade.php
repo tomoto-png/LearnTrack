@@ -390,7 +390,7 @@
     <!-- モーダル本体（初期は非表示） -->
     <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
         <!-- 背景に対して絶対位置 -->
-        <button id="closeModal" class="absolute top-10 right-10 w-14 h-14 bg-[var(--button-bg)] text-[var(--white)] text-2xl font-bold rounded-full flex items-center justify-center z-50">&times;</button>
+        <button id="closeModal" class="absolute top-10 right-10 w-10 h-10 bg-[var(--button-bg)] text-[var(--white)] text-xl font-bold rounded-3xl flex items-center justify-center z-50">&times;</button>
 
         <!-- 中央の画像 -->
         <div>
@@ -406,7 +406,7 @@
     @enderror
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const hasImage = {{ !empty($input['image_url']) ? 'true' : 'false' }};
+            const hasImage = {{ !empty($questionData->image_url) ? 'true' : 'false' }};
             const buttons = document.querySelectorAll('.toggle-replies-btn');
 
             if (hasImage) {
@@ -415,17 +415,20 @@
                 const closeModal = document.getElementById('closeModal');
 
                 thumbnail.addEventListener('click', () => {
-                    $('#imageModal').removeClass('hidden').addClass('flex');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
                 });
 
                 closeModal.addEventListener('click', () => {
-                    $('#imageModal').removeClass('flex').addClass('hidden')
+                    modal.classList.remove('flex');
+                    modal.classList.add('hidden');
                 });
 
                 // モーダルの背景クリックでも閉じる
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
-                        $('#imageModal').removeClass('flex').addClass('hidden');
+                        modal.classList.remove('flex');
+                        modal.classList.add('hidden');
                     }
                 });
             }
@@ -438,13 +441,9 @@
 
                     targetElem.classList.toggle('hidden');
 
-                    if (targetElem.classList.contains('hidden')) {
-                        // 隠れてたら元の文字に戻す
-                        this.textContent = this.getAttribute('data-label');
-                    } else {
-                        // 見えてたら「閉じる」に
-                        this.textContent = '閉じる';
-                    }
+                    this.textContent = targetElem.classList.contains('hidden')
+                        ? this.getAttribute('data-label')
+                        : '閉じる';
                 });
             });
         });

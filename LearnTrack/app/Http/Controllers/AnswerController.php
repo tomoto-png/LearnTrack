@@ -54,8 +54,7 @@ class AnswerController extends Controller
         }
         if ($mode === 'post') {
             try {
-                DB::transaction(function () use ($user, $request, $input) {
-                    $imageUrl = null;
+                DB::transaction(function () use ($user, $input) {
                     if (session('confirm_image_path')) {
                         $confirmPath = session('confirm_image_path');
                         $fullConfirmPath = storage_path('app/public/' . $confirmPath);
@@ -65,11 +64,13 @@ class AnswerController extends Controller
                         //一時保存のデータを削除
                         Storage::disk('public')->delete(session('confirm_image_path'));
                         session()->forget('confirm_image_path');
+                    } else {
+                        $imageUrl = null;
                     }
                     Answer::create([
                         'user_id' => $user->id,
                         'question_id' => $input['question_id'],
-                        'content' => $request->content,
+                        'content' => $input['content'],
                         'image_url' => $imageUrl,
                     ]);
                 });

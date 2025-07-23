@@ -53,12 +53,12 @@
                             <div>
                                 <p id="text" class="text-base leading-relaxed max-h-custom overflow-hidden">{!! nl2br(preg_replace('/(https?:\/\/[^\s]+)/i',
                                     '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">$1</a>',
-                                    e($replieInput->content))) !!}</p>
+                                    e($replieInput['content']))) !!}</p>
                                 <button type="button" id="toggleBtn" class="text-blue-500 hover:text-blue-700 hidden">...続きを読む</button>
-                                <input type="hidden" name="content" value="{{ $input['content'] }}">
+                                <input type="hidden" name="content" value="{{ $replieInput['content'] }}">
                             </div>
-                            <input type="hidden" name="content" value="{{ $replieInput->content }}">
-                            <input type="hidden" name="answer_id" value="{{ $replieInput->answer_id }}">
+                            <input type="hidden" name="content" value="{{ $replieInput['content'] }}">
+                            <input type="hidden" name="answer_id" value="{{ $replieInput['answer_id'] }}">
                             <input type="hidden" name="mode" id="modeInput" value="">
                         </div>
                         <div class="flex justify-end space-x-4 mt-4">
@@ -89,7 +89,7 @@
                                     class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none h-40 sm:h-46 lg:h-52 focus:ring-2 focus:ring-[var(--accent-color)]"
                                     placeholder="5文字〜2000文字で入力してください。"
                                     minlength="5"
-                                    maxlength="2000">{{ old('content', $replieInput->content ?? '')}}</textarea>
+                                    maxlength="2000">{{ old('content', $replieInput['content'] ?? '')}}</textarea>
                                 <p class="text-sm mb-2">
                                     ※URLを使用する際は、後ろにスペースや改行を入れてから質問内容を入力してください。
                                 </p>
@@ -98,7 +98,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <input type="hidden" name="answer_id" id="answer_id" value="{{ $answer->id ?? $replieInput->answer_id}}">
+                        <input type="hidden" name="answer_id" id="answer_id" value="{{ $answer->id ?? $replieInput['answer_id']}}">
                         <input type="hidden" name="mode" id="mode" value="confirm">
                         <div class="flex justify-end space-x-4 mt-4">
                             <a href="{{ route('question.show', ['id' => ($questionId)]) }}" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">キャンセル</a>

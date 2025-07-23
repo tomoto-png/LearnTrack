@@ -27,6 +27,7 @@ class StudyDataController extends Controller
             'loginYear'=> $loginYear
         ]);
     }
+
     public function fetchData(Request $request)
     {
         $date = Carbon::parse($request->input('date'));
@@ -57,7 +58,7 @@ class StudyDataController extends Controller
         ]);
     }
 
-    private function getChartData($startDate, $endDate, $type = 'day', $chartType = 'pie')
+    private function getChartData($startDate, $endDate, $type = 'month', $chartType = 'bar')
     {
         $sessions = StudySession::where('user_id', Auth::id())
                                 ->whereBetween('created_at', [$startDate, $endDate])
@@ -73,10 +74,9 @@ class StudyDataController extends Controller
             $otherLabel = null;
             $otherData = null;
 
-            $planDurations = $sessions->groupBy('plan_id')->map(fn($group) => $group->sum('duration'));
-
-            $sortedPlanDurations = $planDurations->sortDesc();//データの順番を大き順に
-
+            $sortedPlanDurations = $sessions->groupBy('plan_id')
+                ->map(fn($group) => $group->sum('duration'))
+                ->sortDesc();//データの順番を大き順に
             foreach ($sortedPlanDurations as $planId => $seconds) {
                 if (empty($planId)) {
                     $otherLabel = 'その他';
@@ -108,7 +108,7 @@ class StudyDataController extends Controller
                 }
 
                 foreach ($sessions as $session) {
-                    $time = $session->created_at->format('H:i:s');//本日中の学習データの時間だけを取る
+                    $time = $session->created_at->format('H:i:s');
                     foreach ($timeRanges as $label => $range) {
                         if ($time >= $range['start'] && $time <= $range['end']) {
                             $totals[$label] += $session->duration;
@@ -116,7 +116,6 @@ class StudyDataController extends Controller
                         }
                     }
                 }
-
 
                 foreach ($totals as $label => $seconds) {
                     $labels[] = $label;
@@ -135,7 +134,6 @@ class StudyDataController extends Controller
                 //実際勉強して時間をここで計算
                 $dailyDurations = $sessions->groupBy(fn($session) => $session->created_at->format('Y-m-d'))//日ごとに学習履歴をまとめる（グループにする）
                                            ->map(fn($group) => $group->sum('duration'));//グループごとの時間を足す
-
                 //学習して日付に勉強時間を代入
                 foreach ($dailyDurations as $date => $seconds) {
                     $allDates[$date] = $seconds;
@@ -143,7 +141,7 @@ class StudyDataController extends Controller
 
                 //グラフで表示するデータを作成
                 foreach ($allDates as $date => $seconds) {//dailyDurations内の日付と時間をdateとsecondsに代入する
-                    $labels[] = (new \Carbon\Carbon($date))->format('n/j'); // Laravel が使う日付ライブラリ「Carbon」を使って、'2025-05-01'から'5/1'に変換
+                    $labels[] = Carbon::parse($date)->format('n/j'); // Laravel が使う日付ライブラリ「Carbon」を使って、'2025-05-01'から'5/1'に変換
                     $data[] = $seconds;
                 }
             } elseif ($type === 'year') {
