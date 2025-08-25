@@ -38,8 +38,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('timer')->group(function () {
         //集中タイマー管理
         Route::get('/', [TimerController::class, 'index'])->name('timer.index');
-        Route::post('/start/{plan?}', [TimerController::class, 'start'])->name('timer.start');
-        Route::put('/stop/{studySession}', [TimerController::class, 'stop'])->name('timer.stop');
+        Route::post('/start/{id?}', [TimerController::class, 'start'])->name('timer.start');
+        Route::put('/stop/{id}', [TimerController::class, 'stop'])->name('timer.stop');
         Route::get('/settings', [TimerController::class, 'timerSettings'])->name('timer.settings');
         Route::post('/saveTimerSettings', [TimerController::class, 'saveTimerSettings'])->name('pomodoro.saveTimerSettings');
         //ポモドーロタイマー管理
@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/show/{id}', [QuestionController::class, 'show'])->name('question.show');
         Route::get('/{id}/answer', [AnswerController::class, 'create'])->name('answer.create');
         Route::post('/answers/store', [AnswerController::class, 'store'])->name('answer.store');
-        Route::post('/answer/{answer}/best', [AnswerController::class, 'setBest'])->name('answer.setBest');
+        Route::post('/answer/{id}/best', [AnswerController::class, 'setBest'])->name('answer.setBest');
         Route::get('/cancel/{id}', [AnswerController::class, 'cancel'])->name('answer.cancel');
         Route::get('/{id}/replie', [AnswerReplyController::class, 'create']) ->name('replie.create');
         Route::post('/replie/store', [AnswerReplyController::class, 'store'])->name('replie.store');

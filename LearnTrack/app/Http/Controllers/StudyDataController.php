@@ -58,7 +58,7 @@ class StudyDataController extends Controller
         ]);
     }
 
-    private function getChartData($startDate, $endDate, $type = 'month', $chartType = 'bar')
+    private function getChartData($startDate, $endDate, $type = 'day', $chartType = 'pie')
     {
         $sessions = StudySession::where('user_id', Auth::id())
                                 ->whereBetween('created_at', [$startDate, $endDate])

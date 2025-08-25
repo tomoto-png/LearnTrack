@@ -134,7 +134,7 @@
                     </div>
                     <div class="max-h-24 overflow-y-auto break-words">
                         <p class="text-sm sm:text-base text-[var(--text-main)]">
-                            {{ $user->bio ?? '自己紹介はまだ設定されていません。' }}
+                            {!! nl2br(e($user->bio ?? '自己紹介はまだ設定されていません。')) !!}
                         </p>
                     </div>
                 </div>

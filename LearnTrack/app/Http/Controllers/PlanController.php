@@ -67,8 +67,6 @@ class PlanController extends Controller
             'description' => $request->description,
             'target_hours' => $request->target_hours,
             'priority' => $request->priority,
-            'progress' => 0.00,
-            'completed' => false,
         ]);
 
         return redirect()->route('plan.index');

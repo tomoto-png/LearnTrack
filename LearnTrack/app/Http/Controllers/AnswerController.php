@@ -10,7 +10,6 @@ use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\File;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
@@ -74,20 +73,20 @@ class AnswerController extends Controller
                         'image_url' => $imageUrl,
                     ]);
                 });
-            } catch (QueryException $e) {
+
+                return redirect()->route('question.show',['id' => $input['question_id']]);
+            } catch (\Exception $e) {
                 return redirect()->back()->withErrors(['error' => '回答の投稿が失敗しました']);
             }
         }
-        return redirect()->route('question.show',['id' => $input['question_id']]);
     }
-    public function setBest(Answer $answer)
+    public function setBest($id)
     {
+        $answer = Answer::findOrFail($id);
+        $question = $answer->question;
         try {
-            DB::transaction(function () use ($answer) {
-                $question = $answer->question;
-                $answer->user->update([
-                    'count' => $answer->user->count + $question->reward
-                ]);
+            DB::transaction(function () use ($answer, $question) {
+                $answer->user->increment('count', $question->reward);
 
                 $answer->update(['is_best' => true]);
 
@@ -95,11 +94,11 @@ class AnswerController extends Controller
                     $question->update(['is_closed' => true]);
                 }
             });
-        } catch (QueryException $e) {
+            return back();
+        } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->withErrors(['error' => 'ベスアンサーの選択に失敗しました']);
         }
-
-        return back();
     }
     public function cancel($id) {
         if (session('confirm_image_path')) {

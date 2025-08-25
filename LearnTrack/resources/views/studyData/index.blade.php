@@ -151,6 +151,7 @@
         let calendar;
         let targetDate = new Date().toISOString().split('T')[0];
         const todayStr = new Date().toISOString().split('T')[0];
+        //グラフの処理
         function createChart(labels, data) {
             const ctx = document.getElementById('studyPieChart').getContext('2d');
             const chartWrapper = document.getElementById('chartWrapper');
@@ -282,7 +283,6 @@
                         const bgColor = context.dataset.backgroundColor[context.dataIndex];//Chartのデータセットオブジェクトによって背景の背景の色配列を取得、[context.dataIndex]を使用する事で何番目か
                         return getContrastColor(bgColor);
                     },//ラベルのカラー
-                    //フォントの設定
                     font: {
                         size: 16
                     },
@@ -301,7 +301,7 @@
 
                         return label;
                     },
-                    clip: false,
+                    clip: false,//ラベルがグラフの外に出ても隠れないように
                     anchor: function(context) {
                         return getLabelDisplaySettings(context).anchor;
                     },
@@ -351,23 +351,7 @@
                 options: options
             });
         }
-        function closeCalendarModal() {
-            $('#calendarModal').removeClass('flex').addClass('hidden');
 
-            if (!yearPicker.classList.contains('hidden')) {
-                yearPicker.classList.add('hidden');
-            }
-            if (!monthPicker.classList.contains('hidden')) {
-                monthPicker.classList.add('hidden');
-            }
-            if (!changeCalendarBtn.classList.contains('hidden')) {
-                changeCalendarBtn.classList.toggle('hidden');
-                option.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
-            }
-
-            isFirstOpen = true;
-        }
         document.addEventListener('DOMContentLoaded', function () {
             $.ajaxSetup({
                 headers: {
@@ -379,15 +363,37 @@
             //カレンダー機能
             const calendarBtn = document.getElementById('calendarToggleBtn');
             const calendarModal = document.getElementById('calendarModal');
+            //カレンダーモーダルを閉じる
+            function closeCalendarModal() {
+                calendarModal.classList.remove('flex');
+                calendarModal.classList.add('hidden');
+
+                if (!yearPicker.classList.contains('hidden')) {
+                    yearPicker.classList.add('hidden');
+                }
+                if (!monthPicker.classList.contains('hidden')) {
+                    monthPicker.classList.add('hidden');
+                }
+                if (!changeCalendarBtn.classList.contains('hidden')) {
+                    changeCalendarBtn.classList.toggle('hidden');
+                    option.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                }
+
+                isFirstOpen = true;
+            }
 
             calendarBtn.addEventListener('click', function () {
                 if (calendarModal.classList.contains('hidden')) {
-                    $('#calendarModal').removeClass('hidden').addClass('flex');
+                    calendarModal.classList.remove('hidden');
+                    calendarModal.classList.add('flex');
                 } else {
                     calendarModal.classList.add('hidden');
+                    calendarModal.classList.remove('flex');
                     closeCalendarModal();
                     return;
                 }
+
                 // 初期化されてなければカレンダー作成
                 if (!calendarInitialized) {
                     const calendarEl = document.getElementById('calendar');
@@ -693,7 +699,7 @@
                     //遅延処理
                     setTimeout(() => {
                         const itemHeight = 32;
-                        // 初回のみ現在の年月にスクロール
+                        // モーダルを開いた時に現在選択の年月にスクロール
                         if (isFirstOpen) {
                             const [splitYear, splitMonth, splitDay] = targetDate.split('-');
                             //現在の年が何番目にあるかを計算(0から)

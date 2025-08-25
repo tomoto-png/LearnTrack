@@ -402,6 +402,7 @@
             $("#start-button").click(() => {
                 if (!timerInterval) {
                     startStudyTimer();
+
                     $.ajax({
                         url: '/timer/start/' + $('#planSelect').val(),
                         type: 'POST',

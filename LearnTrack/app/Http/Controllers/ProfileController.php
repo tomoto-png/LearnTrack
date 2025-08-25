@@ -116,7 +116,7 @@ class ProfileController extends Controller
                         $oldPath = str_replace(Storage::disk('s3')->url(''), '', $user->avatar);//接頭辞を削除したファイルパスを残す、str_replaceは文字列の一部置き換え
                         Storage::disk('s3')->delete($oldPath);
                     }
-                    $s3Path = $request->file('avatar')->store('uploads/avatars', 's3');
+                    $s3Path = Storage::disk('s3')->putFile('uploads/avatars', $request->file('avatar'));
                     $avatar = Storage::disk('s3')->url($s3Path);
                 } else {
                     $avatar = $user->avatar;
@@ -130,11 +130,10 @@ class ProfileController extends Controller
                     'occupation' => $request->occupation,
                 ]);
             });
-        } catch (QueryException $e) {
+            return redirect()->route('profile.index');
+        } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => '回答の投稿が失敗しました']);
         }
-
-        return redirect()->route('profile.index');
     }
 
     public function show($id) {

@@ -8,7 +8,6 @@ use App\Models\Plan;
 use App\Models\StudySession;
 use App\Models\TimerSetting;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
 
 
 class TimerController extends Controller
@@ -30,45 +29,44 @@ class TimerController extends Controller
         return view('pomodoro.index', compact('plans'));
     }
 
-    public function start(Plan $plan = null)
+    public function start($id = null)
     {
         $userId = Auth::id();
 
-        $unfinishedSession = StudySession::where('user_id', $userId)
+        StudySession::where('user_id', $userId)
             ->whereNull('duration')
-            ->first();
+            ->delete();
 
-        if ($unfinishedSession) {
-            $unfinishedSession->delete();
+        if (!is_null($id) && !Plan::find($id)) {
+            return response()->json([
+                'error' => '指定された計画は存在しません'
+            ], 404);
         }
 
         $newSession = StudySession::create([
             'user_id' => $userId,
-            'plan_id' => $plan?->id,
+            'plan_id' => $id,
         ]);
 
         return response()->json(['studySessionId' => $newSession->id], 200);
     }
 
-    public function stop(StudySession $studySession)
+    public function stop($id)
     {
         $user = Auth::user();
+        $studySession = StudySession::findOrFail($id);
+
+        $duration = request()->input('duration');
+        $count = request()->input('count');
 
         try{
-            DB::transaction(function () use ($user, $studySession) {
-                $duration = request()->input('duration');
-                $count = request()->input('count');
-                $userCount = $user->count + $count;
+            DB::transaction(function () use ($user, $studySession, $duration, $count) {
                 $studySession->update([
                     'duration' => $duration,
                 ]);
-
-                $user->update([
-                    'count' => $userCount
-                ]);
+                $user->increment('count', $count);
 
                 $plan = $studySession->plan;
-
                 if ($plan && $plan->target_hours > 0) {
                     $totalDuration = $plan->studySessions()->sum('duration');
                     $targetSeconds = $plan->target_hours * 3600;//時間を秒数に
@@ -79,11 +77,11 @@ class TimerController extends Controller
                     ]);
                 }
             });
-        } catch (QueryException $e) {
-            return redirect()->back()->withErrors(['error' => 'タイマーの終了に失敗しました']);
-        }
 
-        return response()->json(['message' => 'タイマー停止']);
+            return response()->json(['message' => 'タイマー停止']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'タイマーの停止に失敗しました'], 500);
+        }
     }
 
     public function timerSettings()
