@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
         }
     </style>
 </head>
+
 <body class="bg-[var(--bg-green)] text-[var(--text-brown)] min-h-screen flex justify-center">
     <aside id="sidebar"
         class="fixed top-0 left-0 w-72 h-screen bg-[var(--bg-light-gray)] shadow-lg p-6 z-50
@@ -32,23 +34,26 @@
                 <h1 class="text-xl sm:text-2xl font-semibold">マイページ</h1>
                 <button id="menuButton"
                     class="fixed top-7 right-6 sm:top-10 sm:right-8 bg-[var(--accent-color)] text-[var(--white)] p-2 rounded-lg shadow-lg hover:bg-[var(--button-hover)] transition-transform transform hover:scale-110 lg:hidden z-50">
-                    <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="ハンバーガーメニュー" class="w-6 h-6">
+                    <img id="menuIcon" src="{{ asset('images/menu_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
+                        alt="ハンバーガーメニュー" class="w-6 h-6">
                 </button>
             </div>
         </header>
 
-        <div class="bg-[var(--bg-light-gray)] p-8 rounded-lg shadow-lg">
+        <div class="bg-[var(--bg-light-gray)] py-6 px-8 rounded-lg shadow-lg">
             <div class="flex justify-between items-center">
                 <div class="flex flex-col md:flex-row md:space-x-4 items-center">
                     @if ($user->avatar)
-                        <div class="w-20 h-20 rounded-full border-2 border-[var(--accent-color)] shadow overflow-hidden md:w-28 md:h-28">
-                            <img class="w-full h-full object-cover"
-                                src="{{ $user->avatar }}"
+                        <div
+                            class="w-20 h-20 rounded-full border-2 border-[var(--accent-color)] shadow overflow-hidden md:w-28 md:h-28">
+                            <img class="w-full h-full object-cover" src="{{ $user->avatar }}"
                                 alt="{{ $user->name }}のアバター">
                         </div>
                     @else
-                        <div class="w-20 h-20 rounded-full bg-[var(--bg-green)] border-2 border-[var(--accent-color)] flex items-center justify-center md:w-28 md:h-28">
-                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="アイコン" class="w-10 h-10 opacity-70">
+                        <div
+                            class="w-20 h-20 rounded-full bg-[var(--bg-green)] border-2 border-[var(--accent-color)] flex items-center justify-center md:w-28 md:h-28">
+                            <img src="{{ asset('images/person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
+                                alt="アイコン" class="w-10 h-10 opacity-70">
                         </div>
                     @endif
 
@@ -57,15 +62,14 @@
                 <div>
                     <a href="{{ route('profile.edit') }}"
                         class="inline-flex items-center gap-2 bg-[var(--button-bg)] text-[var(--white)] px-2 py-1 sm:px-4 sm:py-2 rounded-lg font-medium hover:bg-[var(--button-hover)] transition-all duration-300">
-                        <img src="{{ asset('images/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}"
-                            alt="編集"
+                        <img src="{{ asset('images/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="編集"
                             class="w-5 h-5">
                         <span class="text-base">編集</span>
                     </a>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 mt-4 p-2 md:grid-cols-3 md:gap-12 md:p-4">
+            <div class="grid grid-cols-1 gap-6 mt-4 p-2 md:grid-cols-3 md:gap-12">
                 <!-- プロフィール -->
                 <div class="flex-1">
                     <div class="flex items-center mb-2 sm:mb-4">
@@ -141,54 +145,63 @@
             </div>
         </div>
 
-        <div class="mt-6 bg-[var(--bg-light-gray)] rounded-lg overflow-hidden shadow-lg p-8">
+        <div class="mt-5 bg-[var(--bg-light-gray)] rounded-lg overflow-hidden shadow-lg py-5 px-8">
             <div class="flex justify-center sm:justify-start gap-5 text-lg">
                 <a href="{{ route('profile.index', ['filter' => 'question']) }}"
-                   class="pb-1 border-b-2 transition duration-200 {{ $filter == 'question' ? 'border-[var(--accent-color)] text-[var(--accent-color)] font-semibold' : 'border-transparent' }}">
+                    class="pb-1 border-b-2 transition duration-200 {{ $filter == 'question' ? 'border-[var(--accent-color)] text-[var(--accent-color)] font-semibold' : 'border-transparent' }}">
                     質問一覧
                 </a>
                 <a href="{{ route('profile.index', ['filter' => 'answer']) }}"
-                   class="pb-1 border-b-2 transition duration-200 {{ $filter == 'answer' ? 'border-[var(--accent-color)] text-[var(--accent-color)] font-semibold' : 'border-transparent' }}">
+                    class="pb-1 border-b-2 transition duration-200 {{ $filter == 'answer' ? 'border-[var(--accent-color)] text-[var(--accent-color)] font-semibold' : 'border-transparent' }}">
                     回答一覧
                 </a>
             </div>
-            <div class="mt-4">
-                <div id="filter-buttons"
-                    class="flex flex-wrap gap-2 sm:flex-nowrap">
+            <div class="mt-3">
+                <div id="filter-buttons" class="flex flex-wrap gap-2 sm:flex-nowrap">
                     <button data-status=""
-                            class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)] bg-[var(--button-bg)] text-[var(--white)]">
+                        class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]
+                            {{ $status === null || $status === '' ? 'bg-[var(--button-bg)] text-[var(--white)]' : '' }}">
                         全て
                     </button>
+
                     <button data-status="open"
-                            class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]">
+                        class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]
+                            {{ $status === 'open' ? 'bg-[var(--button-bg)] text-[var(--white)]' : '' }}">
                         回答受付中
                     </button>
+
                     <button data-status="closed"
-                            class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]">
+                        class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]
+                            {{ $status === 'closed' ? 'bg-[var(--button-bg)] text-[var(--white)]' : '' }}">
                         解決済み
                     </button>
+
                     @if ($filter === 'question')
                         <button data-status="no_best"
-                                class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]">
+                            class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]
+                                {{ $status === 'no_best' ? 'bg-[var(--button-bg)] text-[var(--white)]' : '' }}">
                             ベストアンサー未選択
                         </button>
                     @else
                         <button data-status="best"
-                                class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]">
+                            class="filter-button py-1 px-3 rounded-full border border-[var(--text-brown)]
+                                {{ $status === 'best' ? 'bg-[var(--button-bg)] text-[var(--white)]' : '' }}">
                             ベストアンサー
                         </button>
                     @endif
                 </div>
             </div>
-            <div class="mt-6 sm:mt-8" id="data-list">
+            <div class="mt-2 sm:mt-4" id="data-list">
                 @include('components.profile_items', ['datas' => $datas, 'filter' => $filter])
             </div>
-            <x-pagination.custom :paginator="$datas" />
+            <div id="pagination">
+                <x-pagination.custom :paginator="$datas" />
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.filter-button');
             const filter = "{{ $filter }}";
 
@@ -199,11 +212,12 @@
             });
 
             buttons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     const status = this.dataset.status;
 
                     // ボタンの見た目を切り替え
-                    buttons.forEach(btn => btn.classList.remove('bg-[var(--button-bg)]', 'text-[var(--white)]'));
+                    buttons.forEach(btn => btn.classList.remove('bg-[var(--button-bg)]',
+                        'text-[var(--white)]'));
                     this.classList.add('bg-[var(--button-bg)]', 'text-[var(--white)]');
 
                     $.ajax({
@@ -214,7 +228,10 @@
                             status: status
                         },
                         success: function(response) {
-                            document.querySelector('#data-list').innerHTML = response.html;
+                            document.querySelector('#data-list').innerHTML = response
+                                .html;
+                            document.querySelector('#pagination').innerHTML = response
+                                .pagination;
                         },
                         error: function(xhr, error) {
                             if (xhr.status === 419 || xhr.status === 401) {
@@ -230,11 +247,12 @@
             const menuButton = document.getElementById("menuButton");
             const sidebar = document.getElementById("sidebar");
             if (menuButton && sidebar) {
-                menuButton.addEventListener("click", function () {
+                menuButton.addEventListener("click", function() {
                     sidebar.classList.toggle("-translate-x-full");
                 });
             }
         });
     </script>
 </body>
+
 </html>

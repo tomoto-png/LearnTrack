@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Question;
 use App\Models\Answer;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
@@ -23,7 +22,7 @@ class ProfileController extends Controller
         if ($filter === 'question') {
             $questionQuery = Question::where('user_id', $user->id)
                 ->with('category');
-            switch ($status){
+            switch ($status) {
                 case 'open':
                     $questionQuery->where('is_closed', false);
                     break;
@@ -39,7 +38,11 @@ class ProfileController extends Controller
                     break;
             }
             $questionQuery->orderBy('created_at', 'desc');
-            $datas = $questionQuery->paginate(4);
+            $datas = $questionQuery->paginate(3)
+                ->appends([
+                    'filter' => $filter,
+                    'status' => $status,
+                ]);
         } elseif ($filter === 'answer') {
             $answerQuery = Answer::where('user_id', $user->id)
                 ->with('question');
@@ -62,7 +65,11 @@ class ProfileController extends Controller
                     break;
             }
             $answerQuery->orderBy('created_at', 'desc');
-            $datas = $answerQuery->paginate(4);
+            $datas = $answerQuery->paginate(3)
+                ->appends([
+                    'filter' => $filter,
+                    'status' => $status,
+                ]);
         }
 
         if ($request->ajax()) {
@@ -71,12 +78,17 @@ class ProfileController extends Controller
                 'filter' => $filter
             ])->render();
 
+            $pagination = view('components.pagination.custom', [
+                'paginator' => $datas
+            ])->render();
+
             return response()->json([
                 'html' => $html,
+                'pagination' => $pagination,
             ]);
         }
 
-        return view('profile.index', compact('user', 'userWithCounts', 'datas', 'filter'));
+        return view('profile.index', compact('user', 'userWithCounts', 'datas', 'filter', 'status'));
     }
 
     public function edit()
@@ -96,7 +108,7 @@ class ProfileController extends Controller
             'gender' => 'nullable|string',
             'age' => 'nullable|string',
             'occupation' => 'nullable|string|max:20',
-        ],[
+        ], [
             'name.required' => '名前を入力してください。',
             'name.string' => '名前は文字列で入力してください。',
             'bio.string' => '自己紹介文は文字列で入力してください。',
@@ -113,7 +125,7 @@ class ProfileController extends Controller
                 if ($request->hasFile('avatar')) {
                     if ($user->avatar) {
                         // S3上のパスを取得するため、URLからパスを抜き出す
-                        $oldPath = str_replace(Storage::disk('s3')->url(''), '', $user->avatar);//接頭辞を削除したファイルパスを残す、str_replaceは文字列の一部置き換え
+                        $oldPath = str_replace(Storage::disk('s3')->url(''), '', $user->avatar); //接頭辞を削除したファイルパスを残す、str_replaceは文字列の一部置き換え
                         Storage::disk('s3')->delete($oldPath);
                     }
                     $s3Path = Storage::disk('s3')->putFile('uploads/avatars', $request->file('avatar'));
@@ -136,7 +148,8 @@ class ProfileController extends Controller
         }
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $user = User::findOrFail($id);
         return view('profile.show', compact('user'));
     }
